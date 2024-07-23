@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum performance_class {
+  ONE
+  TWO
+}
+
+enum age_group {
+  YOUTH_A
+  YOUTH_B
+  YOUTH_C
+  YOUTH_D
+  SENIOR
+}
+
+enum kup {
+  K1
+  K2
+  K3
+  K4
+  K5
+  K7
+  K6
+  K8
+  D1
+  D2
+  D3
+}
+
+enum weight_class {
+  T45
+  T48
+  T51
+  T55
+  T59
+  T63
+  T68
+  T73
+  P73
+  T78
+  P78
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum FighterGender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  password      String
+  role          UserRole @default(USER)
+  email         String   @unique
+  timestamp     DateTime
+  fighterdata   FigherData[]
+}
+
+model FigherData {
+  id            String @id @default(cuid())
+  weight        String
+  gender        FighterGender 
+  weight_class  weight_class
+  kup           kup 
+  date_of_birth DateTime
+  age_group     age_group
+  performance_class performance_class
+
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+}

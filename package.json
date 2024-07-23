@@ -1,0 +1,29 @@
+{
+  "name": "tkdathletics",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prisma": "^5.17.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "cd client && bun run build",
+    "start": "bun server/index.ts",
+    "dev_server": "bun --watch server/index.ts",
+    "dev_client": "cd client && bunx --bun vite",
+    "dev": "concurrently 'bun dev_server' 'bun dev_client'"
+  },
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^5.17.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^8.2.2",
+    "hono": "^4.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.23.8"
+  }
+}
