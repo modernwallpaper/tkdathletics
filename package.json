@@ -18,6 +18,9 @@
   "type": "module",
   "dependencies": {
     "@prisma/client": "^5.17.0",
+    "@tanstack/react-router": "^1.45.8",
+    "@tanstack/router-devtools": "^1.45.8",
+    "@tanstack/router-plugin": "^1.45.8",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "bcryptjs": "^2.4.3",

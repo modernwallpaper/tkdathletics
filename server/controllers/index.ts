@@ -2,7 +2,7 @@ import type { Context } from "hono"
 import { LoginSchema, UserSchema } from "../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt, { type JwtPayload } from "jsonwebtoken"
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
 
@@ -29,12 +29,17 @@ const login = async (c: Context) => {
 
     const token = jwt.sign({ userId: existingUser.id }, secret, { expiresIn: "30d" });
 
+    const fighter = await db.figherData.findUnique({ where: { id: existingUser.id } });
+
     const response = new Response(
       JSON.stringify({
-        id: existingUser.id,
-        name: existingUser.name,
-        email: existingUser.email,
-        timestamp: existingUser.timestamp
+        user: {
+          id: existingUser.id,
+          name: existingUser.name,
+          email: existingUser.email,
+          timestamp: existingUser.timestamp
+        },
+        fighter,
       }),
       {
         status: 200,

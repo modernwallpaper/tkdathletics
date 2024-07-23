@@ -1,4 +1,5 @@
 import { VitePWA } from 'vite-plugin-pwa';
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite"
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
@@ -34,16 +35,17 @@ export default defineConfig({
       suppressWarnings: true,
       type: 'module',
     },
-  })],
+  }), TanStackRouterVite()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@server": path.resolve(__dirname, "../server/"),
     },
   },
   server: {
     proxy: {
       "/api": {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:4000',
         changeOrigin: true,
       }
     }
