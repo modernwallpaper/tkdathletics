@@ -25,6 +25,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getAllUsers: builder.mutation({
+      query: () => ({
+        url: `${USER_URL}/getall`,
+        method: 'GET',
+      }),
+    }),
     logout: builder.mutation({
       query: () => ({
         url: `${AUTH_URL}/logout`,
@@ -34,4 +40,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetProfileMutation, useLogoutMutation } = userApiSlice;
+export const { useLoginMutation, useRegisterMutation, useGetProfileMutation, useGetAllUsersMutation, useLogoutMutation } = userApiSlice;

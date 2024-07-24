@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { login, logout, profile, register } from "../controllers";
+import { getAll, login, logout, profile, register, updateUserAsUser } from "../controllers";
 import { protectAdmin, protectUser } from "../lib/middleware";
 
 export const routes = new Hono()
@@ -7,3 +7,5 @@ export const routes = new Hono()
 .post("auth/register", protectAdmin ,register)
 .post("auth/logout", logout)
 .get("user/profile", protectUser, profile)
+.put("user/profile", protectUser, updateUserAsUser)
+.get("user/getall", protectAdmin, getAll)

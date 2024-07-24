@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { LoginSchema, UserSchema } from "../schemas";
+import { LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
@@ -180,4 +180,96 @@ const profile = async (c: Context) => {
   }
 };
 
-export { login, register, logout, profile };
+const getAll = async (c: Context) => {
+  const users = await db.user.findMany();
+  if (!users) return c.json({ error: "No users found" }, 404);
+  return c.json(users, 200);
+};
+
+const updateUserAsUser = async (c: Context) => {
+  let token;
+  token = getCookie(c, "jwt");
+
+  const data = await c.req.json();
+  const validatedFields = UpdateUserAsUserSchema.safeParse(data);
+  if (!validatedFields.success) return c.json({ error: "Invalid fields" });
+
+  let authorized = false;
+
+  if (token) {
+    try {
+      const secret = process.env.JWT_SECRET;
+      if (!secret)
+        return c.json(
+          {
+            error:
+              "No jwt secret was found. Please contact the system administrators",
+          },
+          500,
+        );
+
+      const decoded = jwt.verify(token, secret);
+
+      if (typeof decoded !== "string" && (decoded as JwtPayload).userId) {
+        const user = await getUserById((decoded as JwtPayload).userId);
+        if (!user) return c.json({ error: "Was not able to fetch user" }, 500);
+        if (user.id === validatedFields.data.id) {
+          authorized = true;
+        } else {
+          return c.json(
+            { error: "You cant change/update other users profiles" },
+            401,
+          );
+        }
+      }
+    } catch (error) {
+      c.json({ error: error }, 500);
+    }
+  } else {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  if (authorized) {
+    const {
+      name,
+      username,
+      surename,
+      weight_class,
+      kup,
+      birthday,
+      email,
+      password,
+      ag,
+      pg,
+      gender,
+      img,
+    } = validatedFields.data;
+    const udata: Partial<typeof validatedFields.data> = {};
+
+    if (name) udata.name = name;
+    if (username) udata.username = username;
+    if (surename) udata.surename = surename;
+    if (weight_class) udata.weight_class = weight_class;
+    if (kup) udata.kup = kup;
+    if (birthday) udata.birthday = birthday;
+    if (email) udata.email = email;
+    if (password) udata.password = await bcrypt.hash(password, 12);
+    if (ag) udata.ag = ag;
+    if (pg) udata.pg = pg;
+    if (gender) udata.gender = gender;
+    if (img) udata.img = img;
+
+    if (Object.keys(udata).length === 0) {
+      return c.json({ error: "No fields for update provided" });
+    }
+
+    const updatedUser = await db.user.update({
+      where: { id: validatedFields.data.id },
+      data: udata,
+    });
+
+    return c.json(updatedUser, 200);
+  }
+};
+
+export { login, register, logout, profile, getAll, updateUserAsUser };
