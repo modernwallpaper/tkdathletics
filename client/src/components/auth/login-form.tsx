@@ -35,7 +35,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     console.clear();
-    if (user) router.navigate({ to: "/settings" });
+    if (user) router.navigate({ to: "/v1/settings" });
   }, [router, user]);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -53,7 +53,7 @@ export const LoginForm = () => {
       if (loginResponse) {
         const userdata = await getProfile({}).unwrap();
         dispatch(setCredentials({ ...userdata }));
-        router.navigate({ to: "/settings" });
+        router.navigate({ to: "/v1/settings" });
         console.clear();
       }
     } catch (error: any) {

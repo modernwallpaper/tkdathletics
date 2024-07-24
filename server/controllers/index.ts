@@ -21,7 +21,19 @@ const login = async (c: Context) => {
   if (!existingUser || !existingUser.email)
     return c.json({ error: "User not found" }, 404);
 
+  if (existingUser.failed_logins > 6) {
+    return c.json({ error: "User blocked" }, 401);
+  }
+
   const passwordsMatch = await bcrypt.compare(password, existingUser.password);
+
+  if (!passwordsMatch) {
+    const failedLogins = existingUser.failed_logins;
+    await db.user.update({
+      where: { email },
+      data: { failed_logins: failedLogins + 1 },
+    });
+  }
 
   if (existingUser && passwordsMatch) {
     const secret = process.env.JWT_SECRET;
@@ -32,12 +44,9 @@ const login = async (c: Context) => {
           "No jwt secret was found. Please contact the system administrators",
       });
 
+    // @ts-ignore
     const token = jwt.sign({ userId: existingUser.id }, secret, {
       expiresIn: "30d",
-    });
-
-    const fighter = await db.figherData.findUnique({
-      where: { id: existingUser.id },
     });
 
     const response = new Response(
@@ -48,7 +57,6 @@ const login = async (c: Context) => {
           email: existingUser.email,
           timestamp: existingUser.timestamp,
         },
-        fighter,
       }),
       {
         status: 200,
@@ -70,54 +78,55 @@ const register = async (c: Context) => {
 
   if (!validatedFields.success) return c.json({ error: "Invalid fields" }, 400);
 
-  const { name, email, password } = validatedFields.data;
+  let {
+    name,
+    email,
+    password,
+    username,
+    surename,
+    authority,
+    birthday,
+    img,
+    kup,
+    weight_class,
+    gender,
+    ag,
+    pg,
+  } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) return c.json({ error: "Email already in use" }, 400);
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
+  if (img === undefined) img = "";
+
   try {
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        timestamp: new Date(),
-      },
-    });
-
-    const fighter = await db.figherData.create({
-      data: {
-        id: user.id,
-        weight: "",
-        weight_class: "T68",
-        kup: "K1",
-        gender: "MALE",
-        age_group: "SENIOR",
-        performance_class: "ONE",
-        date_of_birth: new Date(0),
-      },
-    });
-
-    const secret = process.env.JWT_SECRET;
-
-    if (!secret)
-      c.json({
-        error:
-          "No jwt secret was found. Please contact the system administrators",
+    await db.user
+      .create({
+        data: {
+          name: name,
+          username: username,
+          email: email,
+          password: hashedPassword,
+          surename: surename,
+          authority: authority,
+          birthday: birthday,
+          img: img,
+          kup: kup,
+          weight_class: weight_class,
+          gender: gender,
+          ag: ag,
+          pg: pg,
+          failed_logins: 0,
+          timestamp: new Date(),
+        },
+      })
+      .catch((Error) => {
+        console.log(Error);
       });
 
-    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "30d" });
-
-    const response = new Response(JSON.stringify({ user, fighter }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Set-Cookie": `jwt=${token}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}`,
-      },
-    });
-    return response;
+    return c.json({ success: "User created successfully" });
   } catch (err) {
     return c.json({ error: err });
   }
@@ -161,11 +170,7 @@ const profile = async (c: Context) => {
         const user = await getUserById((decoded as JwtPayload).userId);
         if (!user) return c.json({ error: "Was not able to fetch user" }, 500);
 
-        const fighter = await db.figherData.findUnique({
-          where: { id: user.id },
-        });
-
-        return c.json({ user, fighter }, 200);
+        return c.json(user, 200);
       }
     } catch (error) {
       c.json({ error: error }, 500);

@@ -5,3 +5,4 @@ export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 }
+

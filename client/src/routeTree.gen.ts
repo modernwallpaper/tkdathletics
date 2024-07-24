@@ -11,25 +11,43 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as V1Import } from './routes/v1'
 import { Route as IndexImport } from './routes/index'
-import { Route as SettingsIndexImport } from './routes/settings/index'
+import { Route as V1IndexImport } from './routes/v1/index'
 import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as V1SettingsIndexImport } from './routes/v1/settings/index'
+import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
 
 // Create/Update Routes
+
+const V1Route = V1Import.update({
+  path: '/v1',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const SettingsIndexRoute = SettingsIndexImport.update({
-  path: '/settings/',
-  getParentRoute: () => rootRoute,
+const V1IndexRoute = V1IndexImport.update({
+  path: '/',
+  getParentRoute: () => V1Route,
 } as any)
 
 const LoginIndexRoute = LoginIndexImport.update({
   path: '/login/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const V1SettingsIndexRoute = V1SettingsIndexImport.update({
+  path: '/settings/',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminIndexRoute = V1AdminIndexImport.update({
+  path: '/admin/',
+  getParentRoute: () => V1Route,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -43,6 +61,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/v1': {
+      id: '/v1'
+      path: '/v1'
+      fullPath: '/v1'
+      preLoaderRoute: typeof V1Import
+      parentRoute: typeof rootRoute
+    }
     '/login/': {
       id: '/login/'
       path: '/login'
@@ -50,12 +75,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexImport
       parentRoute: typeof rootRoute
     }
-    '/settings/': {
-      id: '/settings/'
+    '/v1/': {
+      id: '/v1/'
+      path: '/'
+      fullPath: '/v1/'
+      preLoaderRoute: typeof V1IndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/': {
+      id: '/v1/admin/'
+      path: '/admin'
+      fullPath: '/v1/admin'
+      preLoaderRoute: typeof V1AdminIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/settings/': {
+      id: '/v1/settings/'
       path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsIndexImport
-      parentRoute: typeof rootRoute
+      fullPath: '/v1/settings'
+      preLoaderRoute: typeof V1SettingsIndexImport
+      parentRoute: typeof V1Import
     }
   }
 }
@@ -64,8 +103,12 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  V1Route: V1Route.addChildren({
+    V1IndexRoute,
+    V1AdminIndexRoute,
+    V1SettingsIndexRoute,
+  }),
   LoginIndexRoute,
-  SettingsIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -77,18 +120,35 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login/",
-        "/settings/"
+        "/v1",
+        "/login/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/v1": {
+      "filePath": "v1.tsx",
+      "children": [
+        "/v1/",
+        "/v1/admin/",
+        "/v1/settings/"
+      ]
+    },
     "/login/": {
       "filePath": "login/index.tsx"
     },
-    "/settings/": {
-      "filePath": "settings/index.tsx"
+    "/v1/": {
+      "filePath": "v1/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/": {
+      "filePath": "v1/admin/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/settings/": {
+      "filePath": "v1/settings/index.tsx",
+      "parent": "/v1"
     }
   }
 }

@@ -7,76 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum performance_class {
-  ONE
-  TWO
-}
-
-enum age_group {
-  YOUTH_A
-  YOUTH_B
-  YOUTH_C
-  YOUTH_D
-  SENIOR
-}
-
-enum kup {
-  K1
-  K2
-  K3
-  K4
-  K5
-  K7
-  K6
-  K8
-  D1
-  D2
-  D3
-}
-
-enum weight_class {
-  T45
-  T48
-  T51
-  T55
-  T59
-  T63
-  T68
-  T73
-  P73
-  T78
-  P78
-}
-
-enum UserRole {
+enum authority {
   ADMIN
   USER
 }
 
-enum FighterGender {
+enum kup {
+  one
+  two 
+  three
+  four
+  five
+  six
+  seven
+  eight
+  nine
+  ten
+}
+
+enum weight_class {
+  to56kg
+}
+
+enum gender {
   MALE
   FEMALE
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String
-  password      String
-  role          UserRole @default(USER)
-  email         String   @unique
-  timestamp     DateTime
-  fighterdata   FigherData[]
+enum ag {
+  Senior
+  Youth_A 
+  Youth_B
+  Youth_C
+  Youth_D
 }
 
-model FigherData {
-  id            String @id @default(cuid())
-  weight        String
-  gender        FighterGender 
-  weight_class  weight_class
-  kup           kup 
-  date_of_birth DateTime
-  age_group     age_group
-  performance_class performance_class
+enum pg {
+  KADETS
+  LK1
+  LK2
+}
 
-  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+model User {
+  id            String @id @default(cuid())
+  username      String
+  password      String
+  name          String
+  surename       String
+  authority     authority @default(USER)
+  failed_logins Int 
+  email         String @unique
+  birthday      DateTime
+  img           String
+  kup           kup
+  weight_class  weight_class
+  gender        gender
+  ag            ag
+  pg            pg 
+  timestamp     DateTime
 }
