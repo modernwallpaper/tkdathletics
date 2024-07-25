@@ -6,18 +6,26 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
 
+/**
+ * @desc POST /api/auth/login
+ * @access PUBLIC
+*/
 const login = async (c: Context) => {
+  // Get data & validate
   const data = await c.req.json();
+  console.log(c);
   const validatedFields = LoginSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return c.json({ error: "Invalid fields" }, 400);
   }
 
+  // Destructure fields
   const { email, password } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
 
+  // Check for user
   if (!existingUser || !existingUser.email)
     return c.json({ error: "User not found" }, 404);
 
@@ -25,6 +33,7 @@ const login = async (c: Context) => {
     return c.json({ error: "User blocked" }, 401);
   }
 
+  // Check if passwords match
   const passwordsMatch = await bcrypt.compare(password, existingUser.password);
 
   if (!passwordsMatch) {
@@ -72,9 +81,16 @@ const login = async (c: Context) => {
   }
 };
 
+/**
+ * @desc POST /api/auth/register
+ * @access ADMIN
+*/
 const register = async (c: Context) => {
   const user = await c.req.json();
+  console.log(user)
   const validatedFields = UserSchema.safeParse(user);
+
+  console.log(validatedFields.error?.message);
 
   if (!validatedFields.success) return c.json({ error: "Invalid fields" }, 400);
 
@@ -132,6 +148,10 @@ const register = async (c: Context) => {
   }
 };
 
+/**
+ * @desc POST /api/auth/logout
+ * @access PUBLIC
+*/
 const logout = async () => {
   const response = new Response(
     JSON.stringify({
@@ -148,6 +168,10 @@ const logout = async () => {
   return response;
 };
 
+/**
+ * @desc GET /api/user/logout
+ * @access PRIVATE
+*/
 const profile = async (c: Context) => {
   let token;
   token = getCookie(c, "jwt");
@@ -180,15 +204,22 @@ const profile = async (c: Context) => {
   }
 };
 
+/**
+ * @desc GET /api/user/getall
+ * @access ADMIN
+*/
 const getAll = async (c: Context) => {
   const users = await db.user.findMany();
   if (!users) return c.json({ error: "No users found" }, 404);
   return c.json(users, 200);
 };
 
+/**
+ * @desc PUT /api/user/getall
+ * @access PRIVATE 
+*/
 const updateUserAsUser = async (c: Context) => {
-  let token;
-  token = getCookie(c, "jwt");
+  let token = getCookie(c, "jwt");
 
   const data = await c.req.json();
   const validatedFields = UpdateUserAsUserSchema.safeParse(data);
@@ -217,13 +248,13 @@ const updateUserAsUser = async (c: Context) => {
           authorized = true;
         } else {
           return c.json(
-            { error: "You cant change/update other users profiles" },
+            { error: "You can't change/update other users' profiles" },
             401,
           );
         }
       }
     } catch (error) {
-      c.json({ error: error }, 500);
+      return c.json({ error: error }, 500);
     }
   } else {
     return c.json({ error: "Unauthorized" }, 401);
@@ -244,6 +275,7 @@ const updateUserAsUser = async (c: Context) => {
       gender,
       img,
     } = validatedFields.data;
+
     const udata: Partial<typeof validatedFields.data> = {};
 
     if (name) udata.name = name;
@@ -263,12 +295,18 @@ const updateUserAsUser = async (c: Context) => {
       return c.json({ error: "No fields for update provided" });
     }
 
-    const updatedUser = await db.user.update({
-      where: { id: validatedFields.data.id },
-      data: udata,
-    });
+    console.log(udata);
 
-    return c.json(updatedUser, 200);
+    try {
+      const updatedUser = await db.user.update({
+        where: { id: validatedFields.data.id },
+        data: udata,
+      });
+
+      return c.json(updatedUser, 200);
+    } catch (err) {
+      return c.json({ error: err }, 500);
+    }
   }
 };
 

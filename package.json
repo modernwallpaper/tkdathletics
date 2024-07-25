@@ -12,7 +12,7 @@
     "build": "cd client && bun run build",
     "start": "bun server/index.ts",
     "dev_server": "bun --watch server/index.ts",
-    "dev_client": "cd client && bunx --bun vite",
+    "dev_client": "cd frontend && bunx --bun vite",
     "dev": "concurrently 'bun dev_server' 'bun dev_client'"
   },
   "type": "module",
