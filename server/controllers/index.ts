@@ -13,7 +13,6 @@ import { getCookie } from "hono/cookie";
 const login = async (c: Context) => {
   // Get data & validate
   const data = await c.req.json();
-  console.log(c);
   const validatedFields = LoginSchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -87,10 +86,7 @@ const login = async (c: Context) => {
 */
 const register = async (c: Context) => {
   const user = await c.req.json();
-  console.log(user)
   const validatedFields = UserSchema.safeParse(user);
-
-  console.log(validatedFields.error?.message);
 
   if (!validatedFields.success) return c.json({ error: "Invalid fields" }, 400);
 
@@ -98,16 +94,16 @@ const register = async (c: Context) => {
     name,
     email,
     password,
-    username,
-    surename,
-    authority,
-    birthday,
-    img,
-    kup,
-    weight_class,
-    gender,
-    ag,
-    pg,
+    //username,
+    //surename,
+    //authority,
+    //birthday,
+    //img,
+    //kup,
+    //weight_class,
+    //gender,
+    //ag,
+    //pg,
   } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
 
@@ -115,25 +111,23 @@ const register = async (c: Context) => {
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  if (img === undefined) img = "";
-
   try {
     await db.user
       .create({
         data: {
           name: name,
-          username: username,
+          //username: username,
           email: email,
           password: hashedPassword,
-          surename: surename,
-          authority: authority,
-          birthday: birthday,
-          img: img,
-          kup: kup,
-          weight_class: weight_class,
-          gender: gender,
-          ag: ag,
-          pg: pg,
+          //surename: surename,
+          //authority: authority,
+          //birthday: birthday,
+          //img: img,
+          //kup: kup,
+          //weight_class: weight_class,
+          //gender: gender,
+          //ag: ag,
+          //pg: pg,
           failed_logins: 0,
           timestamp: new Date(),
         },
@@ -161,10 +155,11 @@ const logout = async () => {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Set-Cookie": `jwt=; HttpOnly; Max-Age=${new Date(0)}`,
+        "Set-Cookie": `jwt=; HttpOnly; Path=/;Max-Age=${new Date(0)}`,
       },
     },
   );
+
   return response;
 };
 
@@ -294,8 +289,6 @@ const updateUserAsUser = async (c: Context) => {
     if (Object.keys(udata).length === 0) {
       return c.json({ error: "No fields for update provided" });
     }
-
-    console.log(udata);
 
     try {
       const updatedUser = await db.user.update({

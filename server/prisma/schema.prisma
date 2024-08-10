@@ -50,19 +50,19 @@ enum pg {
 
 model User {
   id            String @id @default(cuid())
-  username      String
+  username      String?
   password      String
   name          String
-  surename       String
+  surename      String?
   authority     authority @default(USER)
   failed_logins Int 
   email         String @unique
-  birthday      DateTime
-  img           String
-  kup           kup
-  weight_class  weight_class
-  gender        gender
-  ag            ag
-  pg            pg 
+  birthday      DateTime?
+  img           String?
+  kup           kup?
+  weight_class  weight_class?
+  gender        gender?
+  ag            ag?
+  pg            pg?
   timestamp     DateTime
 }
