@@ -10,10 +10,30 @@ import { loadUser } from "@/lib/indexedDB";
 
 // Define the shape of the user object
 interface User {
-  // Define properties of the user object here
   id: string;
-  name: string;
   email: string;
+  password: string;
+  name?: string;
+  surenname?: string;
+  username?: string;
+  birthday?: string;
+  img?: string;
+  kup?:
+  | "one"
+  | "two"
+  | "three"
+  | "four"
+  | "five"
+  | "six"
+  | "seven"
+  | "eight"
+  | "nine"
+  | "ten";
+  weight_class?: string;
+  gender?: "MALE" | "FEMALE";
+  ag?: "Senior" | "Youth_A" | "Youth_B" | "Youth_C" | "Youth_D";
+  pg?: "KADETS" | "LK1" | "LK2";
+  authority: "USER" | "ADMIN";
 }
 
 // Define the shape of the state object

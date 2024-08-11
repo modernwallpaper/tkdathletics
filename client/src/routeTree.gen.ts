@@ -17,6 +17,7 @@ import { Route as V1IndexImport } from './routes/v1/index'
 import { Route as RegisterIndexImport } from './routes/register/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as V1SettingsIndexImport } from './routes/v1/settings/index'
+import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
 
 // Create/Update Routes
 
@@ -47,6 +48,11 @@ const LoginIndexRoute = LoginIndexImport.update({
 
 const V1SettingsIndexRoute = V1SettingsIndexImport.update({
   path: '/settings/',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminIndexRoute = V1AdminIndexImport.update({
+  path: '/admin/',
   getParentRoute: () => V1Route,
 } as any)
 
@@ -89,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1IndexImport
       parentRoute: typeof V1Import
     }
+    '/v1/admin/': {
+      id: '/v1/admin/'
+      path: '/admin'
+      fullPath: '/v1/admin'
+      preLoaderRoute: typeof V1AdminIndexImport
+      parentRoute: typeof V1Import
+    }
     '/v1/settings/': {
       id: '/v1/settings/'
       path: '/settings'
@@ -103,7 +116,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  V1Route: V1Route.addChildren({ V1IndexRoute, V1SettingsIndexRoute }),
+  V1Route: V1Route.addChildren({
+    V1IndexRoute,
+    V1AdminIndexRoute,
+    V1SettingsIndexRoute,
+  }),
   LoginIndexRoute,
   RegisterIndexRoute,
 })
@@ -129,6 +146,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "v1.tsx",
       "children": [
         "/v1/",
+        "/v1/admin/",
         "/v1/settings/"
       ]
     },
@@ -140,6 +158,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/v1/": {
       "filePath": "v1/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/": {
+      "filePath": "v1/admin/index.tsx",
       "parent": "/v1"
     },
     "/v1/settings/": {

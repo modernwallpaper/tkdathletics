@@ -17,7 +17,7 @@ let allowlist: RegExp[] | undefined
 if (import.meta.env.DEV)
   allowlist = [/^\/$/]
 
-// Dont cache api route Dont cache api routess 
+// Dont cache api route 
 registerRoute(
   ({ url }) => url.pathname.startsWith('/api/'),
   new StaleWhileRevalidate({

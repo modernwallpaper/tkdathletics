@@ -4,13 +4,11 @@ const STORE_NAME = "users";
 
 export interface User {
   id: string;
-  username?: string;
-  password?: string;
-  name: string;
-  surename?: string;
-  authority?: "USER" | "ADMIN";
-  failed_logins?: number;
   email: string;
+  password: string;
+  name?: string;
+  surenname?: string;
+  username?: string;
   birthday?: string;
   img?: string;
   kup?:
@@ -24,10 +22,11 @@ export interface User {
   | "eight"
   | "nine"
   | "ten";
-  weight_class?: "to56kg";
+  weight_class?: string;
   gender?: "MALE" | "FEMALE";
   ag?: "Senior" | "Youth_A" | "Youth_B" | "Youth_C" | "Youth_D";
-  pg?: "LK1" | "LK2" | "KADETS";
+  pg?: "KADETS" | "LK1" | "LK2";
+  authority: "USER" | "ADMIN";
   timestamp: string;
 }
 
