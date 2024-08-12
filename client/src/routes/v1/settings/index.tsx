@@ -1,12 +1,5 @@
-import { SettingsPage } from '@/components/app/settings/page';
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/v1/settings/')({
-  component: () => <Comp />
+  component: () => <p>Settings page</p> 
 })
-
-const Comp = () => {
-  return(
-    <SettingsPage />
-  )
-}

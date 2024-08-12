@@ -52,7 +52,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
   };
 
   return (
-    <div className="flex flex-col">      
+    <div className="flex flex-col">
       <div className="space-y-2">
         <div>
           <DialogHeader>
@@ -66,7 +66,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="flex space-x-2">
-                <div className="flex-col gap-y-2">
+                <div className="flex-col gap-y-2 w-full">
                   <FormField
                     control={form.control}
                     name="name"
@@ -156,7 +156,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                     )}
                   />
                 </div>
-                <div className="flex-col gap-y-2 ">
+                <div className="flex-col gap-y-2 w-full">
                   <FormField
                     control={form.control}
                     name="weight_class"
@@ -172,7 +172,9 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                             <SelectTrigger>
                               <SelectValue
                                 placeholder={
-                                  user.weight_class ? user.weight_class : "Select a weight class"
+                                  user.weight_class
+                                    ? user.weight_class
+                                    : "Select a weight class"
                                 }
                               />
                             </SelectTrigger>
@@ -199,8 +201,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                             <SelectTrigger>
                               <SelectValue
                                 placeholder={
-                                  user.gender
-                                  ? user.gender : "Select a gender"
+                                  user.gender ? user.gender : "Select a gender"
                                 }
                               />
                             </SelectTrigger>
@@ -228,8 +229,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                             <SelectTrigger>
                               <SelectValue
                                 placeholder={
-                                  user.ag
-                                  ? user.ag : "Select an age group"
+                                  user.ag ? user.ag : "Select an age group"
                                 }
                               />
                             </SelectTrigger>
@@ -261,7 +261,8 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                               <SelectValue
                                 placeholder={
                                   user.pg
-                                  ? user.pg : "Select a performance class"
+                                    ? user.pg
+                                    : "Select a performance class"
                                 }
                               />
                             </SelectTrigger>
@@ -270,6 +271,36 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                             <SelectItem value="KADETS">Kadets</SelectItem>
                             <SelectItem value="LK1">LK1</SelectItem>
                             <SelectItem value="LK2">LK2</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="authority"
+                    disabled={isLoading}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Authority</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={
+                                  user.authority
+                                    ? user.authority
+                                    : "Select a role"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="ADMIN">Admin</SelectItem>
+                            <SelectItem value="USER">User</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormItem>

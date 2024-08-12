@@ -1,21 +1,32 @@
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { PageHeader } from "../page-header"
-import { useLogout } from "@/hooks/useLogout";
-import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { PageHeader } from "../page-header";
+import { Nav } from "./nav";
+import { Outlet } from "@tanstack/react-router";
 
 export const SettingsPage = () => {
-  const { state } = useAuthContext();
-  const { user } = state;
-  const { logout } = useLogout();
-  
-  const onLogout = async () => {
-    await logout();
-  }
-  return(
+  return (
     <div>
-      <PageHeader label="Settings"/>
-      <p>{JSON.stringify(user)}</p>
-      <Button onClick={onLogout}>Logout</Button>
+      <PageHeader label="Settings" />
+      <div className="flex">
+        <div className="md:hidden flex-col">
+          <div>
+            <Nav />
+          </div>
+          <div className="mt-6">
+            <Outlet />
+          </div>
+        </div>
+        <div className="md:flex hidden">
+          <Nav />
+          <Separator
+            orientation="vertical"
+            className="md:ml-20 md:h-28 md:mt-6"
+          />
+          <div className="md:mt-6 md:ml-10">
+            <Outlet />
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
