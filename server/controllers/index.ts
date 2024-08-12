@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
+import { DeleteUserSchema, LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
@@ -9,7 +9,7 @@ import { getCookie } from "hono/cookie";
 /**
  * @desc POST /api/auth/login
  * @access PUBLIC
-*/
+ */
 const login = async (c: Context) => {
   // Get data & validate
   const data = await c.req.json();
@@ -94,7 +94,7 @@ const login = async (c: Context) => {
 /**
  * @desc POST /api/auth/register
  * @access ADMIN
-*/
+ */
 const register = async (c: Context) => {
   const user = await c.req.json();
   const validatedFields = UserSchema.safeParse(user);
@@ -107,7 +107,7 @@ const register = async (c: Context) => {
     password,
     //username,
     //surename,
-    //authority,
+    authority,
     //birthday,
     //img,
     //kup,
@@ -131,7 +131,7 @@ const register = async (c: Context) => {
           email: email,
           password: hashedPassword,
           //surename: surename,
-          //authority: authority,
+          authority: authority,
           //birthday: birthday,
           //img: img,
           //kup: kup,
@@ -156,7 +156,7 @@ const register = async (c: Context) => {
 /**
  * @desc POST /api/auth/logout
  * @access PUBLIC
-*/
+ */
 const logout = async () => {
   const response = new Response(
     JSON.stringify({
@@ -177,7 +177,7 @@ const logout = async () => {
 /**
  * @desc GET /api/user/logout
  * @access PRIVATE
-*/
+ */
 const profile = async (c: Context) => {
   let token;
   token = getCookie(c, "jwt");
@@ -213,7 +213,7 @@ const profile = async (c: Context) => {
 /**
  * @desc GET /api/user/getall
  * @access ADMIN
-*/
+ */
 const getAll = async (c: Context) => {
   const users = await db.user.findMany();
   if (!users) return c.json({ error: "No users found" }, 404);
@@ -221,9 +221,9 @@ const getAll = async (c: Context) => {
 };
 
 /**
- * @desc PUT /api/user/getall
- * @access PRIVATE 
-*/
+ * @desc PUT /api/user/profile
+ * @access PRIVATE
+ */
 const updateUserAsUser = async (c: Context) => {
   let token = getCookie(c, "jwt");
 
@@ -314,4 +314,87 @@ const updateUserAsUser = async (c: Context) => {
   }
 };
 
-export { login, register, logout, profile, getAll, updateUserAsUser };
+/**
+ * @desc PUT /api/user/admin/update
+ * @access PRIVATE
+ */
+const updateUserAsAdmin = async (c: Context) => {
+  const req = await c.req.json();
+  const validatedFields = UpdateUserAsUserSchema.safeParse(req);
+
+  if(!validatedFields.success) return c.json({ error: "Innvalid fields" }, 400)
+
+  const {
+    name,
+    username,
+    surename,
+    weight_class,
+    kup,
+    birthday,
+    email,
+    password,
+    ag,
+    pg,
+    gender,
+    img,
+  } = validatedFields.data;
+
+  const udata: Partial<typeof validatedFields.data> = {};
+
+  if (name) udata.name = name;
+  if (username) udata.username = username;
+  if (surename) udata.surename = surename;
+  if (weight_class) udata.weight_class = weight_class;
+  if (kup) udata.kup = kup;
+  if (birthday) udata.birthday = birthday;
+  if (email) udata.email = email;
+  if (password) udata.password = await bcrypt.hash(password, 12);
+  if (ag) udata.ag = ag;
+  if (pg) udata.pg = pg;
+  if (gender) udata.gender = gender;
+  if (img) udata.img = img;
+
+  if (Object.keys(udata).length === 0) {
+    return c.json({ error: "No fields for update provided" });
+  }
+
+  const existingUser = await getUserById(validatedFields.data.id);
+
+  try {
+    const uuser = await db.user.update({
+      where: { id: validatedFields.data.id },
+      data: { authority: existingUser?.authority, ...udata },
+    });
+
+    return c.json({ success: "User updated successfully", user: uuser }, 200);
+  } catch (err) {
+    return c.json({ error: err }, 500);
+  }
+};
+
+/**
+ * @desc POST /api/user/admin/delete
+ * @access PRIVATE
+ */
+const deleteUserAsAdmin = async (c: Context) => {
+  const req = await c.req.json();
+  
+  const validatedFields = DeleteUserSchema.safeParse(req); 
+
+  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
+
+  const { id } = validatedFields.data;
+
+  const existingUser = await getUserById(id);
+  
+  if(!existingUser) return c.json({ error: "The id provided doesent exist on any user" });
+
+  try {
+    await db.user.delete({ where: { id } })
+    return c.json({ success: "User deleted successfully" });
+  } catch (error) {
+    return c.json({ error: JSON.stringify(error) });
+  }
+}
+
+export { login, register, logout, profile, getAll, updateUserAsUser, updateUserAsAdmin, deleteUserAsAdmin };

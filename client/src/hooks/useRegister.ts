@@ -1,10 +1,13 @@
+import { CreateUserSchema } from "@/schemas";
 import { useState } from "react";
+import * as z from "zod"
 
 export const useRegister = () => {
   const[error, setError] = useState(null);
   const[loading, isLoading] = useState(false);
-  
-  const register = async(name: string, email: string, password: string) => {
+  const[success, setSuccess] = useState("");
+
+  const register = async(values: z.infer<typeof CreateUserSchema>) => {
     isLoading(true);
     setError(null);
 
@@ -13,20 +16,23 @@ export const useRegister = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(values),
     });
 
     const data = await res.json();
 
-    if(!res.ok) {
-      isLoading(false);
+    if(data.error) {
+      setSuccess("");
+      sessionStorage.setItem("toastMessage", data.error);
       setError(data.error);
+      window.location.reload();
     }
-    if(res.ok) {
+
+    if(data.success) {
       isLoading(false);
-      //localStorage.setItem('user', JSON.stringify(data));
-      //console.log("User created successfully");
+      sessionStorage.setItem("toastMessage", data.success);
+      window.location.reload();
     }
   }
-  return { register, loading, error };
+  return { register, loading, error, success };
 }

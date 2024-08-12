@@ -4,6 +4,7 @@ const UserSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),
+  authority: z.enum(["USER", "ADMIN"])
 })
 
 //const UserSchema = z.object({
@@ -53,4 +54,8 @@ const LoginSchema = z.object({
   password: z.string(),
 });
 
-export { UserSchema, LoginSchema, UpdateUserAsUserSchema };
+const DeleteUserSchema = z.object({
+  id: z.string().min(1),
+})
+
+export { UserSchema, LoginSchema, UpdateUserAsUserSchema, DeleteUserSchema };

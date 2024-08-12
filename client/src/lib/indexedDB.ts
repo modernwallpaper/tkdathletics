@@ -1,34 +1,8 @@
+import { User } from "@/types";
+
 const DB_NAME = "Tkdathletics";
 const DB_VERSION = 1;
 const STORE_NAME = "users";
-
-export interface User {
-  id: string;
-  email: string;
-  password: string;
-  name?: string;
-  surenname?: string;
-  username?: string;
-  birthday?: string;
-  img?: string;
-  kup?:
-  | "one"
-  | "two"
-  | "three"
-  | "four"
-  | "five"
-  | "six"
-  | "seven"
-  | "eight"
-  | "nine"
-  | "ten";
-  weight_class?: string;
-  gender?: "MALE" | "FEMALE";
-  ag?: "Senior" | "Youth_A" | "Youth_B" | "Youth_C" | "Youth_D";
-  pg?: "KADETS" | "LK1" | "LK2";
-  authority: "USER" | "ADMIN";
-  timestamp: string;
-}
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
