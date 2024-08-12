@@ -5,19 +5,21 @@ export const useLogout = () => {
   const { dispatch, state } = useAuthContext();
   const { user } = state;
   const logout = async () => {
-    await fetch('/api/auth/logout', {
+    await fetch("/api/auth/logout", {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
     });
-    
-    if(user) {
-      localStorage.removeItem('user');
-      deleteUser(user.id);
-      dispatch({type: "LOGOUT"});
-    } 
-  }
+
+    if (user) {
+      if (user.id) {
+        localStorage.removeItem("user");
+        deleteUser(user.id);
+        dispatch({ type: "LOGOUT" });
+      }
+    }
+  };
 
   return { logout };
-}
+};

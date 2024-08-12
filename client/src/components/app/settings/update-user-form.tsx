@@ -12,11 +12,6 @@ import {
 import { useUpdateUserAsAdmin } from "@/hooks/useUpdateUserAsAdmin";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Select,
