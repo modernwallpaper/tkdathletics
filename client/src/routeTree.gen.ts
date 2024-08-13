@@ -18,9 +18,9 @@ import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as V1SettingsImport } from './routes/v1/settings'
 import { Route as V1SettingsIndexImport } from './routes/v1/settings/index'
 import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
-import { Route as V1SettingsNotificationsImport } from './routes/v1/settings/notifications'
-import { Route as V1SettingsCompetitionDataImport } from './routes/v1/settings/competition-data'
-import { Route as V1SettingsAccountImport } from './routes/v1/settings/account'
+import { Route as V1SettingsNotificationsIndexImport } from './routes/v1/settings/notifications/index'
+import { Route as V1SettingsCompetitionDataIndexImport } from './routes/v1/settings/competition-data/index'
+import { Route as V1SettingsAccountIndexImport } from './routes/v1/settings/account/index'
 
 // Create/Update Routes
 
@@ -59,18 +59,20 @@ const V1AdminIndexRoute = V1AdminIndexImport.update({
   getParentRoute: () => V1Route,
 } as any)
 
-const V1SettingsNotificationsRoute = V1SettingsNotificationsImport.update({
-  path: '/notifications',
-  getParentRoute: () => V1SettingsRoute,
-} as any)
+const V1SettingsNotificationsIndexRoute =
+  V1SettingsNotificationsIndexImport.update({
+    path: '/notifications/',
+    getParentRoute: () => V1SettingsRoute,
+  } as any)
 
-const V1SettingsCompetitionDataRoute = V1SettingsCompetitionDataImport.update({
-  path: '/competition-data',
-  getParentRoute: () => V1SettingsRoute,
-} as any)
+const V1SettingsCompetitionDataIndexRoute =
+  V1SettingsCompetitionDataIndexImport.update({
+    path: '/competition-data/',
+    getParentRoute: () => V1SettingsRoute,
+  } as any)
 
-const V1SettingsAccountRoute = V1SettingsAccountImport.update({
-  path: '/account',
+const V1SettingsAccountIndexRoute = V1SettingsAccountIndexImport.update({
+  path: '/account/',
   getParentRoute: () => V1SettingsRoute,
 } as any)
 
@@ -113,27 +115,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1IndexImport
       parentRoute: typeof V1Import
     }
-    '/v1/settings/account': {
-      id: '/v1/settings/account'
-      path: '/account'
-      fullPath: '/v1/settings/account'
-      preLoaderRoute: typeof V1SettingsAccountImport
-      parentRoute: typeof V1SettingsImport
-    }
-    '/v1/settings/competition-data': {
-      id: '/v1/settings/competition-data'
-      path: '/competition-data'
-      fullPath: '/v1/settings/competition-data'
-      preLoaderRoute: typeof V1SettingsCompetitionDataImport
-      parentRoute: typeof V1SettingsImport
-    }
-    '/v1/settings/notifications': {
-      id: '/v1/settings/notifications'
-      path: '/notifications'
-      fullPath: '/v1/settings/notifications'
-      preLoaderRoute: typeof V1SettingsNotificationsImport
-      parentRoute: typeof V1SettingsImport
-    }
     '/v1/admin/': {
       id: '/v1/admin/'
       path: '/admin'
@@ -148,6 +129,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1SettingsIndexImport
       parentRoute: typeof V1SettingsImport
     }
+    '/v1/settings/account/': {
+      id: '/v1/settings/account/'
+      path: '/account'
+      fullPath: '/v1/settings/account'
+      preLoaderRoute: typeof V1SettingsAccountIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/settings/competition-data/': {
+      id: '/v1/settings/competition-data/'
+      path: '/competition-data'
+      fullPath: '/v1/settings/competition-data'
+      preLoaderRoute: typeof V1SettingsCompetitionDataIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/settings/notifications/': {
+      id: '/v1/settings/notifications/'
+      path: '/notifications'
+      fullPath: '/v1/settings/notifications'
+      preLoaderRoute: typeof V1SettingsNotificationsIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
   }
 }
 
@@ -157,10 +159,10 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   V1Route: V1Route.addChildren({
     V1SettingsRoute: V1SettingsRoute.addChildren({
-      V1SettingsAccountRoute,
-      V1SettingsCompetitionDataRoute,
-      V1SettingsNotificationsRoute,
       V1SettingsIndexRoute,
+      V1SettingsAccountIndexRoute,
+      V1SettingsCompetitionDataIndexRoute,
+      V1SettingsNotificationsIndexRoute,
     }),
     V1IndexRoute,
     V1AdminIndexRoute,
@@ -196,10 +198,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "v1/settings.tsx",
       "parent": "/v1",
       "children": [
-        "/v1/settings/account",
-        "/v1/settings/competition-data",
-        "/v1/settings/notifications",
-        "/v1/settings/"
+        "/v1/settings/",
+        "/v1/settings/account/",
+        "/v1/settings/competition-data/",
+        "/v1/settings/notifications/"
       ]
     },
     "/login/": {
@@ -209,24 +211,24 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "v1/index.tsx",
       "parent": "/v1"
     },
-    "/v1/settings/account": {
-      "filePath": "v1/settings/account.tsx",
-      "parent": "/v1/settings"
-    },
-    "/v1/settings/competition-data": {
-      "filePath": "v1/settings/competition-data.tsx",
-      "parent": "/v1/settings"
-    },
-    "/v1/settings/notifications": {
-      "filePath": "v1/settings/notifications.tsx",
-      "parent": "/v1/settings"
-    },
     "/v1/admin/": {
       "filePath": "v1/admin/index.tsx",
       "parent": "/v1"
     },
     "/v1/settings/": {
       "filePath": "v1/settings/index.tsx",
+      "parent": "/v1/settings"
+    },
+    "/v1/settings/account/": {
+      "filePath": "v1/settings/account/index.tsx",
+      "parent": "/v1/settings"
+    },
+    "/v1/settings/competition-data/": {
+      "filePath": "v1/settings/competition-data/index.tsx",
+      "parent": "/v1/settings"
+    },
+    "/v1/settings/notifications/": {
+      "filePath": "v1/settings/notifications/index.tsx",
       "parent": "/v1/settings"
     }
   }

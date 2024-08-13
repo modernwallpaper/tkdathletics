@@ -17,7 +17,7 @@ export const SettingsPage = () => {
           </div>
         </div>
         <div className="md:flex hidden">
-          <Nav />
+           <Nav />
           <Separator
             orientation="vertical"
             className="md:ml-20 md:h-28 md:mt-6"

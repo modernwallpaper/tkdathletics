@@ -3,9 +3,10 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { LoginForm } from "@/components/app/login-form";
 
 export const Route = createFileRoute("/login/")({
-  component: () => <Comp />,
+  component: () => <LoginForm />,
 });
 
 const Comp = () => {

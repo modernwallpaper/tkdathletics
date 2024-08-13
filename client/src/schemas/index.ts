@@ -1,5 +1,10 @@
 import * as z from "zod";
 
+const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
 const UpdateUserAsAdminSchema = z.object({
   id: z.string().email().optional(),
   name: z.string().optional(),
@@ -92,4 +97,4 @@ const CreateUserSchema = z.object({
   authority: z.enum(["USER", "ADMIN"]),
 });
 
-export { UpdateUserAsAdminSchema, CreateUserSchema, UpdateUserAsUserSchema };
+export { UpdateUserAsAdminSchema, CreateUserSchema, UpdateUserAsUserSchema, LoginSchema };
