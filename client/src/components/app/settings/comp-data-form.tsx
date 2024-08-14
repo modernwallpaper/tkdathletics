@@ -20,6 +20,7 @@ import { UpdateUserAsUserSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { FormError } from "../form-error";
 
 export const CompDataForm = () => {
   const { state } = useAuthContext();
@@ -211,6 +212,9 @@ export const CompDataForm = () => {
               />
             </div>
             <Button type="submit">Save</Button>
+            {error && (
+              <FormError message={error}/>
+            )}
           </form>
         </Form>
       </div>
