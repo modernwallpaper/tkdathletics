@@ -307,7 +307,7 @@ const updateUserAsUser = async (c: Context) => {
         data: udata,
       });
 
-      return c.json(updatedUser, 200);
+      return c.json({ success: "User updated successfully", user: updatedUser }, 200);
     } catch (err) {
       return c.json({ error: err }, 500);
     }

@@ -10,6 +10,7 @@ import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useEffect } from "react";
+import { FormError } from "./form-error";
 
 export const LoginForm = () => {
   const { state } = useAuthContext();
@@ -20,7 +21,7 @@ export const LoginForm = () => {
     if(user) router.navigate({ to: "/v1/settings" })
   }, [user, router])
   
-  const { login, loading } = useLogin();
+  const { login, loading, error } = useLogin();
  
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -114,6 +115,9 @@ export const LoginForm = () => {
                 Login
               </Button>
             </div>
+            {error && (
+              <FormError message={error}/>
+            )}
           </form>
         </Form>
       </div>

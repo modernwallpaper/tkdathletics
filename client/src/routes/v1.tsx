@@ -19,7 +19,7 @@ export const Route = createFileRoute("/v1")({
           <div className="w-full">
             <Navbar />
           </div>
-          <div className="md:pr-28 md:pl-28 md:pt-5 pr-5 pl-5 pt-2">
+          <div className="md:pr-28 md:pl-28 md:pt-5 pr-5 pl-5 pt-2 w-full h-full">
             <Outlet />
           </div>
         </main>

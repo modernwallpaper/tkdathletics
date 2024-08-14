@@ -23,7 +23,7 @@ export const useLogin = () => {
       const data = await res.json();
 
       if (data.error) {
-        setError(JSON.stringify(data.error));
+        setError(data.error);
         setLoading(false);
         return false;
       }
