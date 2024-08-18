@@ -15,11 +15,11 @@ export const Route = createFileRoute("/v1")({
 
     return (
       <AuthMiddleware>
-        <main className="w-full h-full flex flex-col gap-y-2 fixed">
-          <div className="w-full">
+        <main className="relative flex min-h-screen flex-col bg-background">
+          <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <Navbar />
-          </div>
-          <div className="md:pr-28 md:pl-28 md:pt-5 pr-5 pl-5 pt-2 w-full h-full">
+          </header>
+          <div className="flex-1">
             <Outlet />
           </div>
         </main>

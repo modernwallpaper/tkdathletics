@@ -15,8 +15,8 @@ export const Navbar = () => {
   const pathname = location.pathname;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] md:pr-20 md:pl-20">
-      <div className="flex w-full md:hidden justify-between">
+    <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-20 lg:pl-20">
+      <div className="flex w-full lg:hidden justify-between">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant={"outline"} size={"icon"} className="ml-2">
@@ -131,7 +131,7 @@ export const Navbar = () => {
           <ModeToggle />
         </div>
       </div>
-      <div className="hidden md:flex items-center justify-between w-full">
+      <div className="hidden lg:flex items-center justify-between w-full">
         <div className="gap-x-2 items-center">
           <Button
             asChild

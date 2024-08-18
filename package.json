@@ -9,7 +9,7 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "build": "cd client && bun run build",
+    "build": "rm -rf dist && cd client && bun run build",
     "start": "bun server/index.ts",
     "dev_server": "bun --watch server/index.ts",
     "dev_client": "cd client && bunx --bun vite --host",

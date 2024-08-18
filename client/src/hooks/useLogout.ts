@@ -4,6 +4,7 @@ import { useAuthContext } from "./useAuthContext";
 export const useLogout = () => {
   const { dispatch, state } = useAuthContext();
   const { user } = state;
+  
   const logout = async () => {
     await fetch("/api/auth/logout", {
       headers: {

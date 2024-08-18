@@ -1,29 +1,17 @@
-import { PageHeader } from "../page-header";
 import { Nav } from "./nav";
 import { Outlet } from "@tanstack/react-router";
 
 export const SettingsPage = () => {
   return (
-    <div className="h-full w-full">
-      <PageHeader label="Settings" />
-      <div className="flex h-full w-full">
-        <div className="md:hidden flex-col">
-          <div>
-            <Nav />
-          </div>
-          <div className="mt-6">
-            <Outlet />
-          </div>
-        </div>
-        <div className="md:flex hidden w-full h-full">
-          <div className="mr-8">
-            <Nav />
-          </div>
-          <div className="mt-6 ml-10 w-full h-full">
-            <Outlet />
-          </div>
-        </div>
+    <>
+      <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+        <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
+          <Nav />
+        </aside>
+        <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+          <Outlet />
+        </main>
       </div>
-    </div>
+    </>
   );
 };

@@ -78,11 +78,13 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     checkForUser();
   }, [dispatch, setLoading]);
 
-  while (loading === false) {
-    return (
-      <AuthContext.Provider value={{ state, dispatch }}>
-        {children}
-      </AuthContext.Provider>
-    );
+  if (loading) {
+    return null;
   }
+
+  return (
+    <AuthContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

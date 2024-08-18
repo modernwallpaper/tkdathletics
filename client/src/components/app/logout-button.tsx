@@ -6,6 +6,7 @@ export const LogoutButton = () => {
   const { logout } = useLogout();
 
   const onClick = () => {
+    //console.log("Logout requested");
     logout();
   };
 

@@ -22,7 +22,8 @@ export default defineConfig({
       name: 'frontend',
       short_name: 'frontend',
       description: 'frontend',
-      theme_color: '#ffffff',      
+      theme_color: '#ffffff',
+      display: "standalone"
     },
 
     injectManifest: {

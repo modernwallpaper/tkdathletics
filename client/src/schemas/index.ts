@@ -97,4 +97,9 @@ const CreateUserSchema = z.object({
   authority: z.enum(["USER", "ADMIN"]),
 });
 
-export { UpdateUserAsAdminSchema, CreateUserSchema, UpdateUserAsUserSchema, LoginSchema };
+const NotificationsSchema = z.object({
+  video_upload: z.boolean().default(false).optional(),
+  register_competition: z.boolean().default(false).optional(),
+})
+
+export { UpdateUserAsAdminSchema, CreateUserSchema, UpdateUserAsUserSchema, LoginSchema,NotificationsSchema };
