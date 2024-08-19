@@ -10,7 +10,7 @@ const initUser = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
   if (!adminUser) {
     console.log("Creating new server admin");
-    const hashedPassword = await bcrypt.hash("123456", 12);
+    const hashedPassword = await bcrypt.hash(JSON.stringify(process.env.ADMIN_PWD), 12);
     await db.user.create({
       data: {
         name: "admin",
