@@ -10,12 +10,6 @@ import { useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "./mode-toggle";
 import { LogoutButton } from "./logout-button";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
