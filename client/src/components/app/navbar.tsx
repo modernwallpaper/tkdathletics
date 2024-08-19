@@ -9,6 +9,18 @@ import {
 import { useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "./mode-toggle";
 import { LogoutButton } from "./logout-button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -107,17 +119,67 @@ export const Navbar = () => {
                     </Button>
                   </li>
                   <li>
-                    <Button
-                      asChild
-                      variant={"nav_link"}
-                      className={
-                        pathname === "/v1/settings"
-                          ? "text-primary"
-                          : "text-muted-foreground hover:text-primary"
-                      }
-                    >
-                      <a href={"/v1/settings"}>Settings</a>
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          asChild
+                          variant={"nav_link"}
+                          className={
+                            pathname === "/v1/settings" ||
+                              "/v1/settings/account" ||
+                              "/v1/settings/competition-data" ||
+                              "/v1/settings/notifications"
+                              ? "text-primary"
+                              : "text-muted-foreground hover:text-primary"
+                          }
+                        >
+                          <p>Settings</p>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="flex flex-col justify-start">
+                        <DropdownMenuItem asChild className="flex justify-start">
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/account"
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-primary"
+                            }
+                          >
+                            <a href="/v1/settings/account">Account</a>
+                          </Button>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="flex justify-start">
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/competition-data"
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-primary"
+                            }
+                          >
+                            <a href="/v1/settings/competition-data">Competition Data</a>
+                          </Button>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="flex justify-start">
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/notifications"
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-primary"
+                            }
+                          >
+                            <a href="/v1/settings/notifications">
+                              Notifications
+                            </a>
+                          </Button>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </li>
                 </ul>
               </div>

@@ -83,7 +83,7 @@ export const NotificationsForm = () => {
             )}
           />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Save</Button>
       </form>
     </Form>
   );
