@@ -4,7 +4,7 @@ import { useUpdateUserAsUser } from "@/hooks/useUpdateUserAsUser";
 import { loadUser, saveUser } from "@/lib/indexedDB";
 import { useEffect, useState } from "react";
 
-export const CheckForUpdate = async ({ children }: { children: React.ReactNode }) => {
+export const CheckForUpdate = ({ children }: { children: React.ReactNode }) => {
   const { state } = useAuthContext();
   const { user } = state;
   const { isOnline } = useConnection();
@@ -42,38 +42,42 @@ export const CheckForUpdate = async ({ children }: { children: React.ReactNode }
     }
   }, [localTimestamp, apiTimestamp, user])
 
-  if(user) {
-    if(isOnline) {
-      const getApiTimestamp = async () => {
-        try {
-          const req = await fetch("/api/user/profile", { method: "GET" });
-          const res = await req.json();
-
-          if(res.timestamp) {
-            setApiTimestamp(res.timestamp);
-          }
-        } catch (error) {
-          console.error("Failed to make api request to get user profile: ", user.id);
-        }
-      }
-
-      const getLocalTimestamp = async () => {
-        if(user.id) {
+  const getTimestamps = async () => {
+    if(user) {
+      if(isOnline) {
+        const getApiTimestamp = async () => {
           try {
-            const res = await loadUser(user.id);
-            if(res?.timestamp) {
-              setLocalTimestamp(res.timestamp);
+            const req = await fetch("/api/user/profile", { method: "GET" });
+            const res = await req.json();
+
+            if(res.timestamp) {
+              setApiTimestamp(res.timestamp);
             }
           } catch (error) {
-            console.error("Error to make request to local db to get user profile: ", user.id);
+            console.error("Failed to make api request to get user profile: ", user.id);
           }
         }
-      }
 
-      await getApiTimestamp();
-      await getLocalTimestamp();
+        const getLocalTimestamp = async () => {
+          if(user.id) {
+            try {
+              const res = await loadUser(user.id);
+              if(res?.timestamp) {
+                setLocalTimestamp(res.timestamp);
+              }
+            } catch (error) {
+              console.error("Error to make request to local db to get user profile: ", user.id);
+            }
+          }
+        }
+
+        await getApiTimestamp();
+        await getLocalTimestamp();
+      }
     }
   }
+
+  getTimestamps();
 
   return <>{children}</>
 } 

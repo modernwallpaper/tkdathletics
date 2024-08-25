@@ -1,3 +1,4 @@
+import { CheckForUpdate } from "@/components/app/check-update-user";
 import { Navbar } from "@/components/app/navbar";
 import { NotFound } from "@/components/router/not-found";
 import { useToast } from "@/components/ui/use-toast";
@@ -15,14 +16,16 @@ export const Route = createFileRoute("/v1")({
 
     return (
       <AuthMiddleware>
-        <main className="relative flex min-h-screen flex-col bg-background">
-          <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <Navbar />
-          </header>
-          <div className="flex-1">
-            <Outlet />
-          </div>
-        </main>
+        <CheckForUpdate>
+          <main className="relative flex min-h-screen flex-col bg-background">
+            <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <Navbar />
+            </header>
+            <div className="flex-1">
+              <Outlet />
+            </div>
+          </main>
+        </CheckForUpdate>
       </AuthMiddleware>
     );
   },
