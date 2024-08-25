@@ -7,7 +7,6 @@ const DB_VERSION = 1;
 const STORE_NAME = "users";
 
 //admin store
-const ADMIN_DB_VERSION = 1;
 const ADMIN_STORE_NAME = "otherUsers";
 
 function openDB(): Promise<IDBDatabase> {
