@@ -5,9 +5,11 @@ export const AdminMiddleware = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // Get the user from the auth context
   const { state } = useAuthContext();
   const { user } = state;
 
+  // Check if the user is an admin
   if (user) {
     if (user.authority === "ADMIN") {
       return <>{children}</>;

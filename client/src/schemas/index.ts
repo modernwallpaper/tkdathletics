@@ -1,10 +1,12 @@
 import * as z from "zod";
 
+//LoginSchema
 const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string(),
 });
 
+//UpdateUserSchema for admins
 const UpdateUserAsAdminSchema = z.object({
   id: z.string().email().optional(),
   name: z.string().optional(),
@@ -48,6 +50,7 @@ const UpdateUserAsAdminSchema = z.object({
   authority: z.enum(["ADMIN", "USER"]).optional(),
 });
 
+//UpdateUserSchema for users
 const UpdateUserAsUserSchema = z.object({
   id: z.string().email().optional(),
   name: z.string().optional(),
@@ -90,6 +93,7 @@ const UpdateUserAsUserSchema = z.object({
   timestamp: z.string().optional(),
 });
 
+//CreateUserSchema
 const CreateUserSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
@@ -97,6 +101,7 @@ const CreateUserSchema = z.object({
   authority: z.enum(["USER", "ADMIN"]),
 });
 
+//NotificationsSchema
 const NotificationsSchema = z.object({
   video_upload: z.boolean().default(false).optional(),
   register_competition: z.boolean().default(false).optional(),

@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs"
 const initUser = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
   if (!adminUser) {
-    console.log("Creating new server admin");
+    console.log("[!] Creating new server admin");
     const hashedPassword = await bcrypt.hash(JSON.stringify(process.env.ADMIN_PWD), 12);
     await db.user.create({
       data: {
@@ -30,9 +30,9 @@ const initUser = async () => {
         timestamp: new Date()
       },
     });
-    console.log("New server admin created successfully");
+    console.log("[+] New server admin created successfully");
   } else {
-    console.log("Server admin already created");
+    console.log("[!] Server admin already created");
   }
 }
 

@@ -46,7 +46,7 @@ export const UpdateUserForm = () => {
     ) => {
       setLoading(loading);
       try {
-        await update({ id: user.id, ...values });
+        await update({ ...values, id: user.id, timestamp: JSON.stringify(new Date()) });
       } catch (error) {
         console.log(error);
       }

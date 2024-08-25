@@ -36,7 +36,7 @@ export const AccountForm = () => {
 
   const onSubmit = async (values: z.infer<typeof UpdateUserAsUserSchema>) => {
     if (user.id) {
-      await update(values, user.id);
+      await update({ ...values, timestamp: JSON.stringify(new Date())}, user.id);
     }
   };
 

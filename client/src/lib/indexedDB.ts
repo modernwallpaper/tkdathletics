@@ -1,8 +1,14 @@
 import { User } from "@/types";
 
 const DB_NAME = "Tkdathletics";
+
+// user store
 const DB_VERSION = 1;
 const STORE_NAME = "users";
+
+//admin store
+const ADMIN_DB_VERSION = 1;
+const ADMIN_STORE_NAME = "otherUsers";
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -21,6 +27,25 @@ function openDB(): Promise<IDBDatabase> {
 
     request.onerror = (event: Event) => {
       reject((event.target as IDBOpenDBRequest).error);
+    };
+  });
+}
+
+export async function saveUserAsAdmin(user: User): Promise<void> {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(ADMIN_STORE_NAME, "readwrite");
+    const store = transaction.objectStore(ADMIN_STORE_NAME);
+    const request = store.put(user);
+
+    request.onsuccess = () => {
+      console.log("User saved successfully");
+      resolve();
+    };
+
+    request.onerror = (event: Event) => {
+      console.error("Error saving user:", (event.target as IDBRequest).error);
+      reject((event.target as IDBRequest).error);
     };
   });
 }

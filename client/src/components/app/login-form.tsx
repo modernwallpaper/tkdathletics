@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useEffect } from "react";
 import { FormError } from "./form-error";
+import { useConnection } from "@/hooks/useConnectionContext";
 
 export const LoginForm = () => {
   const { state } = useAuthContext();
@@ -23,12 +24,16 @@ export const LoginForm = () => {
   
   const { login, loading, error } = useLogin();
  
+  const { isOnline } = useConnection();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    await login(values.email, values.password);
+    if(isOnline) {
+      await login(values.email, values.password);
+    }
   };
 
   return (
@@ -53,7 +58,7 @@ export const LoginForm = () => {
               </Label>
               <div className="mt-1">
                 <FormField
-                  disabled={loading}
+                  disabled={loading || !isOnline}
                   control={form.control}
                   name="email"
                   render={({ field }) => (
@@ -79,7 +84,7 @@ export const LoginForm = () => {
               </Label>
               <div className="mt-1">
                 <FormField
-                  disabled={loading}
+                  disabled={loading || !isOnline}
                   control={form.control}
                   name="password"
                   render={({ field }) => (
@@ -108,7 +113,7 @@ export const LoginForm = () => {
             </div>
             <div>
               <Button
-                disabled={loading}
+                disabled={loading || !isOnline}
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-primary py-2 px-4 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-2"
               >
@@ -117,6 +122,9 @@ export const LoginForm = () => {
             </div>
             {error && (
               <FormError message={error}/>
+            )}
+            {!isOnline && (
+              <FormError message="You need to be online to login"/>
             )}
           </form>
         </Form>
