@@ -304,7 +304,7 @@ const updateUserAsUser = async (c: Context) => {
     try {
       const updatedUser = await db.user.update({
         where: { id: validatedFields.data.id },
-        data: udata,
+        data: { ...udata, timestamp: new Date() },
       });
 
       return c.json({ success: "User updated successfully", user: updatedUser }, 200);

@@ -19,6 +19,8 @@ declare module "@tanstack/react-router" {
   }
 }
 
+console.log("V. 1.0.6");
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ConnectionProvider>
