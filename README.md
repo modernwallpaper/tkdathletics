@@ -15,5 +15,5 @@
     ```
 ### Notes
 
-[!IMPORTANT]
-Create a ```.env``` file in the root dir of the application and create the necessary variables provided in the ```.env.template``` file
+> [!WARNING]
+> Create a ```.env``` file in the root dir of the application and create the necessary variables provided in the ```.env.template``` file. Otherwise, the application will not work properly.
