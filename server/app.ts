@@ -5,6 +5,7 @@ import { serveStatic } from "hono/bun";
 import { getUserByEmail } from "./lib/user";
 import { db } from "./lib/db";
 import bcrypt from "bcryptjs"
+import webPush from "web-push"
 
 const initUser = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
@@ -37,6 +38,17 @@ const initUser = async () => {
 }
 
 initUser();
+
+const apiKeys = {
+  vapidPublicKey: "BHQFgVk9ZVQSU6vw_eN7Snoxs3cA3StKs8Z3bbCOM4dPRuO5VTtagGiYEzykJty3pok-ySG8CXAnZPLtMN9Dsjo",
+  vapidPrivateKey: "dtgizdnHe7E_GaIjxNJApIAk7VvVUi1zxzPWQ9c7FTI"
+}
+
+webPush.setVapidDetails(
+  "mailto:test@test.com",
+  apiKeys.vapidPublicKey,
+  apiKeys.vapidPrivateKey,
+)
 
 const app = new Hono();
 

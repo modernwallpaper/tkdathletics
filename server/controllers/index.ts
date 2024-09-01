@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
+import { User } from "@prisma/client";
+import webPush from "web-push"
 
 /**
  * @desc POST /api/auth/login
@@ -397,4 +399,43 @@ const deleteUserAsAdmin = async (c: Context) => {
   }
 }
 
-export { login, register, logout, profile, getAll, updateUserAsUser, updateUserAsAdmin, deleteUserAsAdmin };
+const saveSubscription = async (c: Context) => {
+  const { subscription, userId } = await c.req.json();
+ 
+  const existingUser = await getUserById(userId);
+  
+  if(!existingUser) return c.json({ error: "No user found" }, 404);
+
+  await db.user.update({ where: { id: existingUser.id }, data: { pushSubscription: JSON.stringify(subscription) } })
+
+  return c.json({ success: "Subscription saved successfully" });
+}
+
+const sendPushNotification = async (c: Context) => {
+  const { userId } = await c.req.json();
+  
+  console.log("userId", userId);
+
+  const existingUser = await getUserById(userId);
+
+  if(!existingUser) return c.json({ error: "No user found" }, 404);
+
+  const pushSubscription = existingUser.pushSubscription;
+
+  console.log("pushSubscription", pushSubscription);
+
+  if(pushSubscription) {
+
+    console.log("pushSubscription", pushSubscription);
+
+    const subscription = JSON.parse(pushSubscription);
+
+    webPush.sendNotification(subscription, "Hello test");
+
+    return c.json({ "success": "Message sent to push service" });
+  } else {
+    return c.json({ "error": "user is not subscribed to push service" });
+  }
+}
+
+export { login, register, logout, profile, getAll, updateUserAsUser, updateUserAsAdmin, deleteUserAsAdmin, saveSubscription, sendPushNotification };

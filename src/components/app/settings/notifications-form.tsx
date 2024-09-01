@@ -19,6 +19,7 @@ export const NotificationsForm = () => {
   const defaultValues = storedValues
     ? JSON.parse(storedValues)
     : {
+      allowed: false,
       video_upload: false,
       register_competition: false,
     };
@@ -26,17 +27,46 @@ export const NotificationsForm = () => {
   const form = useForm<z.infer<typeof NotificationsSchema>>({
     resolver: zodResolver(NotificationsSchema),
     defaultValues,
-  });
+  }); 
 
-  const onSubmit = (values: z.infer<typeof NotificationsSchema>) => {
-    localStorage.setItem("notifications", JSON.stringify(values));
-    toast({ description: "Notifications saved successfully" });
+  const onSubmit = async (values: z.infer<typeof NotificationsSchema>) => {
+    if(defaultValues.allowed === false && values.allowed === false || defaultValues.allowed === true && values.allowed === false) {
+      localStorage.setItem("notifications", JSON.stringify({"allowed":false,"video_upload":false,"register_competition":false}));
+      window.location.reload();
+      toast({ description: "Notifications saved successfully" });
+    } else {
+      localStorage.setItem("notifications", JSON.stringify(values));
+      window.location.reload();
+      toast({ description: "Notifications saved successfully" });
+    }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="space-y-4 mb-3">
+          <FormField
+            control={form.control}
+            name="allowed"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">
+                    Allow Notifications
+                  </FormLabel>
+                  <FormDescription>
+                    Allow us to send you notifications.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="video_upload"
@@ -54,6 +84,7 @@ export const NotificationsForm = () => {
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    disabled={defaultValues.allowed === false}
                   />
                 </FormControl>
               </FormItem>
@@ -77,6 +108,7 @@ export const NotificationsForm = () => {
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    disabled={defaultValues.allowed === false}
                   />
                 </FormControl>
               </FormItem>

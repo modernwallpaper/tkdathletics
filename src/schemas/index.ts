@@ -103,6 +103,7 @@ const CreateUserSchema = z.object({
 
 //NotificationsSchema
 const NotificationsSchema = z.object({
+  allowed: z.boolean().default(false).optional(),
   video_upload: z.boolean().default(false).optional(),
   register_competition: z.boolean().default(false).optional(),
 })

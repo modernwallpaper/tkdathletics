@@ -64,5 +64,6 @@ model User {
   gender        gender?
   ag            ag?
   pg            pg?
+  pushSubscription String?
   timestamp     DateTime
 }

@@ -5,4 +5,4 @@ Bun.serve({
   fetch: app.fetch,
 });
 
-console.log("Server running on http://localhost:4000");
+console.log("[i] Server running on http://localhost:4000");
