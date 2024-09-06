@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { deleteUserAsAdmin, getAll, login, logout, profile, register, saveSubscription, sendPushNotification, updateUserAsAdmin, updateUserAsUser } from "../controllers";
 import { protectAdmin, protectUser } from "../lib/middleware";
 
+// Setup routes
 export const routes = new Hono()
 .post("auth/login", login)
 .post("auth/register", protectAdmin, register)

@@ -17,6 +17,7 @@ import {
 } from "../ui/dropdown-menu";
 
 export const Navbar = () => {
+  // Get the current pathname
   const location = useLocation();
   const pathname = location.pathname;
 

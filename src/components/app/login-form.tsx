@@ -18,6 +18,7 @@ export const LoginForm = () => {
   const { user } = state;
   const router = useRouter();
 
+  // Redirect to settings page if user is logged in
   useEffect(() => {
     if(user) router.navigate({ to: "/v1/settings" })
   }, [user, router])

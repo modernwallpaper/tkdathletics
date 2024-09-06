@@ -5,7 +5,6 @@ import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
-import { User } from "@prisma/client";
 import webPush from "web-push"
 
 /**

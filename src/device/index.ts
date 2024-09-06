@@ -1,3 +1,4 @@
+// Get the current OS
 export function getOS() {
   let userAgent = window.navigator.userAgent;
   let platform = window.navigator.platform;

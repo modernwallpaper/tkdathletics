@@ -4,6 +4,7 @@ import { getUserById } from "./user";
 import { getCookie } from "hono/cookie";
 import { authority } from "@prisma/client";
 
+// Middleware for user
 const protectUser = async (c: Context, next: Next) => {
   let token;
   token = getCookie(c, "jwt");
@@ -36,6 +37,7 @@ const protectUser = async (c: Context, next: Next) => {
   }
 };
 
+// Middleware for admin
 const protectAdmin = async (c: Context, next: Next) => {
   let token;
   token = getCookie(c, "jwt");

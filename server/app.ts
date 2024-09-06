@@ -7,6 +7,8 @@ import { db } from "./lib/db";
 import bcrypt from "bcryptjs"
 import webPush from "web-push"
 
+
+// Create a server admin if it doesnt exist
 const initUser = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
   if (!adminUser) {
@@ -36,9 +38,9 @@ const initUser = async () => {
     console.log("[!] Server admin already created");
   }
 }
-
 initUser();
 
+// API KEYS for push notifications
 const apiKeys = {
   vapidPublicKey: "BHQFgVk9ZVQSU6vw_eN7Snoxs3cA3StKs8Z3bbCOM4dPRuO5VTtagGiYEzykJty3pok-ySG8CXAnZPLtMN9Dsjo",
   vapidPrivateKey: "dtgizdnHe7E_GaIjxNJApIAk7VvVUi1zxzPWQ9c7FTI"
@@ -50,13 +52,16 @@ webPush.setVapidDetails(
   apiKeys.vapidPrivateKey,
 )
 
+// App logic
 const app = new Hono();
 
+// Logging
 app.use('*', logger());
 
+// Setup routes
 const apiRoutes = app.route("/api/", routes);
-
 app.get('*', serveStatic({ root: './dist/' }));
+
 
 export default app;
 export type ApiRoutes = typeof apiRoutes;
