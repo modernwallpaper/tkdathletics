@@ -19,7 +19,7 @@ declare module "@tanstack/react-router" {
   }
 }
 
-console.log("V. 1.0.6");
+console.log("V. 1.0.7");
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistration().then(function() {
@@ -27,7 +27,6 @@ if ('serviceWorker' in navigator) {
       const user = localStorage.getItem("user");
       console.log(user);
 
-      // Send the user data to the service worker when it's ready
       if (user && reg.active) {
         reg.active.postMessage({
           type: 'SET_USER',

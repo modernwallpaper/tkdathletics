@@ -9,17 +9,17 @@ import {
 import { useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "./mode-toggle";
 import { LogoutButton } from "./logout-button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Navbar = () => {
   // Get the current pathname
   const location = useLocation();
   const pathname = location.pathname;
+
+  //Get the current user
+  const { state } = useAuthContext();
+  const user = state.user;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-20 lg:pl-20">
@@ -31,23 +31,25 @@ export const Navbar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side={"left"} className="h-full">
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle className="pl-3">Tkdatheltics</SheetTitle>
             <div className="flex flex-col gap-y-2 items-start h-full justify-between">
-              <div>
+              <div className="w-full">
                 <ul>
-                  <li>
-                    <Button
-                      asChild
-                      variant={"nav_link"}
-                      className={
-                        pathname === "/v1/admin"
-                          ? "text-primary"
-                          : "text-muted-foreground hover:text-primary"
-                      }
-                    >
-                      <a href="/v1/admin">Admin</a>
-                    </Button>
-                  </li>
+                  {user?.authority === "ADMIN" && (
+                    <li>
+                      <Button
+                        asChild
+                        variant={"nav_link"}
+                        className={
+                          pathname === "/v1/admin"
+                            ? "text-primary"
+                            : "text-muted-foreground hover:text-primary"
+                        }
+                      >
+                        <a href="/v1/admin">Admin</a>
+                      </Button>
+                    </li>
+                  )}
                   <li>
                     <Button
                       asChild
@@ -113,68 +115,25 @@ export const Navbar = () => {
                       <a href={"/v1/training"}>Training</a>
                     </Button>
                   </li>
-                  <li>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          asChild
-                          variant={"nav_link"}
-                          className={
-                            pathname === "/v1/settings" ||
-                              "/v1/settings/account" ||
-                              "/v1/settings/competition-data" ||
-                              "/v1/settings/notifications"
-                              ? "text-primary"
-                              : "text-muted-foreground hover:text-primary"
-                          }
-                        >
-                          <p>Settings</p>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="flex flex-col justify-start">
-                        <DropdownMenuItem asChild className="flex justify-start">
-                          <Button
-                            asChild
-                            variant={"nav_link"}
-                            className={
-                              pathname === "/v1/settings/account"
-                                ? "text-primary"
-                                : "text-muted-foreground hover:text-primary"
-                            }
-                          >
+                  <li className="w-full">
+                    <Accordion type="single" className="ml-4 w-[90%] no-underline p-0" collapsible>
+                      <AccordionItem value="item-1" className="w-full">
+                        <AccordionTrigger className={pathname === "/v1/settings" ? "text-sm no-underline" : "text-muted-foreground text-sm"}>
+                          Settings
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col justify-start items-start w-full">
+                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/account" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
                             <a href="/v1/settings/account">Account</a>
                           </Button>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild className="flex justify-start">
-                          <Button
-                            asChild
-                            variant={"nav_link"}
-                            className={
-                              pathname === "/v1/settings/competition-data"
-                                ? "text-primary"
-                                : "text-muted-foreground hover:text-primary"
-                            }
-                          >
+                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/competition-data" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
                             <a href="/v1/settings/competition-data">Competition Data</a>
                           </Button>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild className="flex justify-start">
-                          <Button
-                            asChild
-                            variant={"nav_link"}
-                            className={
-                              pathname === "/v1/settings/notifications"
-                                ? "text-primary"
-                                : "text-muted-foreground hover:text-primary"
-                            }
-                          >
-                            <a href="/v1/settings/notifications">
-                              Notifications
-                            </a>
+                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/notifications" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
+                            <a href="/v1/settings/notifications">Notifications</a>
                           </Button>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   </li>
                 </ul>
               </div>
@@ -190,17 +149,19 @@ export const Navbar = () => {
       </div>
       <div className="hidden lg:flex items-center justify-between w-full">
         <div className="gap-x-2 items-center">
-          <Button
-            asChild
-            variant={"nav_link"}
-            className={
-              pathname === "/v1/admin"
-                ? "text-primary"
-                : "text-muted-foreground hover:text-primary"
-            }
-          >
-            <a href={"/v1/admin"}>Admin</a>
-          </Button>
+          {user?.authority === "ADMIN" && (
+            <Button
+              asChild
+              variant={"nav_link"}
+              className={
+                pathname === "/v1/admin"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              }
+            >
+              <a href={"/v1/admin"}>Admin</a>
+            </Button>
+          )}
           <Button
             asChild
             variant={"nav_link"}

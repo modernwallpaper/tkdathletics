@@ -4,7 +4,7 @@ const DB_NAME = "Tkdathletics";
 
 // user store
 const DB_VERSION = 1;
-const STORE_NAME = "users";
+const STORE_NAME = "user";
 
 //admin store
 const ADMIN_STORE_NAME = "otherUsers";

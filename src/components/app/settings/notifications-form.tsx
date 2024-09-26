@@ -8,7 +8,6 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "@/components/ui/use-toast";
 import { NotificationsSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,12 +31,12 @@ export const NotificationsForm = () => {
   const onSubmit = async (values: z.infer<typeof NotificationsSchema>) => {
     if(defaultValues.allowed === false && values.allowed === false || defaultValues.allowed === true && values.allowed === false) {
       localStorage.setItem("notifications", JSON.stringify({"allowed":false,"video_upload":false,"register_competition":false}));
+      sessionStorage.setItem("toastMessage", "Notifications have been disabled");
       window.location.reload();
-      toast({ description: "Notifications saved successfully" });
     } else {
       localStorage.setItem("notifications", JSON.stringify(values));
+      sessionStorage.setItem("toastMessage", "Notifications updated successfully");
       window.location.reload();
-      toast({ description: "Notifications saved successfully" });
     }
   };
 
