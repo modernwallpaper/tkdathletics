@@ -124,6 +124,7 @@ model Tournament {
   contract            String
   competitions        Competition[]
   participants        User[] @relation("TournamentParticipants")
+  timestamp           DateTime
 }
 
 model Competition {
@@ -139,6 +140,7 @@ model Competition {
   winner              winner
   video_url           String
   decision            decision
+  timestamp           DateTime
 }
 
 model User {
@@ -159,4 +161,5 @@ model User {
   kup                 kup
   competitions        Competition[]
   tournaments         Tournament[] @relation("TournamentParticipants")
+  timestamp           DateTime
 }
