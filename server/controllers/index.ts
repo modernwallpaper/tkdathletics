@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { DeleteUserSchema, LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
+import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
@@ -64,8 +64,7 @@ const login = async (c: Context) => {
           id: existingUser.id,
           name: existingUser.name,
           email: existingUser.email,
-          surename: existingUser.surename,
-          username: existingUser.username,
+          surename: existingUser.surname,
           birthday: existingUser.birthday,
           img: existingUser.img,
           kup: existingUser.kup,
@@ -131,12 +130,12 @@ const register = async (c: Context) => {
           //username: username,
           email: email,
           password: hashedPassword,
-          //surename: surename,
+          //surname: "",
           authority: authority,
-          //birthday: birthday,
-          //img: img,
+          ///birthday: "",
+          //img: "",
           //kup: kup,
-          //weight_class: weight_class,
+          //weight_class: "TO_63KG",
           //gender: gender,
           //ag: ag,
           //pg: pg,
@@ -271,7 +270,7 @@ const updateUserAsUser = async (c: Context) => {
     const {
       name,
       username,
-      surename,
+      surname,
       weight_class,
       kup,
       birthday,
@@ -287,7 +286,7 @@ const updateUserAsUser = async (c: Context) => {
 
     if (name) udata.name = name;
     if (username) udata.username = username;
-    if (surename) udata.surename = surename;
+    if (surname) udata.surname = surname;
     if (weight_class) udata.weight_class = weight_class;
     if (kup) udata.kup = kup;
     if (birthday) udata.birthday = birthday;
@@ -328,7 +327,7 @@ const updateUserAsAdmin = async (c: Context) => {
   const {
     name,
     username,
-    surename,
+    surname,
     weight_class,
     kup,
     birthday,
@@ -344,7 +343,7 @@ const updateUserAsAdmin = async (c: Context) => {
 
   if (name) udata.name = name;
   if (username) udata.username = username;
-  if (surename) udata.surename = surename;
+  if (surname) udata.surname = surname;
   if (weight_class) udata.weight_class = weight_class;
   if (kup) udata.kup = kup;
   if (birthday) udata.birthday = birthday;
@@ -362,12 +361,13 @@ const updateUserAsAdmin = async (c: Context) => {
   const existingUser = await getUserById(validatedFields.data.id);
 
   try {
-    const uuser = await db.user.update({
-      where: { id: validatedFields.data.id },
-      data: { authority: existingUser?.authority, ...udata },
-    });
-
-    return c.json({ success: "User updated successfully", user: uuser }, 200);
+    if(existingUser) {
+      const uuser = await db.user.update({
+        where: { id: validatedFields.data.id },
+        data: { authority: existingUser?.authority, ...udata },
+      });
+      return c.json({ success: "User updated successfully", user: uuser }, 200);
+    }
   } catch (err) {
     return c.json({ error: err }, 500);
   }
@@ -398,7 +398,52 @@ const deleteUserAsAdmin = async (c: Context) => {
   }
 }
 
+const getCompetitionsForUser = async(c: Context) => {
+  const req = await c.req.json();
 
+  const validatedFields = GetCompetitionShema.safeParse(req);
+
+  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
+  
+  const { id } = validatedFields.data;
+
+  const existingCompetitions = await db.competition.findMany({ where: { userId: id } });
+
+  if(!existingCompetitions) return c.json({ error: "No competitions found for the provided user" }, 404);
+
+  return c.json(JSON.stringify(existingCompetitions), 200)
+}
+
+const getTournamentsForUser = async(c: Context) => {
+  const req = await c.req.json();
+
+  const validatedFields =  GetTournamentSchema.safeParse(req);
+
+  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
+
+  const userId = validatedFields.data.id;
+
+
+  try {
+    const tournaments = await db.tournament.findMany({
+      where: {
+        participants: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+      include: {
+        participants: true,
+        competitions: true,
+      }
+    });
+
+    return c.json({ tournaments }, 200);
+  } catch (error) {
+    return c.json({ error: "Unable to fetch tournaments" }, 500) 
+  }
+}
 
 const saveSubscription = async (c: Context) => {
   const { subscription, userId } = await c.req.json();
@@ -439,4 +484,17 @@ const sendPushNotification = async (c: Context) => {
   }
 }
 
-export { login, register, logout, profile, getAll, updateUserAsUser, updateUserAsAdmin, deleteUserAsAdmin, saveSubscription, sendPushNotification };
+export { 
+  login, 
+  register, 
+  logout, 
+  profile, 
+  getAll, 
+  updateUserAsUser, 
+  updateUserAsAdmin, 
+  deleteUserAsAdmin, 
+  saveSubscription, 
+  sendPushNotification,
+  getCompetitionsForUser,
+  getTournamentsForUser,
+};

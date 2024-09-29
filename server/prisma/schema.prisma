@@ -117,49 +117,49 @@ enum decision {
 
 model Tournament {
   id                  String @id @default(cuid())
-  date                DateTime
-  name                String
-  location            String
-  results             String
-  contract            String
+  date                DateTime?
+  name                String?
+  location            String?
+  results             String?
+  contract            String?
   competitions        Competition[]
   participants        User[] @relation("TournamentParticipants")
-  timestamp           DateTime
+  timestamp           DateTime?
 }
 
 model Competition {
   id                  String @id @default(cuid()) 
-  user                User @relation(fields: [userId], references: [id])
-  userId              String
-  tournament          Tournament @relation(fields: [tournament_id], references: [id])
-  tournament_id       String
-  pg                  pg
-  weight_class        weight_class
-  fight_number        String
-  end_score           String
-  winner              winner
-  video_url           String
-  decision            decision
-  timestamp           DateTime
+  user                User? @relation(fields: [userId], references: [id])
+  userId              String?
+  tournament          Tournament? @relation(fields: [tournament_id], references: [id])
+  tournament_id       String?
+  pg                  pg?
+  weight_class        weight_class?
+  fight_number        String?
+  end_score           String?
+  winner              winner?
+  video_url           String?
+  decision            decision?
+  timestamp           DateTime?
 }
 
 model User {
   id                  String @id @default(cuid())
   password            String
   name                String
-  surname             String
+  surname             String?
   email               String @unique
-  pushSubscription    String
-  authority           authority
-  failed_logins       Int
-  birthday            DateTime
-  img                 String
-  weight_class        weight_class 
-  gender              gender
-  ag                  ag
-  pg                  pg
-  kup                 kup
+  pushSubscription    String?
+  authority           authority?
+  failed_logins       Int @default(0)
+  birthday            DateTime?
+  img                 String?
+  weight_class        weight_class? 
+  gender              gender?
+  ag                  ag?
+  pg                  pg?
+  kup                 kup?
   competitions        Competition[]
   tournaments         Tournament[] @relation("TournamentParticipants")
-  timestamp           DateTime
+  timestamp           DateTime?
 }
