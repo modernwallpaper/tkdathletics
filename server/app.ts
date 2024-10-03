@@ -17,8 +17,7 @@ const initUser = async () => {
     await db.user.create({
       data: {
         name: "admin",
-        username: "admin",
-        surename: "admin",
+        surname: "admin",
         email: "admin@website.com",
         password: hashedPassword,
         authority: "ADMIN",
