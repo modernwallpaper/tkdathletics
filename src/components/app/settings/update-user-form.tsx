@@ -32,8 +32,6 @@ export const UpdateUserForm = () => {
       defaultValues: {
         name: user.name,
         email: user.email,
-        surename: user.surename,
-        username: user.username,
       },
     });
 

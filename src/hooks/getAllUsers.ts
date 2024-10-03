@@ -1,9 +1,9 @@
-import { User } from "@/types";
+import { UserType } from "@/types";
 import { useState, useEffect } from "react";
 
 export function getAllUsers() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [users, setUsers] = useState<User[] | undefined>(undefined);
+  const [users, setUsers] = useState<UserType[] | undefined>(undefined);
   const [error, setError] = useState("");
 
   useEffect(() => {

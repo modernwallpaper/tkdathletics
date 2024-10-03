@@ -32,7 +32,7 @@ export const CompDataForm = () => {
 
   const onSubmit = async (values: z.infer<typeof UpdateUserAsUserSchema>) => {
     if (user?.id) {
-      await update({ ...values, timestamp: JSON.stringify(new Date()) }, user.id);
+      await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id }, user.id);
     }
   };
 
@@ -62,16 +62,17 @@ export const CompDataForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="one">1</SelectItem>
-                      <SelectItem value="two">2</SelectItem>
-                      <SelectItem value="three">3</SelectItem>
-                      <SelectItem value="four">4</SelectItem>
-                      <SelectItem value="five">5</SelectItem>
-                      <SelectItem value="six">6</SelectItem>
-                      <SelectItem value="seven">7</SelectItem>
-                      <SelectItem value="eight">8</SelectItem>
-                      <SelectItem value="nine">9</SelectItem>
-                      <SelectItem value="ten">10</SelectItem>
+                      <SelectItem value="ONE">1</SelectItem>
+                      <SelectItem value="TWO">2</SelectItem>
+                      <SelectItem value="THREE">3</SelectItem>
+                      <SelectItem value="FOUR">4</SelectItem>
+                      <SelectItem value="FIVE">5</SelectItem>
+                      <SelectItem value="SIX">6</SelectItem>
+                      <SelectItem value="SEVEN">7</SelectItem>
+                      <SelectItem value="EIGHT">8</SelectItem>
+                      <SelectItem value="NINE">9</SelectItem>
+                      <SelectItem value="TEN">10</SelectItem>
+                      <SelectItem value="DAN">Dan</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -155,11 +156,11 @@ export const CompDataForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Senior">Senior</SelectItem>
-                      <SelectItem value="Youth_A">Youth A</SelectItem>
-                      <SelectItem value="Youth_B">Youth B</SelectItem>
-                      <SelectItem value="Youth_C">Youth D</SelectItem>
-                      <SelectItem value="Youth_D">Youth C</SelectItem>
+                      <SelectItem value="SENIOR">Senior</SelectItem>
+                      <SelectItem value="YOUTHA">Youth A</SelectItem>
+                      <SelectItem value="YOUTHB">Youth B</SelectItem>
+                      <SelectItem value="YOUTHC">Youth D</SelectItem>
+                      <SelectItem value="YOUTHD">Youth C</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>

@@ -44,7 +44,7 @@ export const CheckForUpdate = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkForUpdate = async () => {
       if(user && localTimestamp && apiTimestamp) {
-        console.info("Checking for update...");
+        console.info("Checking for user update...");
 
         const d_local = new Date(localTimestamp).getTime();
         console.info("Local timestamp: ", d_local);

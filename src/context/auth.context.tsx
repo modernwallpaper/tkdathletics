@@ -7,15 +7,15 @@ import {
   useState,
 } from "react";
 import { loadUser } from "@/lib/indexedDB";
-import { User } from "@/types";
+import { UserType } from "@/types";
 
 // Define the shape of the state object
 interface AuthState {
-  user: User | null;
+  user: UserType | null;
 }
 
 // Define the shape of the action object
-type AuthAction = { type: "LOGIN"; payload: User } | { type: "LOGOUT" };
+type AuthAction = { type: "LOGIN"; payload: UserType } | { type: "LOGOUT" };
 
 // Create the AuthContext with the proper types
 interface AuthContextProps {

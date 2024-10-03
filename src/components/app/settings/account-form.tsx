@@ -27,37 +27,27 @@ export const AccountForm = () => {
   const form = useForm<z.infer<typeof UpdateUserAsUserSchema>>({
     resolver: zodResolver(UpdateUserAsUserSchema),
     defaultValues: {
-      username: user.username,
-      name: user.name,
-      surename: user.surename,
-      email: user.email,
+      name: user.name ? user.name : undefined,
+      email: user.email ? user.email : undefined,
+      surname: user.surname ? user.surname : undefined,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof UpdateUserAsUserSchema>) => {
+    console.log("Submit requested")
     if (user.id) {
-      await update({ ...values, timestamp: JSON.stringify(new Date())}, user.id);
+      await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id}, user.id);
     }
   };
 
   return (
     <div className="w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={(e) => { 
+          form.handleSubmit(onSubmit)(e);
+          console.log("Form submission triggerd");
+        }}>
           <div className="flex flex-col gap-y-4 mb-3 w-full">
-            <FormField
-              control={form.control}
-              name="username"
-              disabled={loading}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="username" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
             <FormField
               disabled={loading}
               control={form.control}
@@ -74,12 +64,12 @@ export const AccountForm = () => {
             <FormField
               disabled={loading}
               control={form.control}
-              name="surename"
+              name="surname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Surename</FormLabel>
+                  <FormLabel>Surname</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="surename" />
+                    <Input {...field} placeholder="surname" />
                   </FormControl>
                 </FormItem>
               )}

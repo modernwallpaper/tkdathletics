@@ -13,14 +13,15 @@ export const useUpdateUserAsUser = () => {
   const update = async (
     values: z.infer<typeof UpdateUserAsUserSchema>,
     id: string,
-  ) => { 
+  ) => {
+    console.log(id);
     if(isOnline) {
       setLoading(true);
       setLoading(true);
       const req = await fetch("/api/user/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, ...values }),
+        body: JSON.stringify({ ...values }),
       });
 
       const res = await req.json();
@@ -40,7 +41,9 @@ export const useUpdateUserAsUser = () => {
         setError(res.error);
       }
     } else {
-      await saveUser({ id, ...values })
+      if(values) {
+        await saveUser({ ...values });
+      }
     }
   };
 

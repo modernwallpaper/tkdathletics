@@ -34,26 +34,11 @@ export function useUpdateUserAsAdmin() {
     }
 
     if (res.success) {
-      if (data.id) {
+     if (data.id) {
         if (data.id === user?.id) {
           console.log("Starting local user update: ", data.id);
           console.log("Id matches");
-          await saveUser({
-            id: res.user.id,
-            ag: res.user.ag,
-            birthday: res.user.birthday,
-            email: res.user.email,
-            gender: res.user.gender,
-            img: res.user.img,
-            kup: res.user.kup,
-            name: res.user.name,
-            pg: res.user.pg,
-            surename: res.user.surename,
-            timestamp: JSON.stringify(new Date()),
-            username: res.user.username,
-            weight_class: res.user.weight_class,
-            authority: res.user.authority,
-          });
+          await saveUser({ ...res.user });
           setError("");
           localStorage.setItem("user", JSON.stringify(res.user));
           sessionStorage.setItem("toastMessage", res.success);
