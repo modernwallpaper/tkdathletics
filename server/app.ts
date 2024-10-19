@@ -40,16 +40,21 @@ const initUser = async () => {
 initUser();
 
 // API KEYS for push notifications
-const apiKeys = {
-  vapidPublicKey: "BHQFgVk9ZVQSU6vw_eN7Snoxs3cA3StKs8Z3bbCOM4dPRuO5VTtagGiYEzykJty3pok-ySG8CXAnZPLtMN9Dsjo",
-  vapidPrivateKey: "dtgizdnHe7E_GaIjxNJApIAk7VvVUi1zxzPWQ9c7FTI"
+if(process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  const apiKeys = {
+    vapidPublicKey: process.env.VAPID_PUBLIC_KEY,
+    vapidPrivateKey: process.env.VAPID_PRIVATE_KEY, 
+  }
+  
+  webPush.setVapidDetails(
+    "mailto:test@test.com",
+    apiKeys.vapidPublicKey,
+    apiKeys.vapidPrivateKey,
+  )
+} else {
+  console.log("Please generate a pair of VAPID keys and place them into your .env file");
 }
 
-webPush.setVapidDetails(
-  "mailto:test@test.com",
-  apiKeys.vapidPublicKey,
-  apiKeys.vapidPrivateKey,
-)
 
 // App logic
 const app = new Hono();
