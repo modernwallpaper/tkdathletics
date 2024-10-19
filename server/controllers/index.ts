@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserAsUserSchema, UserSchema } from "../schemas";
+import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, UserSchema } from "../../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
@@ -28,66 +28,70 @@ const login = async (c: Context) => {
   // Check for user
   if (!existingUser || !existingUser.email)
     return c.json({ error: "User not found" }, 404);
-
-  if (existingUser.failed_logins > 6) {
-    return c.json({ error: "User blocked" }, 401);
+  
+  if(existingUser.failed_logins !== null) {
+    if (existingUser.failed_logins > 6) {
+      return c.json({ error: "User blocked" }, 401);
+    }
   }
+  
+  if(existingUser.password && existingUser.failed_logins !== null) {
+    // Check if passwords match
+    const passwordsMatch = await bcrypt.compare(password, existingUser.password);
 
-  // Check if passwords match
-  const passwordsMatch = await bcrypt.compare(password, existingUser.password);
+    if (!passwordsMatch) {
+      const failedLogins = existingUser.failed_logins;
+      await db.user.update({
+        where: { email },
+        data: { failed_logins: failedLogins + 1 },
+      });
+    }
 
-  if (!passwordsMatch) {
-    const failedLogins = existingUser.failed_logins;
-    await db.user.update({
-      where: { email },
-      data: { failed_logins: failedLogins + 1 },
-    });
-  }
+    if (existingUser && passwordsMatch) {
+      const secret = process.env.JWT_SECRET;
 
-  if (existingUser && passwordsMatch) {
-    const secret = process.env.JWT_SECRET;
+      if (!secret)
+        c.json({
+          error:
+            "No jwt secret was found. Please contact the system administrators",
+        });
 
-    if (!secret)
-      c.json({
-        error:
-          "No jwt secret was found. Please contact the system administrators",
+      // @ts-ignore
+      const token = jwt.sign({ userId: existingUser.id }, secret, {
+        expiresIn: "30d",
       });
 
-    // @ts-ignore
-    const token = jwt.sign({ userId: existingUser.id }, secret, {
-      expiresIn: "30d",
-    });
-
-    const response = new Response(
-      JSON.stringify({
-        user: {
-          id: existingUser.id,
-          name: existingUser.name,
-          email: existingUser.email,
-          surename: existingUser.surname,
-          birthday: existingUser.birthday,
-          img: existingUser.img,
-          kup: existingUser.kup,
-          weight_class: existingUser.weight_class,
-          ag: existingUser.ag,
-          pg: existingUser.pg,
-          gender: existingUser.gender,
-          failed_logins: existingUser.failed_logins,
-          authority: existingUser.authority,
-          timestamp: existingUser.timestamp,
+      const response = new Response(
+        JSON.stringify({
+          user: {
+            id: existingUser.id,
+            name: existingUser.name,
+            email: existingUser.email,
+            surename: existingUser.surname,
+            birthday: existingUser.birthday,
+            img: existingUser.img,
+            kup: existingUser.kup,
+            weight_class: existingUser.weight_class,
+            ag: existingUser.ag,
+            pg: existingUser.pg,
+            gender: existingUser.gender,
+            failed_logins: existingUser.failed_logins,
+            authority: existingUser.authority,
+            timestamp: existingUser.timestamp,
+          },
+        }),
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+            "Set-Cookie": `jwt=${token}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}`,
+          },
         },
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Set-Cookie": `jwt=${token}; HttpOnly; Path=/; Max-Age=${30 * 24 * 60 * 60}`,
-        },
-      },
-    );
-    return response;
-  } else {
-    return c.json({ error: "User not found" }, 404);
+      );
+      return response;
+    } else {
+      return c.json({ error: "User not found" }, 404);
+    }
   }
 };
 
@@ -179,7 +183,7 @@ const logout = async () => {
  * @access PRIVATE
  */
 const profile = async (c: Context) => {
-  let token;
+  let token: string | undefined;
   token = getCookie(c, "jwt");
 
   if (token) {
@@ -228,7 +232,7 @@ const updateUserAsUser = async (c: Context) => {
   let token = getCookie(c, "jwt");
 
   const data = await c.req.json();
-  const validatedFields = UpdateUserAsUserSchema.safeParse(data);
+  const validatedFields = UpdateUserSchema.safeParse(data);
   if (!validatedFields.success) return c.json({ error: "Invalid fields" });
 
   let authorized = false;
@@ -269,7 +273,6 @@ const updateUserAsUser = async (c: Context) => {
   if (authorized) {
     const {
       name,
-      username,
       surname,
       weight_class,
       kup,
@@ -285,7 +288,6 @@ const updateUserAsUser = async (c: Context) => {
     const udata: Partial<typeof validatedFields.data> = {};
 
     if (name) udata.name = name;
-    if (username) udata.username = username;
     if (surname) udata.surname = surname;
     if (weight_class) udata.weight_class = weight_class;
     if (kup) udata.kup = kup;
@@ -320,13 +322,12 @@ const updateUserAsUser = async (c: Context) => {
  */
 const updateUserAsAdmin = async (c: Context) => {
   const req = await c.req.json();
-  const validatedFields = UpdateUserAsUserSchema.safeParse(req);
+  const validatedFields = UpdateUserSchema.safeParse(req);
 
   if(!validatedFields.success) return c.json({ error: "Innvalid fields" }, 400)
 
   const {
     name,
-    username,
     surname,
     weight_class,
     kup,
@@ -342,7 +343,6 @@ const updateUserAsAdmin = async (c: Context) => {
   const udata: Partial<typeof validatedFields.data> = {};
 
   if (name) udata.name = name;
-  if (username) udata.username = username;
   if (surname) udata.surname = surname;
   if (weight_class) udata.weight_class = weight_class;
   if (kup) udata.kup = kup;

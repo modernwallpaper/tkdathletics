@@ -6,7 +6,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { LoginSchema } from "@/schemas";
+import { LoginSchema } from "../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { useEffect } from "react";

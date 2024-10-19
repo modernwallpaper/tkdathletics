@@ -1,4 +1,4 @@
-import { UpdateUserAsUserSchema } from "@/schemas";
+import { UpdateUserSchema } from "../../../../schemas";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +27,8 @@ export const UpdateUserForm = () => {
   const { user } = state;
 
   if (user) {
-    const form = useForm<z.infer<typeof UpdateUserAsUserSchema>>({
-      resolver: zodResolver(UpdateUserAsUserSchema),
+    const form = useForm<z.infer<typeof UpdateUserSchema>>({
+      resolver: zodResolver(UpdateUserSchema),
       defaultValues: {
         name: user.name,
         email: user.email,
@@ -40,7 +40,7 @@ export const UpdateUserForm = () => {
     const { loading, update } = useUpdateUserAsAdmin();
 
     const onSubmit = async (
-      values: z.infer<typeof UpdateUserAsUserSchema>,
+      values: z.infer<typeof UpdateUserSchema>,
     ) => {
       setLoading(loading);
       try {

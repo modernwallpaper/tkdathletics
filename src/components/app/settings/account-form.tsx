@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useUpdateUserAsUser } from "@/hooks/useUpdateUserAsUser";
-import { UpdateUserAsUserSchema } from "@/schemas";
+import { UpdateUserSchema } from "../../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -24,8 +24,8 @@ export const AccountForm = () => {
     return null;
   }
   
-  const form = useForm<z.infer<typeof UpdateUserAsUserSchema>>({
-    resolver: zodResolver(UpdateUserAsUserSchema),
+  const form = useForm<z.infer<typeof UpdateUserSchema>>({
+    resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
       name: user.name ? user.name : undefined,
       email: user.email ? user.email : undefined,
@@ -33,7 +33,7 @@ export const AccountForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof UpdateUserAsUserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     console.log("Submit requested")
     if (user.id) {
       await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id}, user.id);

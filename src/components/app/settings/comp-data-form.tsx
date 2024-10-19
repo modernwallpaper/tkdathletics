@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useUpdateUserAsUser } from "@/hooks/useUpdateUserAsUser";
-import { UpdateUserAsUserSchema } from "@/schemas";
+import { UpdateUserSchema } from "../../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -26,11 +26,11 @@ export const CompDataForm = () => {
   const { user } = state;
   const { error, loading, update } = useUpdateUserAsUser();
 
-  const form = useForm<z.infer<typeof UpdateUserAsUserSchema>>({
-    resolver: zodResolver(UpdateUserAsUserSchema),
+  const form = useForm<z.infer<typeof UpdateUserSchema>>({
+    resolver: zodResolver(UpdateUserSchema),
   });
 
-  const onSubmit = async (values: z.infer<typeof UpdateUserAsUserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     if (user?.id) {
       await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id }, user.id);
     }

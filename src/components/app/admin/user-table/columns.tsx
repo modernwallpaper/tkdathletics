@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { User } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { UpdateUserForm } from "../update-user-form";
@@ -17,8 +16,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DeleteUser } from "../delete-user";
+import { z } from "zod";
+import { UserSchema } from "../../../../../schemas";
 
-export const columns: ColumnDef<User, unknown>[] = [
+export const columns: ColumnDef<z.infer<typeof UserSchema>, unknown>[] = [
   {
     accessorKey: "id",
     header: "Id",

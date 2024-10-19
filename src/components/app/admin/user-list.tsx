@@ -1,7 +1,8 @@
 import { getAllUsers } from "@/hooks/getAllUsers";
 import { UserTable } from "./user-table/data-table";
 import { columns } from "./user-table/columns";
-import { User } from "@/types";
+import { z } from "zod";
+import { UserSchema } from "../../../../schemas";
 
 export const UserList = () => {
   const data = getAllUsers();
@@ -18,7 +19,7 @@ export const UserList = () => {
   if (!users) {
     return <p>No users found</p>;
   } else {
-    return <UserTable<User, unknown> columns={columns} data={users} />;
+    return <UserTable<z.infer<typeof UserSchema>, unknown> columns={columns} data={users} />;
   }
 };
 

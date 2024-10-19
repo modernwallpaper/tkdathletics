@@ -7,7 +7,10 @@ import {
   useState,
 } from "react";
 import { loadUser } from "@/lib/indexedDB";
-import { UserType } from "@/types";
+import { z } from "zod";
+import { UserSchema } from "../../schemas.ts";
+
+type UserType = null | z.infer<typeof UserSchema>;
 
 // Define the shape of the state object
 interface AuthState {

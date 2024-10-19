@@ -1,8 +1,7 @@
-import { UpdateUserAsAdminSchema } from "@/schemas";
+import { UpdateUserSchema, UserSchema } from "../../../../schemas";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "@/types";
 import {
   Form,
   FormControl,
@@ -27,14 +26,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const UpdateUserForm = ({ user }: { user: User }) => {
-  const form = useForm<z.infer<typeof UpdateUserAsAdminSchema>>({
-    resolver: zodResolver(UpdateUserAsAdminSchema),
+export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) => {
+  const form = useForm<z.infer<typeof UpdateUserSchema>>({
+    resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
       name: user.name,
       email: user.email,
-      surename: user.surename,
-      username: user.username,
+      surname: user.surname,
     },
   });
 
@@ -42,7 +40,7 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
 
   const { loading, update } = useUpdateUserAsAdmin();
 
-  const onSubmit = async (values: z.infer<typeof UpdateUserAsAdminSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     setLoading(loading);
     try {
       await update({ id: user.id, ...values });
@@ -95,26 +93,13 @@ export const UpdateUserForm = ({ user }: { user: User }) => {
                   />
                   <FormField
                     control={form.control}
-                    name="surename"
+                    name="surname"
                     disabled={isLoading}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Surename</FormLabel>
+                        <FormLabel>Surname</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="surename" />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    disabled={isLoading}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="username" />
                         </FormControl>
                       </FormItem>
                     )}
