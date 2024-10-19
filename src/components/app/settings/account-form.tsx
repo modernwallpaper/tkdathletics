@@ -23,7 +23,7 @@ export const AccountForm = () => {
   if (!user) {
     return null;
   }
-  
+
   const form = useForm<z.infer<typeof UpdateUserSchema>>({
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
@@ -32,6 +32,8 @@ export const AccountForm = () => {
       surname: user.surname ? user.surname : undefined,
     },
   });
+
+  console.log(user.surname)
 
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     console.log("Submit requested")

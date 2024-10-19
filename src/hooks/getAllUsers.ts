@@ -1,9 +1,10 @@
-import { UserType } from "@/types";
 import { useState, useEffect } from "react";
+import { z } from "zod"
+import { UserSchema } from "../../schemas"
 
 export function getAllUsers() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [users, setUsers] = useState<UserType[] | undefined>(undefined);
+  const [users, setUsers] = useState<z.infer<typeof UserSchema>[] | undefined>(undefined);
   const [error, setError] = useState("");
 
   useEffect(() => {

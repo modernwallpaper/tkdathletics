@@ -1,7 +1,7 @@
-import { UpdateUserAsUserSchema } from "@/schemas"
+import { UpdateUserSchema } from "../../schemas"
 import * as z from "zod"
 
-type User = z.infer<typeof UpdateUserAsUserSchema>;
+type User = z.infer<typeof UpdateUserSchema>;
 
 const DB_NAME = "Tkdathletics";
 const DB_VERSION = 1;
@@ -13,11 +13,11 @@ const STORE_NAME = "user";
 const ADMIN_STORE_NAME = "users";
 
 // competition store
-const STORE_NAME_COMP = "competition";
-
+// const STORE_NAME_COMP = "competition";
+//
 // tournament store
-const STORE_NAME_TOURN = "tournament";
-
+// const STORE_NAME_TOURN = "tournament";
+//
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);

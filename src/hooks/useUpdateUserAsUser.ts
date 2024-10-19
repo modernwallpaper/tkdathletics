@@ -1,5 +1,5 @@
 import { saveUser } from "@/lib/indexedDB";
-import { UpdateUserAsUserSchema } from "@/schemas";
+import { UpdateUserSchema } from "../../schemas";
 import { useState } from "react";
 import * as z from "zod";
 import { useConnection } from "./useConnectionContext";
@@ -11,7 +11,7 @@ export const useUpdateUserAsUser = () => {
   const { isOnline } = useConnection();
 
   const update = async (
-    values: z.infer<typeof UpdateUserAsUserSchema>,
+    values: z.infer<typeof UpdateUserSchema>,
     id: string,
   ) => {
     console.log(id);

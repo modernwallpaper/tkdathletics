@@ -92,26 +92,13 @@ export const UpdateUserForm = () => {
                     />
                     <FormField
                       control={form.control}
-                      name="surename"
+                      name="surname"
                       disabled={isLoading}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Surename</FormLabel>
                           <FormControl>
                             <Input {...field} placeholder="surename" />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      disabled={isLoading}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="username" />
                           </FormControl>
                         </FormItem>
                       )}

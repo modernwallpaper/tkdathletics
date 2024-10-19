@@ -4,7 +4,7 @@ import { db } from "./db"
 export const getUserByEmail = async (email: string | undefined) => {
   try {
     const user = await db.user.findUnique({ where: { email } })
-    return user
+    return user;
   } catch(error) {
     return null
   }
@@ -14,7 +14,7 @@ export const getUserByEmail = async (email: string | undefined) => {
 export const getUserById = async (id: string | undefined) => {
   try {
     const user = await db.user.findUnique({ where: { id } })
-    return user
+    return user;
   } catch(error) {
     return null
   }

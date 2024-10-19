@@ -1,11 +1,21 @@
 import type { Context } from "hono";
-import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, UserSchema } from "../../schemas";
+import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, CreateUserSchema} from "../../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
 import webPush from "web-push"
+
+function exclude<User, Key extends keyof User>(
+  user: User,
+  keys: Key[]
+): Omit<User, Key> {
+  for (let key of keys) {
+    delete user[key]
+  }
+  return user
+}
 
 /**
  * @desc POST /api/auth/login
@@ -67,7 +77,7 @@ const login = async (c: Context) => {
             id: existingUser.id,
             name: existingUser.name,
             email: existingUser.email,
-            surename: existingUser.surname,
+            surname: existingUser.surname,
             birthday: existingUser.birthday,
             img: existingUser.img,
             kup: existingUser.kup,
@@ -101,7 +111,7 @@ const login = async (c: Context) => {
  */
 const register = async (c: Context) => {
   const user = await c.req.json();
-  const validatedFields = UserSchema.safeParse(user);
+  const validatedFields = CreateUserSchema.safeParse(user);
 
   if (!validatedFields.success) return c.json({ error: "Invalid fields" }, 400);
 
@@ -109,16 +119,7 @@ const register = async (c: Context) => {
     name,
     email,
     password,
-    //username,
-    //surename,
     authority,
-    //birthday,
-    //img,
-    //kup,
-    //weight_class,
-    //gender,
-    //ag,
-    //pg,
   } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
 
@@ -131,18 +132,9 @@ const register = async (c: Context) => {
       .create({
         data: {
           name: name,
-          //username: username,
           email: email,
           password: hashedPassword,
-          //surname: "",
           authority: authority,
-          ///birthday: "",
-          //img: "",
-          //kup: kup,
-          //weight_class: "TO_63KG",
-          //gender: gender,
-          //ag: ag,
-          //pg: pg,
           failed_logins: 0,
           timestamp: new Date(),
         },
@@ -179,7 +171,7 @@ const logout = async () => {
 };
 
 /**
- * @desc GET /api/user/logout
+ * @desc GET /api/user/profile
  * @access PRIVATE
  */
 const profile = async (c: Context) => {
@@ -201,10 +193,12 @@ const profile = async (c: Context) => {
       const decoded = jwt.verify(token, secret);
 
       if (typeof decoded !== "string" && (decoded as JwtPayload).userId) {
+        
+
         const user = await getUserById((decoded as JwtPayload).userId);
         if (!user) return c.json({ error: "Was not able to fetch user" }, 500);
 
-        return c.json(user, 200);
+        return c.json(user ? exclude(user, ['password']) : null, 200);
       }
     } catch (error) {
       c.json({ error: error }, 500);
@@ -309,7 +303,7 @@ const updateUserAsUser = async (c: Context) => {
         data: { ...udata, timestamp: new Date() },
       });
 
-      return c.json({ success: "User updated successfully", user: updatedUser }, 200);
+      return c.json({ success: "User updated successfully", user: updatedUser ? exclude(updatedUser, ['password']) : null }, 200);
     } catch (err) {
       return c.json({ error: err }, 500);
     }

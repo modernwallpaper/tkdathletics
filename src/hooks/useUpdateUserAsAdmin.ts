@@ -1,5 +1,5 @@
 import { saveUser } from "@/lib/indexedDB";
-import { UpdateUserAsAdminSchema } from "@/schemas";
+import { UpdateUserSchema } from "../../schemas";
 import { useState } from "react";
 import * as z from "zod";
 import { useAuthContext } from "./useAuthContext";
@@ -11,7 +11,7 @@ export function useUpdateUserAsAdmin() {
   const { state } = useAuthContext();
   const { user } = state;
 
-  const update = async (data: z.infer<typeof UpdateUserAsAdminSchema>) => {
+  const update = async (data: z.infer<typeof UpdateUserSchema>) => {
     setError("");
     setSuccess("");
     setLoading(true);

@@ -1,4 +1,4 @@
-import { CreateUserSchema } from "@/schemas";
+import { CreateUserSchema } from "../../schemas";
 import { useState } from "react";
 import * as z from "zod"
 
