@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
-import { ArrowLeft, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 
 export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) => {
   const form = useForm<z.infer<typeof UpdateUserSchema>>({

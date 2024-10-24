@@ -208,6 +208,7 @@ const CreateTournamentSchemaFrontend = z.object({
 })
 
 const TournamentSchema = z.object({
+  id: z.string().optional(),
   date: z.date().optional(),
   name: z.string().optional(),
   location: z.string().optional(),

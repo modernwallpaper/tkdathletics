@@ -8,12 +8,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { DeleteUser } from "../delete-user";
 import { z } from "zod";
 import { UserSchema } from "../../../../../../schemas";
 
