@@ -115,16 +115,28 @@ enum decision {
   DQB
 }
 
+model File {
+  id        String    @id @default(cuid())
+  url       String
+  filename  String
+  mimeType  String
+  size      Int
+  tournamentContract Tournament? @relation("TournamentContract")
+  tournamentResult   Tournament? @relation("TournamentResult")
+}
+
 model Tournament {
-  id                  String @id @default(cuid())
-  date                DateTime?
-  name                String?
-  location            String?
-  results             String?
-  contract            String?
-  competitions        Competition[]
-  participants        User[] @relation("TournamentParticipants")
-  timestamp           DateTime?
+  id             String          @id @default(cuid())
+  date           DateTime?
+  name           String?
+  location       String?
+  contract       File?           @relation("TournamentContract", fields: [contractId], references: [id])
+  contractId     String? @unique
+  result         File?           @relation("TournamentResult", fields: [resultId], references: [id])
+  resultId       String? @unique
+  competitions   Competition[]
+  participants   User[]          @relation("TournamentParticipants")
+  timestamp      DateTime?
 }
 
 model Competition {

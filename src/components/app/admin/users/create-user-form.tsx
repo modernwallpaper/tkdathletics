@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { CreateUserSchema } from "../../../../schemas";
+import { CreateUserSchema } from "../../../../../schemas";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -19,8 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRegister } from "@/hooks/useRegister";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const CreateUserForm = () => {
   const form = useForm<z.infer<typeof CreateUserSchema>>({
@@ -34,11 +34,11 @@ export const CreateUserForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <DialogHeader>
-        <DialogTitle>Create a user</DialogTitle>
-        <DialogDescription>Enter the new user info</DialogDescription>
-      </DialogHeader>
+    <div className="flex flex-col gap-y-2 w-[50%]">
+      <CardHeader>
+        <CardTitle>Create a user</CardTitle>
+        <CardDescription>Enter the new user info</CardDescription>
+      </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -102,6 +102,7 @@ export const CreateUserForm = () => {
             )}
           />
           <Button type="submit" className="w-full mt-3">Create</Button>
+          <Button variant={"outline"} className="w-full mt-3" asChild><a href="/v1/admin/">Cancel</a></Button>
         </form>
       </Form>
     </div>

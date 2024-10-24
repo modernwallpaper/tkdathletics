@@ -182,6 +182,40 @@ const GetTournamentSchema = z.object({
   id: z.string(),
 })
 
+const TournamentFileSchema = z.object({
+  url: z.string(),
+  filename: z.string(),
+  mimeType: z.string(),
+  size: z.number().int().positive(),
+})
+
+const CreateTournamentSchemaBackend = z.object({
+  date: z.date().optional(),
+  name: z.string(),
+  location: z.string(),
+  result: TournamentFileSchema.optional(),
+  contract: TournamentFileSchema.optional(),
+  participants: z.array(z.string()).optional(),
+})
+
+const CreateTournamentSchemaFrontend = z.object({
+  date: z.date().optional(),
+  name: z.string(),
+  location: z.string(),
+  result: z.instanceof(File).optional(),
+  contract: z.instanceof(File).optional(),
+  participants: z.array(z.string()).optional(),
+})
+
+const TournamentSchema = z.object({
+  date: z.date().optional(),
+  name: z.string().optional(),
+  location: z.string().optional(),
+  resultId: z.string().optional(),
+  contractId: z.string().optional(),
+  participants: z.array(z.string()).optional(),
+})
+
 export { 
   CreateUserSchema, 
   UpdateUserSchema, 
@@ -190,5 +224,8 @@ export {
   GetCompetitionShema, 
   GetTournamentSchema,
   UserSchema,
-  DeleteUserSchema
+  DeleteUserSchema,
+  CreateTournamentSchemaBackend,
+  CreateTournamentSchemaFrontend,
+  TournamentSchema,
 };

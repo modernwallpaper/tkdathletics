@@ -20,6 +20,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { FormError } from "../form-error";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 export const CompDataForm = () => {
   const { state } = useAuthContext();
@@ -101,7 +105,55 @@ export const CompDataForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="to56kg">-56kg</SelectItem>
+                      <SelectItem value="TO_22KG">-22kg</SelectItem>
+                      <SelectItem value="TO_24KG">-24kg</SelectItem>
+                      <SelectItem value="TO_26KG">-26kg</SelectItem>
+                      <SelectItem value="TO_27KG">-27kg</SelectItem>
+                      <SelectItem value="TO_29KG">-29kg</SelectItem>
+                      <SelectItem value="TO_32KG">-32kg</SelectItem>
+                      <SelectItem value="TO_33KG">-33kg</SelectItem>
+                      <SelectItem value="TO_35KG">-35kg</SelectItem>
+                      <SelectItem value="TO_37KG">-37kg</SelectItem>
+                      <SelectItem value="TO_39KG">-39kg</SelectItem>
+                      <SelectItem value="TO_41KG">-41kg</SelectItem>
+                      <SelectItem value="TO_42KG">-42kg</SelectItem>
+                      <SelectItem value="TO_43KG">-43kg</SelectItem>
+                      <SelectItem value="TO_44KG">-44kg</SelectItem>
+                      <SelectItem value="TO_45KG">-45kg</SelectItem>
+                      <SelectItem value="TO_46KG">-46kg</SelectItem>
+                      <SelectItem value="TO_47KG">-47kg</SelectItem>
+                      <SelectItem value="TO_48KG">-48kg</SelectItem>
+                      <SelectItem value="TO_49KG">-49kg</SelectItem>
+                      <SelectItem value="TO_51KG">-51kg</SelectItem>
+                      <SelectItem value="TO_52KG">-52kg</SelectItem>
+                      <SelectItem value="TO_53KG">-53kg</SelectItem>
+                      <SelectItem value="TO_54KG">-54kg</SelectItem>
+                      <SelectItem value="TO_55KG">-55kg</SelectItem>
+                      <SelectItem value="TO_57KG">-57kg</SelectItem>
+                      <SelectItem value="TO_58KG">-58kg</SelectItem>
+                      <SelectItem value="TO_59KG">-59kg</SelectItem>
+                      <SelectItem value="TO_61KG">-61kg</SelectItem>
+                      <SelectItem value="TO_62KG">-62kg</SelectItem>
+                      <SelectItem value="TO_63KG">-63kg</SelectItem>
+                      <SelectItem value="TO_65KG">-65kg</SelectItem>
+                      <SelectItem value="TO_67KG">-67kg</SelectItem>
+                      <SelectItem value="TO_68KG">-68kg</SelectItem>
+                      <SelectItem value="TO_73KG">-73kg</SelectItem>
+                      <SelectItem value="TO_74KG">-74kg</SelectItem>
+                      <SelectItem value="TO_78KG">-78kg</SelectItem>
+                      <SelectItem value="TO_80KG">-80kg</SelectItem>
+                      <SelectItem value="TO_87KG">-87kg</SelectItem>
+                      <SelectItem value="PLUS_45KG">+45kg</SelectItem>
+                      <SelectItem value="PLUS_57KG">+57kg</SelectItem>
+                      <SelectItem value="PLUS_59KG">+59kg</SelectItem>
+                      <SelectItem value="PLUS_63KG">+63kg</SelectItem>
+                      <SelectItem value="PLUS_65KG">+65kg</SelectItem>
+                      <SelectItem value="PLUS_67KG">+67kg</SelectItem>
+                      <SelectItem value="PLUS_68KG">+68kg</SelectItem>
+                      <SelectItem value="PLUS_73KG">+73kg</SelectItem>
+                      <SelectItem value="PLUS_78KG">+78kg</SelectItem>
+                      <SelectItem value="PLUS_80KG">+80kg</SelectItem>
+                      <SelectItem value="PLUS_87KG">+87kg</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -192,6 +244,43 @@ export const CompDataForm = () => {
                       <SelectItem value="LK2">LK2</SelectItem>
                     </SelectContent>
                   </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="birthday"
+              disabled={loading}
+              render={({ field }) => (
+                <FormItem className="flex flex-col mt-2">
+                  <FormLabel>Date of birth</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                          )}
+                        >
+                          {field.value ? format(field.value, "yyyy-mm-dd") : format(user.birthday ? user.birthday : "", "yyyy-mm-dd")}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value) : undefined} // Convert string to Date for selection
+                        onSelect={(date) => {
+                          // Convert Date to string format
+                          const formattedDate = date ? date.toISOString().split('T')[0] : ''; // Format as YYYY-MM-DD or any other string format you prefer
+                          field.onChange(formattedDate); // Set the string value
+                        }}
+                        disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </FormItem>
               )}
             />

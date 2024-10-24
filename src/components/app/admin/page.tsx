@@ -1,11 +1,26 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageHeader } from "../page-header";
-import { UserList } from "./user-list";
+import { UserList } from "./users/user-list";
+import { Separator } from "@/components/ui/separator";
+import { TournamentList } from "./tournaments/tournament-list";
 
 export const AdminPage = () => {
   return (
     <div className="container relative py-6 lg:py-8">
       <PageHeader label="Admin"/>
-      <UserList />
+      <Tabs defaultValue="users">
+        <TabsList className="grid w-fit grid-cols-2">
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="tournaments">Tournaments</TabsTrigger>
+        </TabsList>
+        <Separator className="my-2"/>
+        <TabsContent value="users">
+          <UserList />
+        </TabsContent>
+        <TabsContent value="tournaments">
+          <TournamentList />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

@@ -21,6 +21,12 @@ import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
 import { Route as V1SettingsNotificationsIndexImport } from './routes/v1/settings/notifications/index'
 import { Route as V1SettingsCompetitionDataIndexImport } from './routes/v1/settings/competition-data/index'
 import { Route as V1SettingsAccountIndexImport } from './routes/v1/settings/account/index'
+import { Route as V1AdminCreateUserImport } from './routes/v1/admin/create/user'
+import { Route as V1AdminCreateTournamentImport } from './routes/v1/admin/create/tournament'
+import { Route as V1AdminUpdateUserIdImport } from './routes/v1/admin/update/user.$id'
+import { Route as V1AdminUpdateTournamentIdImport } from './routes/v1/admin/update/tournament.$id'
+import { Route as V1AdminDeleteUserIdImport } from './routes/v1/admin/delete/user.$id'
+import { Route as V1AdminDeleteTournamentIdImport } from './routes/v1/admin/delete/tournament.$id'
 
 // Create/Update Routes
 
@@ -76,6 +82,36 @@ const V1SettingsAccountIndexRoute = V1SettingsAccountIndexImport.update({
   getParentRoute: () => V1SettingsRoute,
 } as any)
 
+const V1AdminCreateUserRoute = V1AdminCreateUserImport.update({
+  path: '/admin/create/user',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminCreateTournamentRoute = V1AdminCreateTournamentImport.update({
+  path: '/admin/create/tournament',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminUpdateUserIdRoute = V1AdminUpdateUserIdImport.update({
+  path: '/admin/update/user/$id',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminUpdateTournamentIdRoute = V1AdminUpdateTournamentIdImport.update({
+  path: '/admin/update/tournament/$id',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminDeleteUserIdRoute = V1AdminDeleteUserIdImport.update({
+  path: '/admin/delete/user/$id',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AdminDeleteTournamentIdRoute = V1AdminDeleteTournamentIdImport.update({
+  path: '/admin/delete/tournament/$id',
+  getParentRoute: () => V1Route,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -129,6 +165,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1SettingsIndexImport
       parentRoute: typeof V1SettingsImport
     }
+    '/v1/admin/create/tournament': {
+      id: '/v1/admin/create/tournament'
+      path: '/admin/create/tournament'
+      fullPath: '/v1/admin/create/tournament'
+      preLoaderRoute: typeof V1AdminCreateTournamentImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/create/user': {
+      id: '/v1/admin/create/user'
+      path: '/admin/create/user'
+      fullPath: '/v1/admin/create/user'
+      preLoaderRoute: typeof V1AdminCreateUserImport
+      parentRoute: typeof V1Import
+    }
     '/v1/settings/account/': {
       id: '/v1/settings/account/'
       path: '/account'
@@ -150,6 +200,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1SettingsNotificationsIndexImport
       parentRoute: typeof V1SettingsImport
     }
+    '/v1/admin/delete/tournament/$id': {
+      id: '/v1/admin/delete/tournament/$id'
+      path: '/admin/delete/tournament/$id'
+      fullPath: '/v1/admin/delete/tournament/$id'
+      preLoaderRoute: typeof V1AdminDeleteTournamentIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/delete/user/$id': {
+      id: '/v1/admin/delete/user/$id'
+      path: '/admin/delete/user/$id'
+      fullPath: '/v1/admin/delete/user/$id'
+      preLoaderRoute: typeof V1AdminDeleteUserIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/update/tournament/$id': {
+      id: '/v1/admin/update/tournament/$id'
+      path: '/admin/update/tournament/$id'
+      fullPath: '/v1/admin/update/tournament/$id'
+      preLoaderRoute: typeof V1AdminUpdateTournamentIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/update/user/$id': {
+      id: '/v1/admin/update/user/$id'
+      path: '/admin/update/user/$id'
+      fullPath: '/v1/admin/update/user/$id'
+      preLoaderRoute: typeof V1AdminUpdateUserIdImport
+      parentRoute: typeof V1Import
+    }
   }
 }
 
@@ -166,6 +244,12 @@ export const routeTree = rootRoute.addChildren({
     }),
     V1IndexRoute,
     V1AdminIndexRoute,
+    V1AdminCreateTournamentRoute,
+    V1AdminCreateUserRoute,
+    V1AdminDeleteTournamentIdRoute,
+    V1AdminDeleteUserIdRoute,
+    V1AdminUpdateTournamentIdRoute,
+    V1AdminUpdateUserIdRoute,
   }),
   LoginIndexRoute,
 })
@@ -191,7 +275,13 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/v1/settings",
         "/v1/",
-        "/v1/admin/"
+        "/v1/admin/",
+        "/v1/admin/create/tournament",
+        "/v1/admin/create/user",
+        "/v1/admin/delete/tournament/$id",
+        "/v1/admin/delete/user/$id",
+        "/v1/admin/update/tournament/$id",
+        "/v1/admin/update/user/$id"
       ]
     },
     "/v1/settings": {
@@ -219,6 +309,14 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "v1/settings/index.tsx",
       "parent": "/v1/settings"
     },
+    "/v1/admin/create/tournament": {
+      "filePath": "v1/admin/create/tournament.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/create/user": {
+      "filePath": "v1/admin/create/user.tsx",
+      "parent": "/v1"
+    },
     "/v1/settings/account/": {
       "filePath": "v1/settings/account/index.tsx",
       "parent": "/v1/settings"
@@ -230,6 +328,22 @@ export const routeTree = rootRoute.addChildren({
     "/v1/settings/notifications/": {
       "filePath": "v1/settings/notifications/index.tsx",
       "parent": "/v1/settings"
+    },
+    "/v1/admin/delete/tournament/$id": {
+      "filePath": "v1/admin/delete/tournament.$id.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/delete/user/$id": {
+      "filePath": "v1/admin/delete/user.$id.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/update/tournament/$id": {
+      "filePath": "v1/admin/update/tournament.$id.tsx",
+      "parent": "/v1"
+    },
+    "/v1/admin/update/user/$id": {
+      "filePath": "v1/admin/update/user.$id.tsx",
+      "parent": "/v1"
     }
   }
 }

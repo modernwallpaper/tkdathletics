@@ -1,11 +1,13 @@
 import type { Context } from "hono";
-import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, CreateUserSchema} from "../../schemas";
+import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, CreateUserSchema, CreateTournamentSchemaBackend} from "../../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
 import webPush from "web-push"
+import path from "path";
+import fs from "fs-extra";
 
 function exclude<User, Key extends keyof User>(
   user: User,
@@ -316,6 +318,7 @@ const updateUserAsUser = async (c: Context) => {
  */
 const updateUserAsAdmin = async (c: Context) => {
   const req = await c.req.json();
+  console.log(req);
   const validatedFields = UpdateUserSchema.safeParse(req);
 
   if(!validatedFields.success) return c.json({ error: "Innvalid fields" }, 400)
@@ -439,6 +442,12 @@ const getTournamentsForUser = async(c: Context) => {
   }
 }
 
+const getAllTournaments = async(c: Context) => {
+  const tournaments = await db.tournament.findMany();
+  console.log(tournaments);
+  return c.json(tournaments, 200);
+}
+
 const saveSubscription = async (c: Context) => {
   const { subscription, userId } = await c.req.json();
  
@@ -478,6 +487,82 @@ const sendPushNotification = async (c: Context) => {
   }
 }
 
+const createTorunament = async (c: Context) => {
+  const data = await c.req.json();
+  if(data.date) {
+    data.date = new Date(data.date);
+  }
+
+  const validatedFields = CreateTournamentSchemaBackend.safeParse(data);
+
+  if(!validatedFields.success) {
+    console.error(validatedFields.error)
+    return c.json({ error: "Invalid fields" }, 400);
+  }
+
+  const { name, date, location, result, contract, participants } = validatedFields.data;
+
+  const tournament = await db.tournament.create({
+    data: {
+      name, 
+      location,
+      date,
+      participants: {
+        connect: participants?.map(id => ({ id })),
+      },
+      contract: contract ? {
+        create: {
+          url: contract?.url,
+          filename: contract?.filename,
+          mimeType: contract?.mimeType,
+          size: contract?.size,
+        },
+      } : undefined,
+      result: result ? {
+        create: {
+          url: result?.url,
+          filename: result?.filename,
+          mimeType: result?.mimeType,
+          size: result?.size,
+        },
+      } : undefined,
+      timestamp: new Date(),
+    }
+  });
+
+  return c.json({ tournament }, 201);
+}
+
+const uploadTournamentFile = async (c: Context) => {
+  const uploadDir = path.join(__dirname, "../uploads");
+  fs.ensureDirSync(uploadDir);
+
+  const formData = await c.req.formData();
+  const file = formData.get("file") as File;
+
+  if (!file) {
+    return c.json({ error: 'No file uploaded' }, 400);
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const filePath = path.join(uploadDir, file.name);
+
+  const savedFile = await db.file.create({
+    data: {
+      url: `/uploads/${file.name}`,
+      filename: file.name,
+      mimeType: file.type,
+      size: file.size, 
+    }
+  })
+  
+  fs.writeFileSync(filePath, buffer);
+  
+  return c.json({ success: 'File uploaded successfully', file: savedFile }, 200)
+};
+
 export { 
   login, 
   register, 
@@ -491,4 +576,7 @@ export {
   sendPushNotification,
   getCompetitionsForUser,
   getTournamentsForUser,
+  getAllTournaments,
+  createTorunament,
+  uploadTournamentFile
 };

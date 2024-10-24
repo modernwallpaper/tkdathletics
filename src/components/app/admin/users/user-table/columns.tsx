@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +8,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import { UpdateUserForm } from "../update-user-form";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -17,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { DeleteUser } from "../delete-user";
 import { z } from "zod";
-import { UserSchema } from "../../../../../schemas";
+import { UserSchema } from "../../../../../../schemas";
 
 export const columns: ColumnDef<z.infer<typeof UserSchema>, unknown>[] = [
   {
@@ -102,28 +100,16 @@ export const columns: ColumnDef<z.infer<typeof UserSchema>, unknown>[] = [
             <Separator className="mb-1" />
             <ul>
               <li>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant={"dropdown"} size={"sm"} className="w-full">
-                      Update
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="w-[450px]">
-                    <UpdateUserForm user={user} />
-                  </DialogContent>
-                </Dialog>
+                <Button asChild variant={"dropdown"} size={"sm"} className="w-full">
+                  <a href={`/v1/admin/update/user/${user.id}`}>
+                    Update
+                  </a>
+                </Button>
               </li>
               <li>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant={"dropdown"} size={"sm"} className="w-full">
-                      Delete
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <DeleteUser id={user.id} />
-                  </AlertDialogContent>
-                </AlertDialog>
+                <Button asChild variant={"dropdown"} size={"sm"} className="w-full">
+                  <a href={`/v1/admin/delete/user/${user.id}`}>Delete</a>
+                </Button>
               </li>
             </ul>
           </DropdownMenuContent>

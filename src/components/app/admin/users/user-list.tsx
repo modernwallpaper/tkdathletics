@@ -2,7 +2,7 @@ import { getAllUsers } from "@/hooks/getAllUsers";
 import { UserTable } from "./user-table/data-table";
 import { columns } from "./user-table/columns";
 import { z } from "zod";
-import { UserSchema } from "../../../../schemas";
+import { UserSchema } from "../../../../../schemas";
 
 export const UserList = () => {
   const data = getAllUsers();
