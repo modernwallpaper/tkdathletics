@@ -13,17 +13,23 @@ import { cn } from "@/lib/utils"
 import { getAllUsers } from "@/hooks/getAllUsers"
 import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useUploadTournamentFile } from "@/hooks/useUploadTournamentFile"
+import { Separator } from "@/components/ui/separator"
+import { useState } from "react"
+import { useRouter } from "@tanstack/react-router"
 
 export const CreateTournametForm = () => {
   const form = useForm<z.infer<typeof CreateTournamentSchemaFrontend>>({
     resolver: zodResolver(CreateTournamentSchemaFrontend),
   })
 
-  const { UploadFile } =  useUploadTournamentFile();
+  const [dataLoading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const { UploadFile, fileLoading } =  useUploadTournamentFile();
 
   const onSubmit = async (values: z.infer<typeof CreateTournamentSchemaFrontend>) => {
-    console.log(values);
-
+    setLoading(true);
     const { result, contract, participants, ...tournamentData } = values;
 
     const uploadedResult = result ? await UploadFile(result) : null;
@@ -33,16 +39,10 @@ export const CreateTournametForm = () => {
       ...tournamentData,
       date: new Date(tournamentData.date ? tournamentData.date : ""),
       result: uploadedResult ? {
-        url: uploadedResult.url,
-        filename: uploadedResult.filename,
-        mimeType: uploadedResult.mimeType,
-        size: uploadedResult.size,
+        id: uploadedResult 
       } : undefined,
       contract: uploadedContract ? {
-        url: uploadedContract.url,
-        filename: uploadedContract.filename,
-        mimeType: uploadedContract.mimeType,
-        size: uploadedContract.size,
+        id: uploadedContract
       } : undefined,
       participants,
     }
@@ -64,8 +64,13 @@ export const CreateTournametForm = () => {
 
       const data = await res.json();
       console.log(data);
+      setLoading(false);
+      sessionStorage.setItem("toastMessage", data.success);
+      await router.navigate({ to: "/v1/admin" });
+      window.location.reload()
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -83,7 +88,8 @@ export const CreateTournametForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-2">
-            <FormField 
+            <FormField
+              disabled={dataLoading || fileLoading}
               name="name"
               control={form.control}
               render={({ field }) => (
@@ -96,6 +102,7 @@ export const CreateTournametForm = () => {
               )}
             />
             <FormField 
+              disabled={dataLoading || fileLoading}
               name="location"
               control={form.control}
               render={({ field }) => (
@@ -108,18 +115,19 @@ export const CreateTournametForm = () => {
               )}
             />
             <FormField 
+              disabled={dataLoading || fileLoading}
               name="date"
               control={form.control}
               render={({ field }) => (
                   <FormItem className="flex flex-col">
-                  <FormLabel>Date of birth</FormLabel>
+                  <FormLabel>Date of tournament</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
+                            "pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
                           )}
                         >
@@ -147,6 +155,7 @@ export const CreateTournametForm = () => {
               )}
             />
             <FormField 
+              disabled={dataLoading || fileLoading}
               name="result"
               control={form.control}
               render={({ field }) => (
@@ -166,6 +175,7 @@ export const CreateTournametForm = () => {
               )}
             />
             <FormField 
+              disabled={dataLoading || fileLoading}
               name="contract"
               control={form.control}
               render={({ field }) => (
@@ -185,6 +195,7 @@ export const CreateTournametForm = () => {
               )}
             />
             <FormField 
+              disabled={dataLoading || fileLoading}
               name="participants"
               control={form.control}
               render={({ field }) => (
@@ -214,7 +225,7 @@ export const CreateTournametForm = () => {
                                     field.onChange(newValue);
                                   }}
                                 >
-                                  {user.name}
+                                  <p key={user.id}>{user.name}</p>
                                 </DropdownMenuCheckboxItem>
                               </FormControl>
                             ))}
@@ -227,9 +238,17 @@ export const CreateTournametForm = () => {
               )}
             />
           </div>
-          <Button className="w-full mt-3" type="submit">
-            <p>Create</p>
-          </Button>
+          <Separator className="mt-3"/>
+          <div className="flex gap-x-2">
+            <Button disabled={dataLoading || fileLoading} asChild className="w-full mt-3" variant={"secondary"}>
+              <a href="/v1/admin">
+                Cancel
+              </a>
+            </Button>
+            <Button disabled={dataLoading || fileLoading} className="w-full mt-3" type="submit">
+              <p>Create</p>
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

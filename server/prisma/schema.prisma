@@ -117,7 +117,7 @@ enum decision {
 
 model File {
   id        String    @id @default(cuid())
-  url       String
+  url       String    @unique
   filename  String
   mimeType  String
   size      Int
@@ -130,10 +130,10 @@ model Tournament {
   date           DateTime?
   name           String?
   location       String?
-  contract       File?           @relation("TournamentContract", fields: [contractId], references: [id])
-  contractId     String? @unique
-  result         File?           @relation("TournamentResult", fields: [resultId], references: [id])
-  resultId       String? @unique
+  contract       File?           @relation("TournamentContract", fields: [contractUrl], references: [url])
+  contractUrl    String?  @unique 
+  result         File?           @relation("TournamentResult", fields: [resultUrl], references: [url])
+  resultUrl      String?  @unique
   competitions   Competition[]
   participants   User[]          @relation("TournamentParticipants")
   timestamp      DateTime?

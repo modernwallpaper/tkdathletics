@@ -6,6 +6,7 @@ export const useUploadTournamentFile = () => {
   const [fileMessage, setMessage] = useState<string>("");
 
   async function UploadFile(file: File) {
+    console.log("File upload request")
     // Reset states
     setLoading(true);
     setError("");
@@ -26,7 +27,8 @@ export const useUploadTournamentFile = () => {
 
       const data = await res.json();
       setMessage(data.success);
-      return data.file;
+      console.log("id: ", data.id);
+      return data.id;
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {

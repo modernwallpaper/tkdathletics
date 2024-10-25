@@ -24,16 +24,23 @@ export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
     header: "Name",
   },
   {
-    accessorKey: "resultId",
-    header: "Result id",
+    accessorKey: "resultUrl",
+    header: "Result url",
   },
   {
-    accessorKey: "contractId",
-    header: "Contract id",
+    accessorKey: "contractUrl",
+    header: "Contract url",
   },
   {
     accessorKey: "participants",
     header: "Participants",
+    cell: ({ row }) => {
+      const tournament = row.original;
+      const participants = tournament.participants;
+      return(
+        <div className="flex flex-col">{participants?.map((participant) => { return <p>{participant.name}</p> })}</div>
+      )
+    }
   },
   {
     accessorKey: "timestamp",

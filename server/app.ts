@@ -6,7 +6,9 @@ import { getUserByEmail } from "./lib/user";
 import { db } from "./lib/db";
 import bcrypt from "bcryptjs"
 import webPush from "web-push"
-
+import path from "path";
+import fs from "fs"
+import mime from "mime"
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
@@ -64,8 +66,45 @@ app.use('*', logger());
 
 // Setup routes
 const apiRoutes = app.route("/api/", routes);
-app.get('*', serveStatic({ root: './dist/' }));
 
+const uploadPath = path.resolve("./uploads/");
+console.log(uploadPath)
+
+if(fs.existsSync(uploadPath)) {
+  console.log("path exists")
+} else {
+  console.log("path doesent exist")    
+}
+
+
+app.get("/uploads/:filename", async (c) => {
+  const filename = c.req.param("filename");
+  
+  if (!filename) {
+    return c.text("Filename is required", 400);
+  }
+
+  const filePath = path.join(uploadPath, filename);
+
+  try {
+    const data = fs.readFileSync(filePath);
+
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new Uint8Array(data));
+        controller.close();
+      },
+    });
+
+    const mimeType = mime.getType(filename) || "application/octet-stream"; 
+    return c.body(stream, 200, { "Content-Type": mimeType });
+  } catch (err) {
+    console.error("Error reading file:", err);
+    return c.text("File not found", 404);
+  }
+});
+
+app.get('*', serveStatic({ root: './dist/' }));
 
 export default app;
 export type ApiRoutes = typeof apiRoutes;

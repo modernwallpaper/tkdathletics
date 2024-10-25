@@ -21,13 +21,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRegister } from "@/hooks/useRegister";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export const CreateUserForm = () => {
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
   });
 
-  const { register } = useRegister();
+  const { register, loading } = useRegister();
 
   const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
     await register(values); 
@@ -42,6 +43,7 @@ export const CreateUserForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
+            disabled={loading}
             control={form.control}
             name="name"
             render={({ field }) => (
@@ -54,6 +56,7 @@ export const CreateUserForm = () => {
             )}
           />
           <FormField
+            disabled={loading}
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -66,6 +69,7 @@ export const CreateUserForm = () => {
             )}
           />
           <FormField
+            disabled={loading}
             control={form.control}
             name="authority"
             render={({ field }) => (
@@ -89,6 +93,7 @@ export const CreateUserForm = () => {
             )}
           />
           <FormField
+            disabled={loading}
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -101,8 +106,17 @@ export const CreateUserForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full mt-3">Create</Button>
-          <Button variant={"outline"} className="w-full mt-3" asChild><a href="/v1/admin/">Cancel</a></Button>
+          <Separator className="mt-3"/>
+          <div className="flex gap-x-2">
+            <Button disabled={loading} asChild className="w-full mt-3" variant={"secondary"}>
+              <a href="/v1/admin">
+                Cancel
+              </a>
+            </Button>
+            <Button disabled={loading} className="w-full mt-3" type="submit">
+              <p>Create</p>
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

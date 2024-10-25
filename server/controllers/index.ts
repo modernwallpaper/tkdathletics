@@ -8,6 +8,7 @@ import { getCookie } from "hono/cookie";
 import webPush from "web-push"
 import path from "path";
 import fs from "fs-extra";
+import mime from "mime"
 
 function exclude<User, Key extends keyof User>(
   user: User,
@@ -443,7 +444,13 @@ const getTournamentsForUser = async(c: Context) => {
 }
 
 const getAllTournaments = async(c: Context) => {
-  const tournaments = await db.tournament.findMany();
+  const tournaments = await db.tournament.findMany({
+    include: {
+      participants: true,
+      contract: true,
+      result: true,
+    }
+  });
   console.log(tournaments);
   return c.json(tournaments, 200);
 }
@@ -487,6 +494,16 @@ const sendPushNotification = async (c: Context) => {
   }
 }
 
+const deleteTournament = async (c: Context) => {
+  const data = await c.req.json();
+  if(data.id) {
+    await db.tournament.delete({ where: { id: data.id } });
+    return c.json({ success: "Tournament deleted successfully" });
+  } else if(!data.id) {
+    return c.json({ error: "No id provided" }, 401);
+  }
+}
+
 const createTorunament = async (c: Context) => {
   const data = await c.req.json();
   if(data.date) {
@@ -511,31 +528,27 @@ const createTorunament = async (c: Context) => {
         connect: participants?.map(id => ({ id })),
       },
       contract: contract ? {
-        create: {
-          url: contract?.url,
-          filename: contract?.filename,
-          mimeType: contract?.mimeType,
-          size: contract?.size,
-        },
+        connect: { id: contract.id }
       } : undefined,
       result: result ? {
-        create: {
-          url: result?.url,
-          filename: result?.filename,
-          mimeType: result?.mimeType,
-          size: result?.size,
-        },
+        connect: { id: result.id }
       } : undefined,
       timestamp: new Date(),
     }
   });
 
-  return c.json({ tournament }, 201);
+  return c.json({ tournament, success: "Turnament created successfully" }, 201);
 }
 
 const uploadTournamentFile = async (c: Context) => {
-  const uploadDir = path.join(__dirname, "../uploads");
-  fs.ensureDirSync(uploadDir);
+  const uploadDir = path.resolve("./uploads/");
+  const uploadDirExists = fs.existsSync(uploadDir);
+
+  console.log("Upload dir: ", uploadDir);
+
+  if(!uploadDirExists) {
+    console.error("Upload dir doesent exist");
+  }
 
   const formData = await c.req.formData();
   const file = formData.get("file") as File;
@@ -546,10 +559,8 @@ const uploadTournamentFile = async (c: Context) => {
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-
-  const filePath = path.join(uploadDir, file.name);
-
-  const savedFile = await db.file.create({
+  
+  const initFile = await db.file.create({
     data: {
       url: `/uploads/${file.name}`,
       filename: file.name,
@@ -557,10 +568,20 @@ const uploadTournamentFile = async (c: Context) => {
       size: file.size, 
     }
   })
+  console.log(initFile);
+
+  const { id, filename, mimeType, size } = initFile;
+
+  const extension = mime.getExtension(file.type);
+  const fileURL = path.join(uploadDir, `${id}${extension ? `.${extension}` : ''}`);
   
-  fs.writeFileSync(filePath, buffer);
+  const savedFile = await db.file.update({ where: { id }, data: { url: path.join("/uploads/", `${id}${extension ? `.${extension}` : ''}`), filename, mimeType, size } });
   
-  return c.json({ success: 'File uploaded successfully', file: savedFile }, 200)
+  console.log(savedFile);
+  
+  fs.writeFileSync(fileURL, buffer);
+
+  return c.json({ success: 'File uploaded successfully', id }, 200)
 };
 
 export { 
@@ -578,5 +599,6 @@ export {
   getTournamentsForUser,
   getAllTournaments,
   createTorunament,
-  uploadTournamentFile
+  uploadTournamentFile,
+  deleteTournament
 };

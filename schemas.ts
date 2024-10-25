@@ -183,10 +183,11 @@ const GetTournamentSchema = z.object({
 })
 
 const TournamentFileSchema = z.object({
-  url: z.string(),
-  filename: z.string(),
-  mimeType: z.string(),
-  size: z.number().int().positive(),
+  id: z.string().optional(),
+  url: z.string().optional(),
+  filename: z.string().optional(),
+  mimeType: z.string().optional(),
+  size: z.number().int().positive().optional(),
 })
 
 const CreateTournamentSchemaBackend = z.object({
@@ -199,7 +200,7 @@ const CreateTournamentSchemaBackend = z.object({
 })
 
 const CreateTournamentSchemaFrontend = z.object({
-  date: z.date().optional(),
+  date: z.date(),
   name: z.string(),
   location: z.string(),
   result: z.instanceof(File).optional(),
@@ -212,9 +213,9 @@ const TournamentSchema = z.object({
   date: z.date().optional(),
   name: z.string().optional(),
   location: z.string().optional(),
-  resultId: z.string().optional(),
-  contractId: z.string().optional(),
-  participants: z.array(z.string()).optional(),
+  resultUrl: z.string().optional(),
+  contractUrl: z.string().optional(),
+  participants: z.array(UserSchema).optional(),
 })
 
 export { 

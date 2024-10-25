@@ -26,6 +26,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
 import { LoaderCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) => {
   const form = useForm<z.infer<typeof UpdateUserSchema>>({
@@ -388,18 +389,19 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-y-3 w-full">
+              <Separator className="mt-3"/>
+              <div className="flex gap-x-2">
+                <Button asChild className="w-full" variant={"secondary"}>
+                  <a href="/v1/admin">
+                    Cancel
+                  </a>
+                </Button>
                 <Button disabled={isLoading} type="submit" className="w-full">
                   {isLoading ? (
                     <LoaderCircle className="animate-spin"/>
                   ) : (
                     <p>Update</p> 
                   )}
-                </Button>
-                <Button asChild disabled={isLoading} className="w-full" variant={"outline"}>
-                  <a href="/v1/admin">
-                    <p>Cancel</p>
-                  </a>
                 </Button>
               </div>
             </form>

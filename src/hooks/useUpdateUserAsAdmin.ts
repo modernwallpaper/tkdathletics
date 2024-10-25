@@ -3,6 +3,7 @@ import { UpdateUserSchema } from "../../schemas";
 import { useState } from "react";
 import * as z from "zod";
 import { useAuthContext } from "./useAuthContext";
+import { useRouter } from "@tanstack/react-router";
 
 export function useUpdateUserAsAdmin() {
   const [error, setError] = useState("");
@@ -10,6 +11,7 @@ export function useUpdateUserAsAdmin() {
   const [loading, setLoading] = useState(false);
   const { state } = useAuthContext();
   const { user } = state;
+  const router = useRouter();
 
   const update = async (data: z.infer<typeof UpdateUserSchema>) => {
     setError("");
@@ -43,11 +45,13 @@ export function useUpdateUserAsAdmin() {
           localStorage.setItem("user", JSON.stringify(res.user));
           sessionStorage.setItem("toastMessage", res.success);
           setSuccess(res.success);
+          await router.navigate({ to: "/v1/admin" })
           window.location.reload();
         } else {
           setError("");
           sessionStorage.setItem("toastMessage", res.success);
           setSuccess(res.success);
+          await router.navigate({ to: "/v1/admin" })
           window.location.reload();
         }
       }
