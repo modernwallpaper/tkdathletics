@@ -4,3 +4,4 @@ dist
 *.env
 .env
 db-schema.svg
+uploads
