@@ -4,9 +4,13 @@ interface ConnectionContextType {
   isOnline: boolean;
 }
 
-export const ConnectionContext = createContext<ConnectionContextType | undefined>(undefined);
+export const ConnectionContext = createContext<
+  ConnectionContextType | undefined
+>(undefined);
 
-export const ConnectionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ConnectionProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
@@ -18,12 +22,12 @@ export const ConnectionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     window.addEventListener("offline", updateOnlineStatus);
 
     return () => {
-      window.removeEventListener('online', updateOnlineStatus);
-      window.removeEventListener('offline', updateOnlineStatus);
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
     };
   }, []);
 
-  console.log("online: ", isOnline)
+  console.log("online: ", isOnline);
 
   return (
     <ConnectionContext.Provider value={{ isOnline }}>

@@ -19,7 +19,11 @@ export const UserList = () => {
   if (!users) {
     return <p>No users found</p>;
   } else {
-    return <UserTable<z.infer<typeof UserSchema>, unknown> columns={columns} data={users} />;
+    return (
+      <UserTable<z.infer<typeof UserSchema>, unknown>
+        columns={columns}
+        data={users}
+      />
+    );
   }
 };
-

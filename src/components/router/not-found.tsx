@@ -1,9 +1,7 @@
 export const NotFound = () => {
-  return(
+  return (
     <div>
-      <p>
-        This is not the page you are looking for
-      </p>
+      <p>This is not the page you are looking for</p>
     </div>
-  )
-}
+  );
+};

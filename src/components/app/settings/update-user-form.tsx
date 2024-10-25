@@ -39,12 +39,14 @@ export const UpdateUserForm = () => {
 
     const { loading, update } = useUpdateUserAsAdmin();
 
-    const onSubmit = async (
-      values: z.infer<typeof UpdateUserSchema>,
-    ) => {
+    const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
       setLoading(loading);
       try {
-        await update({ ...values, id: user.id, timestamp: JSON.stringify(new Date()) });
+        await update({
+          ...values,
+          id: user.id,
+          timestamp: JSON.stringify(new Date()),
+        });
       } catch (error) {
         console.log(error);
       }

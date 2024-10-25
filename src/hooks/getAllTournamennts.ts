@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { TournamentSchema } from "schemas";
-import { z } from "zod"
+import { z } from "zod";
 
 export function getAllTournaments() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [tournaments, setTournaments] = useState<z.infer<typeof TournamentSchema>[] | undefined>(undefined);
+  const [tournaments, setTournaments] = useState<
+    z.infer<typeof TournamentSchema>[] | undefined
+  >(undefined);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -36,8 +38,8 @@ export function getAllTournaments() {
     fetchTournaments();
   }, []); // Empty dependency array ensures this runs only once when the component mounts
 
-  if(tournaments === undefined) {
-    return { loading, error }
+  if (tournaments === undefined) {
+    return { loading, error };
   } else {
     return { loading, tournaments, error };
   }

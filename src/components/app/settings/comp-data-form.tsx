@@ -20,7 +20,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { FormError } from "../form-error";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -36,7 +40,10 @@ export const CompDataForm = () => {
 
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     if (user?.id) {
-      await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id }, user.id);
+      await update(
+        { ...values, timestamp: JSON.stringify(new Date()), id: user.id },
+        user.id,
+      );
     }
   };
 
@@ -259,24 +266,33 @@ export const CompDataForm = () => {
                       <FormControl>
                         <Button
                           variant={"outline"}
-                          className={cn(
-                            "pl-3 text-left font-normal",
-                          )}
+                          className={cn("pl-3 text-left font-normal")}
                         >
-                          {field.value ? format(field.value, "yyyy-mm-dd") : format(user.birthday ? user.birthday : "", "yyyy-mm-dd")}
+                          {field.value
+                            ? format(field.value, "yyyy-mm-dd")
+                            : format(
+                                user.birthday ? user.birthday : "",
+                                "yyyy-mm-dd",
+                              )}
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={field.value ? new Date(field.value) : undefined} // Convert string to Date for selection
+                        selected={
+                          field.value ? new Date(field.value) : undefined
+                        } // Convert string to Date for selection
                         onSelect={(date) => {
                           // Convert Date to string format
-                          const formattedDate = date ? date.toISOString().split('T')[0] : ''; // Format as YYYY-MM-DD or any other string format you prefer
+                          const formattedDate = date
+                            ? date.toISOString().split("T")[0]
+                            : ""; // Format as YYYY-MM-DD or any other string format you prefer
                           field.onChange(formattedDate); // Set the string value
                         }}
-                        disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
                         initialFocus
                       />
                     </PopoverContent>

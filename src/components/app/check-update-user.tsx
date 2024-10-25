@@ -1,5 +1,5 @@
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useConnection } from "@/hooks/useConnectionContext"
+import { useConnection } from "@/hooks/useConnectionContext";
 import { useUpdateUserAsUser } from "@/hooks/useUpdateUserAsUser";
 import { loadUser, saveUser } from "@/lib/indexedDB";
 import { useEffect, useState } from "react";
@@ -14,17 +14,17 @@ export const CheckForUpdate = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const getTimestamps = async () => {
-      if(user && isOnline) {
+      if (user && isOnline) {
         try {
           const req = await fetch("/api/user/profile", { method: "GET" });
           const res = await req.json();
-          if(res.timestamp) {
+          if (res.timestamp) {
             setApiTimestamp(res.timestamp);
           }
 
-          if(user.id) {
+          if (user.id) {
             const localRes = await loadUser(user.id);
-            if(localRes?.timestamp) {
+            if (localRes?.timestamp) {
               setLocalTimestamp(localRes.timestamp);
             }
           }
@@ -36,54 +36,53 @@ export const CheckForUpdate = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    if(user && isOnline) {
+    if (user && isOnline) {
       getTimestamps();
     }
   }, [user, isOnline]); // Dependencies for the useEffect
-  
+
   useEffect(() => {
     const checkForUpdate = async () => {
-      if(user && localTimestamp && apiTimestamp) {
+      if (user && localTimestamp && apiTimestamp) {
         console.info("Checking for user update...");
 
         const d_local = new Date(localTimestamp).getTime();
         console.info("Local timestamp: ", d_local);
 
-        const d_api  = new Date(apiTimestamp).getTime();
+        const d_api = new Date(apiTimestamp).getTime();
         console.info("API timestamp: ", d_api);
 
-        if(d_local === d_api) {
+        if (d_local === d_api) {
           console.info("No update required");
         }
 
-        if(d_local > d_api) {
-          if(user.id) {
+        if (d_local > d_api) {
+          if (user.id) {
             const localUser = await loadUser(user.id);
-            if(localUser) {
+            if (localUser) {
               await update(localUser, user.id);
               console.info("User updated successfully: local -> api");
             }
           }
-        } else if(d_api > d_local) {
-          if(user.id) {
+        } else if (d_api > d_local) {
+          if (user.id) {
             const req = await fetch("/api/user/profile", { method: "GET" });
             const onlineUser = await req.json();
-            if(onlineUser) {
+            if (onlineUser) {
               await saveUser(onlineUser);
               console.info("User updated successfully: api -> local");
             }
           }
         }
-
       } else {
         console.warn("No timestamps received or no user found");
       }
     };
 
-    if(localTimestamp && apiTimestamp && user) {
+    if (localTimestamp && apiTimestamp && user) {
       checkForUpdate();
     }
   }, [localTimestamp, apiTimestamp, user]);
 
   return <>{children}</>;
-}
+};

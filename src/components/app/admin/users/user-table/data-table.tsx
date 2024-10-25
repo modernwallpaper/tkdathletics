@@ -108,9 +108,9 @@ export function UserTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}
@@ -150,9 +150,7 @@ export function UserTable<TData, TValue>({
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1">
           <Button asChild>
-            <a href="/v1/admin/create/user">
-              Create User
-            </a>
+            <a href="/v1/admin/create/user">Create User</a>
           </Button>
         </div>
         <div className="space-x-2">

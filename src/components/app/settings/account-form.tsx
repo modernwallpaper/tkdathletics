@@ -33,22 +33,27 @@ export const AccountForm = () => {
     },
   });
 
-  console.log(user.surname)
+  console.log(user.surname);
 
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
-    console.log("Submit requested")
+    console.log("Submit requested");
     if (user.id) {
-      await update({ ...values, timestamp: JSON.stringify(new Date()), id: user.id}, user.id);
+      await update(
+        { ...values, timestamp: JSON.stringify(new Date()), id: user.id },
+        user.id,
+      );
     }
   };
 
   return (
     <div className="w-full">
       <Form {...form}>
-        <form onSubmit={(e) => { 
-          form.handleSubmit(onSubmit)(e);
-          console.log("Form submission triggerd");
-        }}>
+        <form
+          onSubmit={(e) => {
+            form.handleSubmit(onSubmit)(e);
+            console.log("Form submission triggerd");
+          }}
+        >
           <div className="flex flex-col gap-y-4 mb-3 w-full">
             <FormField
               disabled={loading}

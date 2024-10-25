@@ -15,7 +15,7 @@ export const useUpdateUserAsUser = () => {
     id: string,
   ) => {
     console.log(id);
-    if(isOnline) {
+    if (isOnline) {
       setLoading(true);
       setLoading(true);
       const req = await fetch("/api/user/profile", {
@@ -41,7 +41,7 @@ export const useUpdateUserAsUser = () => {
         setError(res.error);
       }
     } else {
-      if(values) {
+      if (values) {
         await saveUser({ ...values });
       }
     }

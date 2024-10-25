@@ -94,14 +94,22 @@ export const columns: ColumnDef<z.infer<typeof UserSchema>, unknown>[] = [
             <Separator className="mb-1" />
             <ul>
               <li>
-                <Button asChild variant={"dropdown"} size={"sm"} className="w-full">
-                  <a href={`/v1/admin/update/user/${user.id}`}>
-                    Update
-                  </a>
+                <Button
+                  asChild
+                  variant={"dropdown"}
+                  size={"sm"}
+                  className="w-full"
+                >
+                  <a href={`/v1/admin/update/user/${user.id}`}>Update</a>
                 </Button>
               </li>
               <li>
-                <Button asChild variant={"dropdown"} size={"sm"} className="w-full">
+                <Button
+                  asChild
+                  variant={"dropdown"}
+                  size={"sm"}
+                  className="w-full"
+                >
                   <a href={`/v1/admin/delete/user/${user.id}`}>Delete</a>
                 </Button>
               </li>

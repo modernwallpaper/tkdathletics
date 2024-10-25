@@ -9,7 +9,12 @@ import {
 import { useLocation } from "@tanstack/react-router";
 import { ModeToggle } from "./mode-toggle";
 import { LogoutButton } from "./logout-button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Navbar = () => {
@@ -116,20 +121,58 @@ export const Navbar = () => {
                     </Button>
                   </li>
                   <li className="w-full">
-                    <Accordion type="single" className="ml-4 w-[90%] no-underline p-0" collapsible>
+                    <Accordion
+                      type="single"
+                      className="ml-4 w-[90%] no-underline p-0"
+                      collapsible
+                    >
                       <AccordionItem value="item-1" className="w-full">
-                        <AccordionTrigger className={pathname === "/v1/settings" ? "text-sm no-underline" : "text-muted-foreground text-sm"}>
+                        <AccordionTrigger
+                          className={
+                            pathname === "/v1/settings"
+                              ? "text-sm no-underline"
+                              : "text-muted-foreground text-sm"
+                          }
+                        >
                           Settings
                         </AccordionTrigger>
                         <AccordionContent className="flex flex-col justify-start items-start w-full">
-                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/account" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/account"
+                                ? "text-foreground pl-0 ml-0"
+                                : "text-muted-foreground pl-0 ml-0"
+                            }
+                          >
                             <a href="/v1/settings/account">Account</a>
                           </Button>
-                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/competition-data" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
-                            <a href="/v1/settings/competition-data">Competition Data</a>
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/competition-data"
+                                ? "text-foreground pl-0 ml-0"
+                                : "text-muted-foreground pl-0 ml-0"
+                            }
+                          >
+                            <a href="/v1/settings/competition-data">
+                              Competition Data
+                            </a>
                           </Button>
-                          <Button asChild variant={"nav_link"} className={pathname === "/v1/settings/notifications" ? "text-foreground pl-0 ml-0" : "text-muted-foreground pl-0 ml-0"}>
-                            <a href="/v1/settings/notifications">Notifications</a>
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/notifications"
+                                ? "text-foreground pl-0 ml-0"
+                                : "text-muted-foreground pl-0 ml-0"
+                            }
+                          >
+                            <a href="/v1/settings/notifications">
+                              Notifications
+                            </a>
                           </Button>
                         </AccordionContent>
                       </AccordionItem>

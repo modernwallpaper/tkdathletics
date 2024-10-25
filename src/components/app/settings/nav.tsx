@@ -6,9 +6,7 @@ export const Nav = () => {
   const { pathname } = useLocation();
 
   return (
-    <div
-      className="flex flex-col items-center justify-start mt-6 w-full"
-    >
+    <div className="flex flex-col items-center justify-start mt-6 w-full">
       <ul className="flex flex-col gap-y-1 w-full">
         <li>
           <a href="/v1/settings/account/">

@@ -31,7 +31,7 @@ export const CreateUserForm = () => {
   const { register, loading } = useRegister();
 
   const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
-    await register(values); 
+    await register(values);
   };
 
   return (
@@ -106,12 +106,15 @@ export const CreateUserForm = () => {
               </FormItem>
             )}
           />
-          <Separator className="mt-3"/>
+          <Separator className="mt-3" />
           <div className="flex gap-x-2">
-            <Button disabled={loading} asChild className="w-full mt-3" variant={"secondary"}>
-              <a href="/v1/admin">
-                Cancel
-              </a>
+            <Button
+              disabled={loading}
+              asChild
+              className="w-full mt-3"
+              variant={"secondary"}
+            >
+              <a href="/v1/admin">Cancel</a>
             </Button>
             <Button disabled={loading} className="w-full mt-3" type="submit">
               <p>Create</p>

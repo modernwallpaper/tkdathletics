@@ -21,22 +21,26 @@ declare module "@tanstack/react-router" {
 
 console.log("V. 1.0.7");
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistration().then(function() {
-    navigator.serviceWorker.ready.then((reg) => {
-      const user = localStorage.getItem("user");
-      console.log(user);
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistration().then(function () {
+    navigator.serviceWorker.ready
+      .then((reg) => {
+        const user = localStorage.getItem("user");
+        console.log(user);
 
-      if (user && reg.active) {
-        reg.active.postMessage({
-          type: 'SET_USER',
-          user: JSON.parse(user), 
-        });
-      } else {
-        console.log("Service worker is not active or user data is not available");
-      }
-    }).catch(err => console.error("ServiceWorker registration error:", err));
-  })
+        if (user && reg.active) {
+          reg.active.postMessage({
+            type: "SET_USER",
+            user: JSON.parse(user),
+          });
+        } else {
+          console.log(
+            "Service worker is not active or user data is not available",
+          );
+        }
+      })
+      .catch((err) => console.error("ServiceWorker registration error:", err));
+  });
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

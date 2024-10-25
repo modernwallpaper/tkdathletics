@@ -18,24 +18,40 @@ export const NotificationsForm = () => {
   const defaultValues = storedValues
     ? JSON.parse(storedValues)
     : {
-      allowed: false,
-      video_upload: false,
-      register_competition: false,
-    };
+        allowed: false,
+        video_upload: false,
+        register_competition: false,
+      };
 
   const form = useForm<z.infer<typeof NotificationsSchema>>({
     resolver: zodResolver(NotificationsSchema),
     defaultValues,
-  }); 
+  });
 
   const onSubmit = async (values: z.infer<typeof NotificationsSchema>) => {
-    if(defaultValues.allowed === false && values.allowed === false || defaultValues.allowed === true && values.allowed === false) {
-      localStorage.setItem("notifications", JSON.stringify({"allowed":false,"video_upload":false,"register_competition":false}));
-      sessionStorage.setItem("toastMessage", "Notifications have been disabled");
+    if (
+      (defaultValues.allowed === false && values.allowed === false) ||
+      (defaultValues.allowed === true && values.allowed === false)
+    ) {
+      localStorage.setItem(
+        "notifications",
+        JSON.stringify({
+          allowed: false,
+          video_upload: false,
+          register_competition: false,
+        }),
+      );
+      sessionStorage.setItem(
+        "toastMessage",
+        "Notifications have been disabled",
+      );
       window.location.reload();
     } else {
       localStorage.setItem("notifications", JSON.stringify(values));
-      sessionStorage.setItem("toastMessage", "Notifications updated successfully");
+      sessionStorage.setItem(
+        "toastMessage",
+        "Notifications updated successfully",
+      );
       window.location.reload();
     }
   };

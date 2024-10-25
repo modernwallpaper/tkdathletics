@@ -1,23 +1,31 @@
 import type { Context } from "hono";
-import { DeleteUserSchema, GetCompetitionShema, GetTournamentSchema, LoginSchema, UpdateUserSchema, CreateUserSchema, CreateTournamentSchemaBackend} from "../../schemas";
+import {
+  DeleteUserSchema,
+  GetCompetitionShema,
+  GetTournamentSchema,
+  LoginSchema,
+  UpdateUserSchema,
+  CreateUserSchema,
+  CreateTournamentSchemaBackend,
+} from "../../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { db } from "../lib/db";
 import { getCookie } from "hono/cookie";
-import webPush from "web-push"
+import webPush from "web-push";
 import path from "path";
 import fs from "fs-extra";
-import mime from "mime"
+import mime from "mime";
 
 function exclude<User, Key extends keyof User>(
   user: User,
-  keys: Key[]
+  keys: Key[],
 ): Omit<User, Key> {
   for (let key of keys) {
-    delete user[key]
+    delete user[key];
   }
-  return user
+  return user;
 }
 
 /**
@@ -41,16 +49,19 @@ const login = async (c: Context) => {
   // Check for user
   if (!existingUser || !existingUser.email)
     return c.json({ error: "User not found" }, 404);
-  
-  if(existingUser.failed_logins !== null) {
+
+  if (existingUser.failed_logins !== null) {
     if (existingUser.failed_logins > 6) {
       return c.json({ error: "User blocked" }, 401);
     }
   }
-  
-  if(existingUser.password && existingUser.failed_logins !== null) {
+
+  if (existingUser.password && existingUser.failed_logins !== null) {
     // Check if passwords match
-    const passwordsMatch = await bcrypt.compare(password, existingUser.password);
+    const passwordsMatch = await bcrypt.compare(
+      password,
+      existingUser.password,
+    );
 
     if (!passwordsMatch) {
       const failedLogins = existingUser.failed_logins;
@@ -118,12 +129,7 @@ const register = async (c: Context) => {
 
   if (!validatedFields.success) return c.json({ error: "Invalid fields" }, 400);
 
-  let {
-    name,
-    email,
-    password,
-    authority,
-  } = validatedFields.data;
+  let { name, email, password, authority } = validatedFields.data;
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) return c.json({ error: "Email already in use" }, 400);
@@ -196,12 +202,10 @@ const profile = async (c: Context) => {
       const decoded = jwt.verify(token, secret);
 
       if (typeof decoded !== "string" && (decoded as JwtPayload).userId) {
-        
-
         const user = await getUserById((decoded as JwtPayload).userId);
         if (!user) return c.json({ error: "Was not able to fetch user" }, 500);
 
-        return c.json(user ? exclude(user, ['password']) : null, 200);
+        return c.json(user ? exclude(user, ["password"]) : null, 200);
       }
     } catch (error) {
       c.json({ error: error }, 500);
@@ -306,7 +310,13 @@ const updateUserAsUser = async (c: Context) => {
         data: { ...udata, timestamp: new Date() },
       });
 
-      return c.json({ success: "User updated successfully", user: updatedUser ? exclude(updatedUser, ['password']) : null }, 200);
+      return c.json(
+        {
+          success: "User updated successfully",
+          user: updatedUser ? exclude(updatedUser, ["password"]) : null,
+        },
+        200,
+      );
     } catch (err) {
       return c.json({ error: err }, 500);
     }
@@ -322,7 +332,8 @@ const updateUserAsAdmin = async (c: Context) => {
   console.log(req);
   const validatedFields = UpdateUserSchema.safeParse(req);
 
-  if(!validatedFields.success) return c.json({ error: "Innvalid fields" }, 400)
+  if (!validatedFields.success)
+    return c.json({ error: "Innvalid fields" }, 400);
 
   const {
     name,
@@ -359,7 +370,7 @@ const updateUserAsAdmin = async (c: Context) => {
   const existingUser = await getUserById(validatedFields.data.id);
 
   try {
-    if(existingUser) {
+    if (existingUser) {
       const uuser = await db.user.update({
         where: { id: validatedFields.data.id },
         data: { authority: existingUser?.authority, ...udata },
@@ -377,50 +388,56 @@ const updateUserAsAdmin = async (c: Context) => {
  */
 const deleteUserAsAdmin = async (c: Context) => {
   const req = await c.req.json();
-  
-  const validatedFields = DeleteUserSchema.safeParse(req); 
 
-  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
+  const validatedFields = DeleteUserSchema.safeParse(req);
+
+  if (!validatedFields.success) return c.json({ error: "Id required" }, 400);
 
   const { id } = validatedFields.data;
 
   const existingUser = await getUserById(id);
-  
-  if(!existingUser) return c.json({ error: "The id provided doesent exist on any user" });
+
+  if (!existingUser)
+    return c.json({ error: "The id provided doesent exist on any user" });
 
   try {
-    await db.user.delete({ where: { id } })
+    await db.user.delete({ where: { id } });
     return c.json({ success: "User deleted successfully" });
   } catch (error) {
     return c.json({ error: JSON.stringify(error) });
   }
-}
+};
 
-const getCompetitionsForUser = async(c: Context) => {
+const getCompetitionsForUser = async (c: Context) => {
   const req = await c.req.json();
 
   const validatedFields = GetCompetitionShema.safeParse(req);
 
-  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
-  
+  if (!validatedFields.success) return c.json({ error: "Id required" }, 400);
+
   const { id } = validatedFields.data;
 
-  const existingCompetitions = await db.competition.findMany({ where: { userId: id } });
+  const existingCompetitions = await db.competition.findMany({
+    where: { userId: id },
+  });
 
-  if(!existingCompetitions) return c.json({ error: "No competitions found for the provided user" }, 404);
+  if (!existingCompetitions)
+    return c.json(
+      { error: "No competitions found for the provided user" },
+      404,
+    );
 
-  return c.json(JSON.stringify(existingCompetitions), 200)
-}
+  return c.json(JSON.stringify(existingCompetitions), 200);
+};
 
-const getTournamentsForUser = async(c: Context) => {
+const getTournamentsForUser = async (c: Context) => {
   const req = await c.req.json();
 
-  const validatedFields =  GetTournamentSchema.safeParse(req);
+  const validatedFields = GetTournamentSchema.safeParse(req);
 
-  if(!validatedFields.success) return c.json({ error: "Id required" }, 400);
+  if (!validatedFields.success) return c.json({ error: "Id required" }, 400);
 
   const userId = validatedFields.data.id;
-
 
   try {
     const tournaments = await db.tournament.findMany({
@@ -434,111 +451,118 @@ const getTournamentsForUser = async(c: Context) => {
       include: {
         participants: true,
         competitions: true,
-      }
+      },
     });
 
     return c.json({ tournaments }, 200);
   } catch (error) {
-    return c.json({ error: "Unable to fetch tournaments" }, 500) 
+    return c.json({ error: "Unable to fetch tournaments" }, 500);
   }
-}
+};
 
-const getAllTournaments = async(c: Context) => {
+const getAllTournaments = async (c: Context) => {
   const tournaments = await db.tournament.findMany({
     include: {
       participants: true,
       contract: true,
       result: true,
-    }
+    },
   });
   console.log(tournaments);
   return c.json(tournaments, 200);
-}
+};
 
 const saveSubscription = async (c: Context) => {
   const { subscription, userId } = await c.req.json();
- 
-  const existingUser = await getUserById(userId);
-  
-  if(!existingUser) return c.json({ error: "No user found" }, 404);
 
-  await db.user.update({ where: { id: existingUser.id }, data: { pushSubscription: JSON.stringify(subscription) } })
+  const existingUser = await getUserById(userId);
+
+  if (!existingUser) return c.json({ error: "No user found" }, 404);
+
+  await db.user.update({
+    where: { id: existingUser.id },
+    data: { pushSubscription: JSON.stringify(subscription) },
+  });
 
   return c.json({ success: "Subscription saved successfully" });
-}
+};
 
 const sendPushNotification = async (c: Context) => {
   const { userId } = await c.req.json();
-  
+
   console.log("userId", userId);
 
   const existingUser = await getUserById(userId);
 
-  if(!existingUser) return c.json({ error: "No user found" }, 404);
+  if (!existingUser) return c.json({ error: "No user found" }, 404);
 
   const pushSubscription = existingUser.pushSubscription;
 
   console.log("pushSubscription", pushSubscription);
 
-  if(pushSubscription) {
-
+  if (pushSubscription) {
     console.log("pushSubscription", pushSubscription);
 
     const subscription = JSON.parse(pushSubscription);
 
     webPush.sendNotification(subscription, "Hello test");
 
-    return c.json({ "success": "Message sent to push service" });
+    return c.json({ success: "Message sent to push service" });
   } else {
-    return c.json({ "error": "user is not subscribed to push service" });
+    return c.json({ error: "user is not subscribed to push service" });
   }
-}
+};
 
 const deleteTournament = async (c: Context) => {
   const data = await c.req.json();
-  if(data.id) {
+  if (data.id) {
     await db.tournament.delete({ where: { id: data.id } });
     return c.json({ success: "Tournament deleted successfully" });
-  } else if(!data.id) {
+  } else if (!data.id) {
     return c.json({ error: "No id provided" }, 401);
   }
-}
+};
 
 const createTorunament = async (c: Context) => {
   const data = await c.req.json();
-  if(data.date) {
+  if (data.date) {
     data.date = new Date(data.date);
   }
 
   const validatedFields = CreateTournamentSchemaBackend.safeParse(data);
 
-  if(!validatedFields.success) {
-    console.error(validatedFields.error)
+  if (!validatedFields.success) {
+    console.error(validatedFields.error);
     return c.json({ error: "Invalid fields" }, 400);
   }
 
-  const { name, date, location, result, contract, participants } = validatedFields.data;
+  const { name, date, location, result, contract, participants } =
+    validatedFields.data;
 
   const tournament = await db.tournament.create({
     data: {
-      name, 
+      name,
       location,
       date,
       participants: {
-        connect: participants?.map(id => ({ id })),
+        connect: participants?.map((id) => ({ id })),
       },
-      contract: contract ? {
-        connect: { id: contract.id }
-      } : undefined,
-      result: result ? {
-        connect: { id: result.id }
-      } : undefined,
+      contract: contract
+        ? {
+            connect: { id: contract.id },
+          }
+        : undefined,
+      result: result
+        ? {
+            connect: { id: result.id },
+          }
+        : undefined,
       timestamp: new Date(),
-    }
+    },
   });
 
   return c.json({ tournament, success: "Turnament created successfully" }, 201);
-}
+};
 
 const uploadTournamentFile = async (c: Context) => {
   const uploadDir = path.resolve("./uploads/");
@@ -546,7 +570,7 @@ const uploadTournamentFile = async (c: Context) => {
 
   console.log("Upload dir: ", uploadDir);
 
-  if(!uploadDirExists) {
+  if (!uploadDirExists) {
     console.error("Upload dir doesent exist");
   }
 
@@ -554,51 +578,62 @@ const uploadTournamentFile = async (c: Context) => {
   const file = formData.get("file") as File;
 
   if (!file) {
-    return c.json({ error: 'No file uploaded' }, 400);
+    return c.json({ error: "No file uploaded" }, 400);
   }
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  
+
   const initFile = await db.file.create({
     data: {
       url: `/uploads/${file.name}`,
       filename: file.name,
       mimeType: file.type,
-      size: file.size, 
-    }
-  })
+      size: file.size,
+    },
+  });
   console.log(initFile);
 
   const { id, filename, mimeType, size } = initFile;
 
   const extension = mime.getExtension(file.type);
-  const fileURL = path.join(uploadDir, `${id}${extension ? `.${extension}` : ''}`);
-  
-  const savedFile = await db.file.update({ where: { id }, data: { url: path.join("/uploads/", `${id}${extension ? `.${extension}` : ''}`), filename, mimeType, size } });
-  
+  const fileURL = path.join(
+    uploadDir,
+    `${id}${extension ? `.${extension}` : ""}`,
+  );
+
+  const savedFile = await db.file.update({
+    where: { id },
+    data: {
+      url: path.join("/uploads/", `${id}${extension ? `.${extension}` : ""}`),
+      filename,
+      mimeType,
+      size,
+    },
+  });
+
   console.log(savedFile);
-  
+
   fs.writeFileSync(fileURL, buffer);
 
-  return c.json({ success: 'File uploaded successfully', id }, 200)
+  return c.json({ success: "File uploaded successfully", id }, 200);
 };
 
-export { 
-  login, 
-  register, 
-  logout, 
-  profile, 
-  getAll, 
-  updateUserAsUser, 
-  updateUserAsAdmin, 
-  deleteUserAsAdmin, 
-  saveSubscription, 
+export {
+  login,
+  register,
+  logout,
+  profile,
+  getAll,
+  updateUserAsUser,
+  updateUserAsAdmin,
+  deleteUserAsAdmin,
+  saveSubscription,
   sendPushNotification,
   getCompetitionsForUser,
   getTournamentsForUser,
   getAllTournaments,
   createTorunament,
   uploadTournamentFile,
-  deleteTournament
+  deleteTournament,
 };

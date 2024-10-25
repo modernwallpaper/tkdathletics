@@ -20,7 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +32,11 @@ import { format } from "date-fns";
 import { LoaderCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) => {
+export const UpdateUserForm = ({
+  user,
+}: {
+  user: z.infer<typeof UserSchema>;
+}) => {
   const form = useForm<z.infer<typeof UpdateUserSchema>>({
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
@@ -60,7 +68,9 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
       <div className="space-y-2">
         <div>
           <CardHeader>
-            <CardTitle>Update <code>{user.id}</code></CardTitle>
+            <CardTitle>
+              Update <code>{user.id}</code>
+            </CardTitle>
             <CardDescription>
               Enter the new user information to update
             </CardDescription>
@@ -68,7 +78,10 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
         </div>
         <div className="">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit, onError)}
+              className="space-y-6"
+            >
               <div className="flex space-x-2">
                 <div className="flex-col gap-y-2 w-full">
                   <FormField
@@ -159,14 +172,23 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
                             <FormControl>
                               <Button
                                 variant={"outline"}
-                                className={cn(
-                                  "pl-3 text-left font-normal",
-                                )}
+                                className={cn("pl-3 text-left font-normal")}
                               >
                                 {user.birthday ? (
-                                  <p>{field.value ? format(field.value, "yyyy-mm-dd") : format(user.birthday ? user.birthday : "", "yyyy-mm-dd")}</p>
+                                  <p>
+                                    {field.value
+                                      ? format(field.value, "yyyy-mm-dd")
+                                      : format(
+                                          user.birthday ? user.birthday : "",
+                                          "yyyy-mm-dd",
+                                        )}
+                                  </p>
                                 ) : (
-                                  <p>{field.value ? format(field.value, "yyyy-mm-dd") : "Pick a date"}</p>
+                                  <p>
+                                    {field.value
+                                      ? format(field.value, "yyyy-mm-dd")
+                                      : "Pick a date"}
+                                  </p>
                                 )}
                               </Button>
                             </FormControl>
@@ -174,13 +196,20 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
                           <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
                               mode="single"
-                              selected={field.value ? new Date(field.value) : undefined} // Convert string to Date for selection
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              } // Convert string to Date for selection
                               onSelect={(date) => {
                                 // Convert Date to string format
-                                const formattedDate = date ? date.toISOString().split('T')[0] : ''; // Format as YYYY-MM-DD or any other string format you prefer
+                                const formattedDate = date
+                                  ? date.toISOString().split("T")[0]
+                                  : ""; // Format as YYYY-MM-DD or any other string format you prefer
                                 field.onChange(formattedDate); // Set the string value
                               }}
-                              disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                              disabled={(date) =>
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
+                              }
                               initialFocus
                             />
                           </PopoverContent>
@@ -389,18 +418,16 @@ export const UpdateUserForm = ({ user }: { user: z.infer<typeof UserSchema> }) =
                   />
                 </div>
               </div>
-              <Separator className="mt-3"/>
+              <Separator className="mt-3" />
               <div className="flex gap-x-2">
                 <Button asChild className="w-full" variant={"secondary"}>
-                  <a href="/v1/admin">
-                    Cancel
-                  </a>
+                  <a href="/v1/admin">Cancel</a>
                 </Button>
                 <Button disabled={isLoading} type="submit" className="w-full">
                   {isLoading ? (
-                    <LoaderCircle className="animate-spin"/>
+                    <LoaderCircle className="animate-spin" />
                   ) : (
-                    <p>Update</p> 
+                    <p>Update</p>
                   )}
                 </Button>
               </div>

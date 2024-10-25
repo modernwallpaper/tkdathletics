@@ -59,8 +59,9 @@ const protectAdmin = async (c: Context, next: Next) => {
       if (typeof decoded !== "string" && (decoded as JwtPayload).userId) {
         const user = await getUserById((decoded as JwtPayload).userId);
         if (!user) return c.json({ error: "Was not able to fetch user" }, 500);
-        
-        if(user.authority === authority.USER) return c.json({ error: "Unauthorized" });
+
+        if (user.authority === authority.USER)
+          return c.json({ error: "Unauthorized" });
 
         return next();
       }
@@ -72,4 +73,4 @@ const protectAdmin = async (c: Context, next: Next) => {
   }
 };
 
-export { protectUser, protectAdmin }
+export { protectUser, protectAdmin };

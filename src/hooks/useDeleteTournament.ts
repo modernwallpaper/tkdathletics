@@ -1,8 +1,8 @@
 import { useRouter } from "@tanstack/react-router";
-import { useState } from "react"
+import { useState } from "react";
 
 export const useDeleteTournament = () => {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const router = useRouter();
@@ -15,12 +15,12 @@ export const useDeleteTournament = () => {
     const res = await fetch("/api/tournament/delete", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: id })
+      body: JSON.stringify({ id: id }),
     });
 
     const data = await res.json();
 
-    if(data.success) {
+    if (data.success) {
       setSuccess(data.success);
       setLoading(false);
       sessionStorage.setItem("toastMessage", data.success);
@@ -28,11 +28,11 @@ export const useDeleteTournament = () => {
       window.location.reload();
     }
 
-    if(data.error) {
+    if (data.error) {
       setError(data.error);
       setLoading(false);
     }
-  }
+  };
 
   return { loading, error, success, DeleteTournament };
-}
+};

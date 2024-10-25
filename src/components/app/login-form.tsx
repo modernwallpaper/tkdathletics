@@ -20,11 +20,11 @@ export const LoginForm = () => {
 
   // Redirect to settings page if user is logged in
   useEffect(() => {
-    if(user) router.navigate({ to: "/v1/settings" })
-  }, [user, router])
-  
+    if (user) router.navigate({ to: "/v1/settings" });
+  }, [user, router]);
+
   const { login, loading, error } = useLogin();
- 
+
   const { isOnline } = useConnection();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -32,7 +32,7 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    if(isOnline) {
+    if (isOnline) {
       await login(values.email, values.password);
     }
   };
@@ -44,7 +44,7 @@ export const LoginForm = () => {
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-foreground">
             Tkdathletics
           </h2>
-          <p className="mt-2 text-center text-base text-muted-foreground" >
+          <p className="mt-2 text-center text-base text-muted-foreground">
             Please log into your account.
           </p>
         </div>
@@ -121,11 +121,9 @@ export const LoginForm = () => {
                 Login
               </Button>
             </div>
-            {error && (
-              <FormError message={error}/>
-            )}
+            {error && <FormError message={error} />}
             {!isOnline && (
-              <FormError message="You need to be online to login"/>
+              <FormError message="You need to be online to login" />
             )}
           </form>
         </Form>

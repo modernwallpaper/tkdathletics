@@ -4,18 +4,21 @@ import { routes } from "./routes/routes";
 import { serveStatic } from "hono/bun";
 import { getUserByEmail } from "./lib/user";
 import { db } from "./lib/db";
-import bcrypt from "bcryptjs"
-import webPush from "web-push"
+import bcrypt from "bcryptjs";
+import webPush from "web-push";
 import path from "path";
-import fs from "fs"
-import mime from "mime"
+import fs from "fs";
+import mime from "mime";
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
   if (!adminUser) {
     console.log("[!] Creating new server admin");
-    const hashedPassword = await bcrypt.hash(JSON.stringify(process.env.ADMIN_PWD), 12);
+    const hashedPassword = await bcrypt.hash(
+      JSON.stringify(process.env.ADMIN_PWD),
+      12,
+    );
     await db.user.create({
       data: {
         name: "admin",
@@ -31,55 +34,55 @@ const initUser = async () => {
         gender: null,
         ag: null,
         pg: null,
-        timestamp: new Date()
+        timestamp: new Date(),
       },
     });
     console.log("[+] New server admin created successfully");
   } else {
     console.log("[!] Server admin already created");
   }
-}
+};
 initUser();
 
 // API KEYS for push notifications
-if(process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
   const apiKeys = {
     vapidPublicKey: process.env.VAPID_PUBLIC_KEY,
-    vapidPrivateKey: process.env.VAPID_PRIVATE_KEY, 
-  }
-  
+    vapidPrivateKey: process.env.VAPID_PRIVATE_KEY,
+  };
+
   webPush.setVapidDetails(
     "mailto:test@test.com",
     apiKeys.vapidPublicKey,
     apiKeys.vapidPrivateKey,
-  )
+  );
 } else {
-  console.log("Please generate a pair of VAPID keys and place them into your .env file");
+  console.log(
+    "Please generate a pair of VAPID keys and place them into your .env file",
+  );
 }
-
 
 // App logic
 const app = new Hono();
 
 // Logging
-app.use('*', logger());
+app.use("*", logger());
 
 // Setup routes
 const apiRoutes = app.route("/api/", routes);
 
 const uploadPath = path.resolve("./uploads/");
-console.log(uploadPath)
+console.log(uploadPath);
 
-if(fs.existsSync(uploadPath)) {
+if (fs.existsSync(uploadPath)) {
   console.log("path exists");
 } else {
   fs.mkdirSync(uploadPath);
 }
 
-
 app.get("/uploads/:filename", async (c) => {
   const filename = c.req.param("filename");
-  
+
   if (!filename) {
     return c.text("Filename is required", 400);
   }
@@ -96,7 +99,7 @@ app.get("/uploads/:filename", async (c) => {
       },
     });
 
-    const mimeType = mime.getType(filename) || "application/octet-stream"; 
+    const mimeType = mime.getType(filename) || "application/octet-stream";
     return c.body(stream, 200, { "Content-Type": mimeType });
   } catch (err) {
     console.error("Error reading file:", err);
@@ -104,7 +107,7 @@ app.get("/uploads/:filename", async (c) => {
   }
 });
 
-app.get('*', serveStatic({ root: './dist/' }));
+app.get("*", serveStatic({ root: "./dist/" }));
 
 export default app;
 export type ApiRoutes = typeof apiRoutes;

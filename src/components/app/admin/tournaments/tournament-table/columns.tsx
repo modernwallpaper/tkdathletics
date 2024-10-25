@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { TournamentSchema } from "schemas";
-import { z } from "zod"
+import { z } from "zod";
 
 export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
   {
@@ -37,10 +42,14 @@ export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
     cell: ({ row }) => {
       const tournament = row.original;
       const participants = tournament.participants;
-      return(
-        <div className="flex flex-col">{participants?.map((participant) => { return <p>{participant.name}</p> })}</div>
-      )
-    }
+      return (
+        <div className="flex flex-col">
+          {participants?.map((participant) => {
+            return <p>{participant.name}</p>;
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "timestamp",
@@ -63,15 +72,27 @@ export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
             <Separator className="mb-1" />
             <ul>
               <li>
-                <Button asChild variant={"dropdown"} size={"sm"} className="w-full">
+                <Button
+                  asChild
+                  variant={"dropdown"}
+                  size={"sm"}
+                  className="w-full"
+                >
                   <a href={`/v1/admin/update/tournament/${tournament.id}`}>
                     Update
                   </a>
                 </Button>
               </li>
               <li>
-                <Button variant={"dropdown"} size={"sm"} className="w-full" asChild>
-                  <a href={`/v1/admin/delete/tournament/${tournament.id}`}>Delete</a>
+                <Button
+                  variant={"dropdown"}
+                  size={"sm"}
+                  className="w-full"
+                  asChild
+                >
+                  <a href={`/v1/admin/delete/tournament/${tournament.id}`}>
+                    Delete
+                  </a>
                 </Button>
               </li>
             </ul>
@@ -80,4 +101,4 @@ export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
       );
     },
   },
-]
+];

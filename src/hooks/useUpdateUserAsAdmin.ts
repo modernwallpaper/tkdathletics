@@ -36,7 +36,7 @@ export function useUpdateUserAsAdmin() {
     }
 
     if (res.success) {
-     if (data.id) {
+      if (data.id) {
         if (data.id === user?.id) {
           console.log("Starting local user update: ", data.id);
           console.log("Id matches");
@@ -45,13 +45,13 @@ export function useUpdateUserAsAdmin() {
           localStorage.setItem("user", JSON.stringify(res.user));
           sessionStorage.setItem("toastMessage", res.success);
           setSuccess(res.success);
-          await router.navigate({ to: "/v1/admin" })
+          await router.navigate({ to: "/v1/admin" });
           window.location.reload();
         } else {
           setError("");
           sessionStorage.setItem("toastMessage", res.success);
           setSuccess(res.success);
-          await router.navigate({ to: "/v1/admin" })
+          await router.navigate({ to: "/v1/admin" });
           window.location.reload();
         }
       }

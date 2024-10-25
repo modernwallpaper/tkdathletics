@@ -1,5 +1,5 @@
-import { UpdateUserSchema } from "../../schemas"
-import * as z from "zod"
+import { UpdateUserSchema } from "../../schemas";
+import * as z from "zod";
 
 type User = z.infer<typeof UpdateUserSchema>;
 
@@ -103,12 +103,12 @@ export async function loadAllUsers(): Promise<User | undefined> {
 
     request.onsuccess = (event: Event) => {
       resolve((event.target as IDBRequest).result);
-    }
+    };
 
     request.onerror = (event: Event) => {
       reject((event.target as IDBRequest).error);
-    }
-  })
+    };
+  });
 }
 
 // Assuming you want to get user by email, you need to create an index for email

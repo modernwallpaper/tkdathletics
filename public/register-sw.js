@@ -1,15 +1,15 @@
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .getRegistration()
-    .then(function(registration) {
+    .then(function (registration) {
       if (!registration) {
         // No service worker is registered
         navigator.serviceWorker
           .register("/sw.js")
-          .then(function(reg) {
+          .then(function (reg) {
             console.log("Service worker registered with scope: ", reg.scope);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log("Service worker registration failed: ", error);
           });
       } else {
@@ -20,7 +20,7 @@ if ("serviceWorker" in navigator) {
         );
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log("Service worker registration check failed: ", error);
     });
 } else {

@@ -1,34 +1,51 @@
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { CreateTournamentSchemaFrontend } from "../../../../../schemas"
-import { z } from "zod"
-import { CardHeader, CardTitle } from "@/components/ui/card"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
-import { getAllUsers } from "@/hooks/getAllUsers"
-import { DropdownMenuCheckboxItem, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useUploadTournamentFile } from "@/hooks/useUploadTournamentFile"
-import { Separator } from "@/components/ui/separator"
-import { useState } from "react"
-import { useRouter } from "@tanstack/react-router"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { CreateTournamentSchemaFrontend } from "../../../../../schemas";
+import { z } from "zod";
+import { CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { getAllUsers } from "@/hooks/getAllUsers";
+import {
+  DropdownMenuCheckboxItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useUploadTournamentFile } from "@/hooks/useUploadTournamentFile";
+import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 
 export const CreateTournametForm = () => {
   const form = useForm<z.infer<typeof CreateTournamentSchemaFrontend>>({
     resolver: zodResolver(CreateTournamentSchemaFrontend),
-  })
+  });
 
   const [dataLoading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
-  const { UploadFile, fileLoading } =  useUploadTournamentFile();
+  const { UploadFile, fileLoading } = useUploadTournamentFile();
 
-  const onSubmit = async (values: z.infer<typeof CreateTournamentSchemaFrontend>) => {
+  const onSubmit = async (
+    values: z.infer<typeof CreateTournamentSchemaFrontend>,
+  ) => {
     setLoading(true);
     const { result, contract, participants, ...tournamentData } = values;
 
@@ -38,14 +55,18 @@ export const CreateTournametForm = () => {
     const finalData = {
       ...tournamentData,
       date: new Date(tournamentData.date ? tournamentData.date : ""),
-      result: uploadedResult ? {
-        id: uploadedResult 
-      } : undefined,
-      contract: uploadedContract ? {
-        id: uploadedContract
-      } : undefined,
+      result: uploadedResult
+        ? {
+            id: uploadedResult,
+          }
+        : undefined,
+      contract: uploadedContract
+        ? {
+            id: uploadedContract,
+          }
+        : undefined,
       participants,
-    }
+    };
 
     console.log(uploadedResult);
 
@@ -58,7 +79,7 @@ export const CreateTournametForm = () => {
         body: JSON.stringify(finalData),
       });
 
-      if(!res.ok) {
+      if (!res.ok) {
         throw new Error("Failed to create tournament");
       }
 
@@ -67,20 +88,20 @@ export const CreateTournametForm = () => {
       setLoading(false);
       sessionStorage.setItem("toastMessage", data.success);
       await router.navigate({ to: "/v1/admin" });
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-  }
+  };
 
   const { loading, users } = getAllUsers();
 
-  if(!users) {
-    return <p>Internal server error...</p>
+  if (!users) {
+    return <p>Internal server error...</p>;
   }
 
-  return(
+  return (
     <div className="felx w-fit">
       <CardHeader>
         <CardTitle>Create Tournament</CardTitle>
@@ -96,12 +117,12 @@ export const CreateTournametForm = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="example"/>
+                    <Input {...field} placeholder="example" />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               disabled={dataLoading || fileLoading}
               name="location"
               control={form.control}
@@ -109,17 +130,17 @@ export const CreateTournametForm = () => {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="City, Country, etc."/>
+                    <Input {...field} placeholder="City, Country, etc." />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               disabled={dataLoading || fileLoading}
               name="date"
               control={form.control}
               render={({ field }) => (
-                  <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col">
                   <FormLabel>Date of tournament</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -128,7 +149,7 @@ export const CreateTournametForm = () => {
                           variant={"outline"}
                           className={cn(
                             "pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
@@ -154,7 +175,7 @@ export const CreateTournametForm = () => {
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
               disabled={dataLoading || fileLoading}
               name="result"
               control={form.control}
@@ -162,27 +183,7 @@ export const CreateTournametForm = () => {
                 <FormItem>
                   <FormLabel>Results</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="file"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          field.onChange(e.target.files[0]);  
-                        }
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField 
-              disabled={dataLoading || fileLoading}
-              name="contract"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contract</FormLabel>
-                  <FormControl>
-                    <Input 
+                    <Input
                       type="file"
                       onChange={(e) => {
                         if (e.target.files?.[0]) {
@@ -194,7 +195,27 @@ export const CreateTournametForm = () => {
                 </FormItem>
               )}
             />
-            <FormField 
+            <FormField
+              disabled={dataLoading || fileLoading}
+              name="contract"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contract</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          field.onChange(e.target.files[0]);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
               disabled={dataLoading || fileLoading}
               name="participants"
               control={form.control}
@@ -211,17 +232,23 @@ export const CreateTournametForm = () => {
                       <DropdownMenuContent align="end">
                         {loading ? (
                           <p>Loading...</p>
-                        ): (
+                        ) : (
                           <div>
                             {users.map((user) => (
                               <FormControl>
                                 <DropdownMenuCheckboxItem
                                   key={user.id}
-                                  checked={field.value?.includes(user.id ? user.id : "")}
+                                  checked={field.value?.includes(
+                                    user.id ? user.id : "",
+                                  )}
                                   onCheckedChange={() => {
-                                    const newValue = field.value?.includes(user.id ? user.id : "") 
-                                      ? field.value.filter((id: String) => id !== user.id)
-                                      : [...field.value || [], user.id];
+                                    const newValue = field.value?.includes(
+                                      user.id ? user.id : "",
+                                    )
+                                      ? field.value.filter(
+                                          (id: String) => id !== user.id,
+                                        )
+                                      : [...(field.value || []), user.id];
                                     field.onChange(newValue);
                                   }}
                                 >
@@ -238,19 +265,26 @@ export const CreateTournametForm = () => {
               )}
             />
           </div>
-          <Separator className="mt-3"/>
+          <Separator className="mt-3" />
           <div className="flex gap-x-2">
-            <Button disabled={dataLoading || fileLoading} asChild className="w-full mt-3" variant={"secondary"}>
-              <a href="/v1/admin">
-                Cancel
-              </a>
+            <Button
+              disabled={dataLoading || fileLoading}
+              asChild
+              className="w-full mt-3"
+              variant={"secondary"}
+            >
+              <a href="/v1/admin">Cancel</a>
             </Button>
-            <Button disabled={dataLoading || fileLoading} className="w-full mt-3" type="submit">
+            <Button
+              disabled={dataLoading || fileLoading}
+              className="w-full mt-3"
+              type="submit"
+            >
               <p>Create</p>
             </Button>
           </div>
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
