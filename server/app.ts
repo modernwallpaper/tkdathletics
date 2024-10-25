@@ -71,9 +71,9 @@ const uploadPath = path.resolve("./uploads/");
 console.log(uploadPath)
 
 if(fs.existsSync(uploadPath)) {
-  console.log("path exists")
+  console.log("path exists");
 } else {
-  console.log("path doesent exist")    
+  fs.mkdirSync(uploadPath);
 }
 
 
