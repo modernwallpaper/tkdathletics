@@ -83,7 +83,7 @@ self.addEventListener("activate", async () => {
   const subscription = await self.registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: base64UrlToUint8Array(
-      "BHQFgVk9ZVQSU6vw_eN7Snoxs3cA3StKs8Z3bbCOM4dPRuO5VTtagGiYEzykJty3pok-ySG8CXAnZPLtMN9Dsjo",
+      import.meta.env.VAPID_PUBLIC_KEY
     ),
   });
 
