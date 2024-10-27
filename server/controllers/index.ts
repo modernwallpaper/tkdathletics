@@ -561,7 +561,7 @@ const createTorunament = async (c: Context) => {
     },
   });
 
-  return c.json({ tournament, success: "Turnament created successfully" }, 201);
+  return c.json({ tournament, success: "Tournament created successfully" }, 201);
 };
 
 const uploadTournamentFile = async (c: Context) => {

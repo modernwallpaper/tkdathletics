@@ -20,27 +20,21 @@ export const AccountForm = () => {
   const { user } = state;
   const { error, loading, update } = useUpdateUserAsUser();
 
-  if (!user) {
-    return null;
-  }
-
   const form = useForm<z.infer<typeof UpdateUserSchema>>({
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
-      name: user.name ? user.name : undefined,
-      email: user.email ? user.email : undefined,
-      surname: user.surname ? user.surname : undefined,
+      name: user?.name ? user?.name : undefined,
+      email: user?.email ? user?.email : undefined,
+      surname: user?.surname ? user?.surname : undefined,
     },
   });
 
-  console.log(user.surname);
-
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     console.log("Submit requested");
-    if (user.id) {
+    if (user?.id) {
       await update(
-        { ...values, timestamp: JSON.stringify(new Date()), id: user.id },
-        user.id,
+        { ...values, timestamp: JSON.stringify(new Date()), id: user?.id },
+        user?.id,
       );
     }
   };
@@ -51,7 +45,6 @@ export const AccountForm = () => {
         <form
           onSubmit={(e) => {
             form.handleSubmit(onSubmit)(e);
-            console.log("Form submission triggerd");
           }}
         >
           <div className="flex flex-col gap-y-4 mb-3 w-full">

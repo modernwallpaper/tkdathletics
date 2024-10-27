@@ -16,7 +16,7 @@ export const useLogout = () => {
     if (user) {
       if (user.id) {
         localStorage.removeItem("user");
-        deleteUser(user.id);
+        await deleteUser(user.id);
         dispatch({ type: "LOGOUT" });
       }
     }

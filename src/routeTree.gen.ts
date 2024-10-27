@@ -16,7 +16,12 @@ import { Route as IndexImport } from './routes/index'
 import { Route as V1IndexImport } from './routes/v1/index'
 import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as V1SettingsImport } from './routes/v1/settings'
+import { Route as V1TrainingIndexImport } from './routes/v1/training/index'
 import { Route as V1SettingsIndexImport } from './routes/v1/settings/index'
+import { Route as V1ScorecardIndexImport } from './routes/v1/scorecard/index'
+import { Route as V1EventsIndexImport } from './routes/v1/events/index'
+import { Route as V1CompetitionsIndexImport } from './routes/v1/competitions/index'
+import { Route as V1AnalysisIndexImport } from './routes/v1/analysis/index'
 import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
 import { Route as V1SettingsNotificationsIndexImport } from './routes/v1/settings/notifications/index'
 import { Route as V1SettingsCompetitionDataIndexImport } from './routes/v1/settings/competition-data/index'
@@ -60,10 +65,40 @@ const V1SettingsRoute = V1SettingsImport.update({
   getParentRoute: () => V1Route,
 } as any)
 
+const V1TrainingIndexRoute = V1TrainingIndexImport.update({
+  id: '/training/',
+  path: '/training/',
+  getParentRoute: () => V1Route,
+} as any)
+
 const V1SettingsIndexRoute = V1SettingsIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => V1SettingsRoute,
+} as any)
+
+const V1ScorecardIndexRoute = V1ScorecardIndexImport.update({
+  id: '/scorecard/',
+  path: '/scorecard/',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1EventsIndexRoute = V1EventsIndexImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1CompetitionsIndexRoute = V1CompetitionsIndexImport.update({
+  id: '/competitions/',
+  path: '/competitions/',
+  getParentRoute: () => V1Route,
+} as any)
+
+const V1AnalysisIndexRoute = V1AnalysisIndexImport.update({
+  id: '/analysis/',
+  path: '/analysis/',
+  getParentRoute: () => V1Route,
 } as any)
 
 const V1AdminIndexRoute = V1AdminIndexImport.update({
@@ -174,12 +209,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof V1AdminIndexImport
       parentRoute: typeof V1Import
     }
+    '/v1/analysis/': {
+      id: '/v1/analysis/'
+      path: '/analysis'
+      fullPath: '/v1/analysis'
+      preLoaderRoute: typeof V1AnalysisIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/competitions/': {
+      id: '/v1/competitions/'
+      path: '/competitions'
+      fullPath: '/v1/competitions'
+      preLoaderRoute: typeof V1CompetitionsIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/events/': {
+      id: '/v1/events/'
+      path: '/events'
+      fullPath: '/v1/events'
+      preLoaderRoute: typeof V1EventsIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/scorecard/': {
+      id: '/v1/scorecard/'
+      path: '/scorecard'
+      fullPath: '/v1/scorecard'
+      preLoaderRoute: typeof V1ScorecardIndexImport
+      parentRoute: typeof V1Import
+    }
     '/v1/settings/': {
       id: '/v1/settings/'
       path: '/'
       fullPath: '/v1/settings/'
       preLoaderRoute: typeof V1SettingsIndexImport
       parentRoute: typeof V1SettingsImport
+    }
+    '/v1/training/': {
+      id: '/v1/training/'
+      path: '/training'
+      fullPath: '/v1/training'
+      preLoaderRoute: typeof V1TrainingIndexImport
+      parentRoute: typeof V1Import
     }
     '/v1/admin/create/tournament': {
       id: '/v1/admin/create/tournament'
@@ -271,6 +341,11 @@ interface V1RouteChildren {
   V1SettingsRoute: typeof V1SettingsRouteWithChildren
   V1IndexRoute: typeof V1IndexRoute
   V1AdminIndexRoute: typeof V1AdminIndexRoute
+  V1AnalysisIndexRoute: typeof V1AnalysisIndexRoute
+  V1CompetitionsIndexRoute: typeof V1CompetitionsIndexRoute
+  V1EventsIndexRoute: typeof V1EventsIndexRoute
+  V1ScorecardIndexRoute: typeof V1ScorecardIndexRoute
+  V1TrainingIndexRoute: typeof V1TrainingIndexRoute
   V1AdminCreateTournamentRoute: typeof V1AdminCreateTournamentRoute
   V1AdminCreateUserRoute: typeof V1AdminCreateUserRoute
   V1AdminDeleteTournamentIdRoute: typeof V1AdminDeleteTournamentIdRoute
@@ -283,6 +358,11 @@ const V1RouteChildren: V1RouteChildren = {
   V1SettingsRoute: V1SettingsRouteWithChildren,
   V1IndexRoute: V1IndexRoute,
   V1AdminIndexRoute: V1AdminIndexRoute,
+  V1AnalysisIndexRoute: V1AnalysisIndexRoute,
+  V1CompetitionsIndexRoute: V1CompetitionsIndexRoute,
+  V1EventsIndexRoute: V1EventsIndexRoute,
+  V1ScorecardIndexRoute: V1ScorecardIndexRoute,
+  V1TrainingIndexRoute: V1TrainingIndexRoute,
   V1AdminCreateTournamentRoute: V1AdminCreateTournamentRoute,
   V1AdminCreateUserRoute: V1AdminCreateUserRoute,
   V1AdminDeleteTournamentIdRoute: V1AdminDeleteTournamentIdRoute,
@@ -300,7 +380,12 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginIndexRoute
   '/v1/': typeof V1IndexRoute
   '/v1/admin': typeof V1AdminIndexRoute
+  '/v1/analysis': typeof V1AnalysisIndexRoute
+  '/v1/competitions': typeof V1CompetitionsIndexRoute
+  '/v1/events': typeof V1EventsIndexRoute
+  '/v1/scorecard': typeof V1ScorecardIndexRoute
   '/v1/settings/': typeof V1SettingsIndexRoute
+  '/v1/training': typeof V1TrainingIndexRoute
   '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
   '/v1/admin/create/user': typeof V1AdminCreateUserRoute
   '/v1/settings/account': typeof V1SettingsAccountIndexRoute
@@ -317,7 +402,12 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/v1': typeof V1IndexRoute
   '/v1/admin': typeof V1AdminIndexRoute
+  '/v1/analysis': typeof V1AnalysisIndexRoute
+  '/v1/competitions': typeof V1CompetitionsIndexRoute
+  '/v1/events': typeof V1EventsIndexRoute
+  '/v1/scorecard': typeof V1ScorecardIndexRoute
   '/v1/settings': typeof V1SettingsIndexRoute
+  '/v1/training': typeof V1TrainingIndexRoute
   '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
   '/v1/admin/create/user': typeof V1AdminCreateUserRoute
   '/v1/settings/account': typeof V1SettingsAccountIndexRoute
@@ -337,7 +427,12 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/v1/': typeof V1IndexRoute
   '/v1/admin/': typeof V1AdminIndexRoute
+  '/v1/analysis/': typeof V1AnalysisIndexRoute
+  '/v1/competitions/': typeof V1CompetitionsIndexRoute
+  '/v1/events/': typeof V1EventsIndexRoute
+  '/v1/scorecard/': typeof V1ScorecardIndexRoute
   '/v1/settings/': typeof V1SettingsIndexRoute
+  '/v1/training/': typeof V1TrainingIndexRoute
   '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
   '/v1/admin/create/user': typeof V1AdminCreateUserRoute
   '/v1/settings/account/': typeof V1SettingsAccountIndexRoute
@@ -358,7 +453,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/v1/'
     | '/v1/admin'
+    | '/v1/analysis'
+    | '/v1/competitions'
+    | '/v1/events'
+    | '/v1/scorecard'
     | '/v1/settings/'
+    | '/v1/training'
     | '/v1/admin/create/tournament'
     | '/v1/admin/create/user'
     | '/v1/settings/account'
@@ -374,7 +474,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/v1'
     | '/v1/admin'
+    | '/v1/analysis'
+    | '/v1/competitions'
+    | '/v1/events'
+    | '/v1/scorecard'
     | '/v1/settings'
+    | '/v1/training'
     | '/v1/admin/create/tournament'
     | '/v1/admin/create/user'
     | '/v1/settings/account'
@@ -392,7 +497,12 @@ export interface FileRouteTypes {
     | '/login/'
     | '/v1/'
     | '/v1/admin/'
+    | '/v1/analysis/'
+    | '/v1/competitions/'
+    | '/v1/events/'
+    | '/v1/scorecard/'
     | '/v1/settings/'
+    | '/v1/training/'
     | '/v1/admin/create/tournament'
     | '/v1/admin/create/user'
     | '/v1/settings/account/'
@@ -443,6 +553,11 @@ export const routeTree = rootRoute
         "/v1/settings",
         "/v1/",
         "/v1/admin/",
+        "/v1/analysis/",
+        "/v1/competitions/",
+        "/v1/events/",
+        "/v1/scorecard/",
+        "/v1/training/",
         "/v1/admin/create/tournament",
         "/v1/admin/create/user",
         "/v1/admin/delete/tournament/$id",
@@ -472,9 +587,29 @@ export const routeTree = rootRoute
       "filePath": "v1/admin/index.tsx",
       "parent": "/v1"
     },
+    "/v1/analysis/": {
+      "filePath": "v1/analysis/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/competitions/": {
+      "filePath": "v1/competitions/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/events/": {
+      "filePath": "v1/events/index.tsx",
+      "parent": "/v1"
+    },
+    "/v1/scorecard/": {
+      "filePath": "v1/scorecard/index.tsx",
+      "parent": "/v1"
+    },
     "/v1/settings/": {
       "filePath": "v1/settings/index.tsx",
       "parent": "/v1/settings"
+    },
+    "/v1/training/": {
+      "filePath": "v1/training/index.tsx",
+      "parent": "/v1"
     },
     "/v1/admin/create/tournament": {
       "filePath": "v1/admin/create/tournament.tsx",

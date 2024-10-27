@@ -1,6 +1,8 @@
-import { PageHeader } from "@/components/app/page-header";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/v1/settings/")({
-  component: () => <PageHeader label="Settings" />,
+  component: () => {
+    const router = useRouter();
+    router.navigate({ to: "/v1/settings/account" })
+  }
 });

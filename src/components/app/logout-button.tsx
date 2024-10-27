@@ -5,9 +5,8 @@ import { useLogout } from "@/hooks/useLogout";
 export const LogoutButton = () => {
   const { logout } = useLogout();
 
-  const onClick = () => {
-    //console.log("Logout requested");
-    logout();
+  const onClick = async () => {
+    await logout();
   };
 
   return (

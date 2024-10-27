@@ -11,7 +11,7 @@ export const AuthMiddleware = ({ children }: { children: React.ReactNode }) => {
 
   // Check if the user is logged in
   useEffect(() => {
-    if (user === null) {
+    if (typeof window !== "undefined" && user === null) {
       router.navigate({ to: "/login" });
     }
   }, [user, router]);
