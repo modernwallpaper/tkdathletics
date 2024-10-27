@@ -69,7 +69,7 @@ const app = new Hono();
 app.use("*", logger());
 
 // Setup routes
-const apiRoutes = app.route("/api/", routes);
+app.route("/api/", routes);
 
 const uploadPath = path.resolve("./uploads/");
 console.log(uploadPath);
@@ -110,4 +110,3 @@ app.get("/uploads/:filename", async (c) => {
 app.get("*", serveStatic({ root: "./dist/" }));
 
 export default app;
-export type ApiRoutes = typeof apiRoutes;
