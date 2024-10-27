@@ -18,7 +18,7 @@ cleanupOutdatedCaches();
 
 let allowlist: RegExp[] | undefined;
 // in dev mode, we disable precaching to avoid caching issues
-if (import.meta.env.DEV) allowlist = [/^\/.*/];
+if (import.meta.env.DEV) allowlist = [/^\/.*/, /^\/$/];
 
 // Dont cache api route
 registerRoute(
