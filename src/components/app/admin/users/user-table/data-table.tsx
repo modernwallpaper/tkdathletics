@@ -67,7 +67,7 @@ export function UserTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("Name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm mr-2"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

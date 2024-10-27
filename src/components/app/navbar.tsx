@@ -27,7 +27,7 @@ export const Navbar = () => {
   const user = state.user;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-20 lg:pl-20">
+    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-20 lg:pl-20">
       <div className="flex w-full lg:hidden justify-between">
         <Sheet>
           <SheetTrigger asChild>
