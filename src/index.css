@@ -19,6 +19,24 @@ body,
   display: none; /* Safari and Chrome */
 }
 
+/* For mobile screens */
+@media (max-width: 768px) {
+  /* Hide horizontal scrollbar */
+  body, html {
+    overflow-x: hidden;
+  }
+
+  /* Hide vertical scrollbar */
+  .no-scrollbar {
+    overflow-y: hidden;
+  }
+
+  /* Alternative for specific containers */
+  .container {
+    overflow: hidden; /* Hide both x and y scrollbars */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
