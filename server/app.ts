@@ -10,6 +10,7 @@ import path from "path";
 import fs from "fs";
 import mime from "mime";
 import chalk from "chalk";
+import { secureHeaders } from "hono/secure-headers"
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
@@ -113,17 +114,8 @@ if(import.meta.env.NODE_ENV === "development") {
   });
 }
 
-app.use('*', (c, next) => {
-  // Add security headers
-  c.header('X-Frame-Options', 'DENY'); // Prevent clickjacking
-  c.header('X-XSS-Protection', '1; mode=block'); // Enable XSS filtering in supported browsers
-  c.header('X-Content-Type-Options', 'nosniff'); // Prevent MIME-type sniffing
-  c.header('Referrer-Policy', 'no-referrer'); // Prevent referrer info leakage
-  c.header('Content-Security-Policy', "default-src 'self'"); // Restrict sources to your own domain
-  
-  // Continue to the next middleware/route handler
-  return next();
-});
+// Secure headers
+app.use(secureHeaders())
 
 // Setup routes
 app.route("/api/", routes);
