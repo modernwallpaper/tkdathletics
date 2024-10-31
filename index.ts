@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import app from "./server/app";
 
 Bun.serve({
@@ -5,5 +6,5 @@ Bun.serve({
   fetch: app.fetch,
 });
 
-console.log("[i] Node env: ", process.env.NODE_ENV);
-console.log("[i] Server running on http://localhost:4000");
+console.log(`${chalk.cyan(`${chalk.blue("[i]")} Node env: ${chalk.reset.dim(`${process.env.NODE_ENV}`)}`)}`);
+console.log(`${chalk.cyan(`${chalk.blue("[i]")} Server running on ${chalk.reset.dim("http://localhost:4000/")}`)}`);

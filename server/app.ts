@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { routes } from "./routes/routes";
-import { serveStatic } from "hono/bun";
+import { getConnInfo, serveStatic } from "hono/bun";
 import { getUserByEmail } from "./lib/user";
 import { db } from "./lib/db";
 import bcrypt from "bcryptjs";
@@ -9,6 +9,7 @@ import webPush from "web-push";
 import path from "path";
 import fs from "fs";
 import mime from "mime";
+import chalk from "chalk";
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
@@ -37,9 +38,9 @@ const initUser = async () => {
         timestamp: new Date(),
       },
     });
-    console.log("[+] New server admin created successfully");
+    console.log(`${chalk.cyan(`${chalk.blue("[+]")} New server admin created successfully`)}`);
   } else {
-    console.log("[!] Server admin already created");
+    console.log(`${chalk.cyan(`${chalk.blue("[i]")} Server admin already created`)}`);
   }
 };
 initUser();
@@ -58,7 +59,7 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
   );
 } else {
   console.log(
-    "Please generate a pair of VAPID keys and place them into your .env file",
+    `${chalk.cyan(`${chalk.blue("[!]")}Please generate a pair of VAPID keys and place them into your .env file`)}}`,
   );
 }
 
@@ -66,7 +67,51 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 const app = new Hono();
 
 // Logging
-app.use("*", logger());
+if(import.meta.env.NODE_ENV === "development") {
+  app.use("*", logger());
+} else if(import.meta.env.NODE_ENV === "production") {
+  app.use("*", async (c, next) => {
+    const info = getConnInfo(c);
+    
+    await next();
+
+    console.log(`
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.dim(`${new Date()}`)}
+      ${chalk.green(`${chalk.bold("Request")}`)} 
+      ${chalk.cyan(`| ${chalk.white(`${c.req.method}`)} -> ${c.req.url}`)}
+      ${chalk.cyan(`| ${chalk.white(`${c.req.method}`)} <- ${c.req.url} ${chalk.yellow(`${c.res.status}`)}`)}
+      
+      ${chalk.green(`${chalk.bold("Request Info")}`)} 
+      ${chalk.cyan(`|> ${chalk.white("Ip")}: ${info.remote.address} ${chalk.dim(`${info.remote.addressType}`)}`)} 
+      ${chalk.cyan(`|> ${chalk.white("Port")}: ${info.remote.port}`)}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+    `);
+  });
+} else {
+  app.use("*", async (c, next) => {
+    const info = getConnInfo(c);
+    
+    await next();
+
+    console.log(`
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.dim(`${new Date()}`)}
+      ${chalk.green(`${chalk.bold("Request")}`)} 
+      ${chalk.cyan(`| ${chalk.white(`${c.req.method}`)} -> ${c.req.url}`)}
+      ${chalk.cyan(`| ${chalk.white(`${c.req.method}`)} <- ${c.req.url} ${chalk.yellow(`${c.res.status}`)}`)}
+      
+      ${chalk.green(`${chalk.bold("Request Info")}`)} 
+      ${chalk.cyan(`|> ${chalk.white("Ip")}: ${info.remote.address} ${chalk.dim(`${info.remote.addressType}`)}`)} 
+      ${chalk.cyan(`|> ${chalk.white("Port")}: ${info.remote.port}`)}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+      ${chalk.cyan("-----------------------------------------------------------------------------")}
+    `);
+  });
+}
 
 app.use('*', (c, next) => {
   // Add security headers
@@ -84,11 +129,8 @@ app.use('*', (c, next) => {
 app.route("/api/", routes);
 
 const uploadPath = path.resolve("./uploads/");
-console.log(uploadPath);
 
-if (fs.existsSync(uploadPath)) {
-  console.log("path exists");
-} else {
+if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath);
 }
 
@@ -114,7 +156,6 @@ app.get("/uploads/:filename", async (c) => {
     const mimeType = mime.getType(filename) || "application/octet-stream";
     return c.body(stream, 200, { "Content-Type": mimeType });
   } catch (err) {
-    console.error("Error reading file:", err);
     return c.text("File not found", 404);
   }
 });
