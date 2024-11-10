@@ -189,6 +189,7 @@ export const CompDataForm = () => {
                     <SelectContent>
                       <SelectItem value="MALE">Male</SelectItem>
                       <SelectItem value="FEMALE">Female</SelectItem>
+                      <SelectItem value="MALE">Andre</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
