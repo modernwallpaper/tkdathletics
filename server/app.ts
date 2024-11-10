@@ -11,6 +11,7 @@ import fs from "fs";
 import mime from "mime";
 import chalk from "chalk";
 import { secureHeaders } from "hono/secure-headers"
+import { ipRestriction } from "hono/ip-restriction"
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
@@ -69,39 +70,36 @@ const app = new Hono();
 
 // Block ips, that surpass 404 request level
 const threshold = 20; // 404 request limit
+const blockedList = await db.blockedClient.findMany();
 const recent404Requests: Record<string, number> = {}; // Temporary tracker for recent IPs
 
 app.use("*", async (c, next) => {
   const info = getConnInfo(c);
   const ip = info.remote.address;
 
-  if(ip) {
-    const blocked = await db.blockedClient.findFirst({
-      where: { ip_addr: ip },
-    });
+  await next();
 
-    if(blocked) {
-      return c.text("You've been blocked from this site", 403);
-    }
-
-    await next();
-
-    if(c.res.status === 404) {
-      recent404Requests[ip] = (recent404Requests[ip] || 0) + 1;
-      
-      if(recent404Requests[ip] >= threshold) {
-        await db.blockedClient.create({
-          data: { ip_addr: ip },
-        });
-        console.log(`
-          ${chalk.cyan("-----------------------------------------------------------------------------")}
-          ${chalk.red(`Blocked ip address: ${chalk.reset.dim(ip)}`)}
-          ${chalk.cyan("-----------------------------------------------------------------------------")}
-        `)
-      }
+  if(c.res.status === 404 && ip) {
+    recent404Requests[ip] = (recent404Requests[ip] || 0) + 1;
+    
+    if(recent404Requests[ip] >= threshold) {
+      await db.blockedClient.create({
+        data: { ip_addr: ip },
+      });
+      console.log(`
+        ${chalk.cyan("-----------------------------------------------------------------------------")}
+        ${chalk.red(`Blocked ip address: ${chalk.reset.dim(ip)}`)}
+        ${chalk.cyan("-----------------------------------------------------------------------------")}
+      `)
     }
   }
 });
+
+app.use("*", ipRestriction(getConnInfo, {
+  denyList: blockedList.map((blocked_ip) => {
+    return blocked_ip.ip_addr;
+  }),
+}));
 
 // Logging
 if(import.meta.env.NODE_ENV === "development") {
