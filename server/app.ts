@@ -70,36 +70,41 @@ const app = new Hono();
 
 // Block ips, that surpass 404 request level
 const threshold = 20; // 404 request limit
-const blockedList = await db.blockedClient.findMany();
 const recent404Requests: Record<string, number> = {}; // Temporary tracker for recent IPs
 
 app.use("*", async (c, next) => {
-  const info = getConnInfo(c);
-  const ip = info.remote.address;
+  const ip = c.req.header("x-client-ip");
 
-  await next();
+  if(ip) {
+    const blocked = await db.blockedClient.findFirst({
+      where: { ip_addr: ip },
+    });
 
-  if(c.res.status === 404 && ip) {
-    recent404Requests[ip] = (recent404Requests[ip] || 0) + 1;
-    
-    if(recent404Requests[ip] >= threshold) {
-      await db.blockedClient.create({
-        data: { ip_addr: ip },
-      });
-      console.log(`
-        ${chalk.cyan("-----------------------------------------------------------------------------")}
-        ${chalk.red(`Blocked ip address: ${chalk.reset.dim(ip)}`)}
-        ${chalk.cyan("-----------------------------------------------------------------------------")}
-      `)
+    if(blocked) {
+      return c.text("You've been blocked from this site", 403);
     }
+
+    await next();
+
+    if(c.res.status === 404 && ip) {
+      recent404Requests[ip] = (recent404Requests[ip] || 0) + 1;
+      
+      if(recent404Requests[ip] >= threshold) {
+        await db.blockedClient.create({
+          data: { ip_addr: ip },
+        });
+        console.log(`
+          ${chalk.cyan("-----------------------------------------------------------------------------")}
+          ${chalk.red(`Blocked ip address: ${chalk.reset.dim(ip)}`)}
+          ${chalk.cyan("-----------------------------------------------------------------------------")}
+        `)
+      }
+    } 
+  } else {
+    console.warn("IP address not available for this request");
+    await next();
   }
 });
-
-app.use("*", ipRestriction(getConnInfo, {
-  denyList: blockedList.map((blocked_ip) => {
-    return blocked_ip.ip_addr;
-  }),
-}));
 
 // Logging
 if(import.meta.env.NODE_ENV === "development") {
