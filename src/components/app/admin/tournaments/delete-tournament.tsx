@@ -21,8 +21,8 @@ export const DeleteTournament = ({ id }: { id?: string }) => {
       <CardHeader>
         <CardTitle>Delete {id}?</CardTitle>
         <CardDescription>
-          This action can not be undone. This will permanenntly remove the user
-          from our servers.
+          This action can not be undone. This will permanenatly remove the tournament 
+          from our servers including the uplaoded files.
         </CardDescription>
       </CardHeader>
       <CardFooter>

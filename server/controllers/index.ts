@@ -516,6 +516,41 @@ const sendPushNotification = async (c: Context) => {
 const deleteTournament = async (c: Context) => {
   const data = await c.req.json();
   if (data.id) {
+    const tournament = await db.tournament.findUnique({ 
+      where: { id: data.id },
+      include: {
+        contract: true,
+        result: true,
+      }
+    });
+
+    if(!tournament) {
+      return c.json({ error: "No tournament found for given id" }, 404);
+    }
+
+
+    if(tournament.result?.url) {
+      const result_path = path.resolve("."+tournament?.result?.url);
+      console.log("path to delete: ", result_path);
+      if(fs.existsSync(result_path)) {
+        console.log("path exists, deleting: ", result_path);
+        fs.removeSync(result_path);
+      } else {
+        console.log("Result file path is not available for tournament with id: ", tournament.id);
+      }
+    }
+
+    if(tournament.contract?.url) {
+      const contract_path = path.resolve("."+tournament?.contract?.url);
+      console.log("path to delete: ", contract_path);
+      if(fs.existsSync(contract_path)) {
+        console.log("path exists, deleting: ", contract_path);
+        fs.removeSync(contract_path);
+      } else {
+        console.log("Contract file path is not available for tournament with id: ", tournament.id);
+      }
+    }
+
     await db.tournament.delete({ where: { id: data.id } });
     return c.json({ success: "Tournament deleted successfully" });
   } else if (!data.id) {
