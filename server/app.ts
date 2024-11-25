@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { routes } from "./routes/routes";
-import { getConnInfo, serveStatic } from "hono/bun";
+import { serveStatic, getConnInfo } from "hono/bun";
 import { getUserByEmail } from "./lib/user";
 import { db } from "./lib/db";
 import bcrypt from "bcryptjs";
@@ -11,7 +11,6 @@ import fs from "fs";
 import mime from "mime";
 import chalk from "chalk";
 import { secureHeaders } from "hono/secure-headers"
-import { ipRestriction } from "hono/ip-restriction"
 
 // Create a server admin if it doesnt exist
 const initUser = async () => {
@@ -67,44 +66,6 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 // App logic
 const app = new Hono();
-
-// Block ips, that surpass 404 request level
-const threshold = 20; // 404 request limit
-const recent404Requests: Record<string, number> = {}; // Temporary tracker for recent IPs
-
-app.use("*", async (c, next) => {
-  const ip = c.req.header("x-client-ip");
-
-  if(ip) {
-    const blocked = await db.blockedClient.findFirst({
-      where: { ip_addr: ip },
-    });
-
-    if(blocked) {
-      return c.text("You've been blocked from this site", 403);
-    }
-
-    await next();
-
-    if(c.res.status === 404 && ip) {
-      recent404Requests[ip] = (recent404Requests[ip] || 0) + 1;
-      
-      if(recent404Requests[ip] >= threshold) {
-        await db.blockedClient.create({
-          data: { ip_addr: ip },
-        });
-        console.log(`
-          ${chalk.cyan("-----------------------------------------------------------------------------")}
-          ${chalk.red(`Blocked ip address: ${chalk.reset.dim(ip)}`)}
-          ${chalk.cyan("-----------------------------------------------------------------------------")}
-        `)
-      }
-    } 
-  } else {
-    console.warn("IP address not available for this request");
-    await next();
-  }
-});
 
 // Logging
 if(import.meta.env.NODE_ENV === "development") {
