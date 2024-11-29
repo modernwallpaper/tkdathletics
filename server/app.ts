@@ -13,7 +13,7 @@ import chalk from "chalk";
 import { secureHeaders } from "hono/secure-headers"
 
 // Create a server admin if it doesnt exist
-const initUser = async () => {
+const initAdmin = async () => {
   const adminUser = await getUserByEmail("admin@website.com");
   if (!adminUser) {
     console.log("[!] Creating new server admin");
@@ -44,7 +44,7 @@ const initUser = async () => {
     console.log(`${chalk.cyan(`${chalk.blue("[i]")} Server admin already created`)}`);
   }
 };
-initUser();
+initAdmin();
 
 // API KEYS for push notifications
 if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
@@ -120,6 +120,7 @@ app.use(secureHeaders())
 // Setup routes
 app.route("/api/", routes);
 
+// File uploads
 const uploadPath = path.resolve("./uploads/");
 
 if (!fs.existsSync(uploadPath)) {
@@ -152,6 +153,8 @@ app.get("/uploads/:filename", async (c) => {
   }
 });
 
+// serve the bundled react app to the routes that aren't /api or /uloads
 app.get("*", serveStatic({ root: "./dist/" }));
 
+// Export the configured api
 export default app;

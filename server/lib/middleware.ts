@@ -6,7 +6,7 @@ import { authority } from "@prisma/client";
 
 // Middleware for user
 const protectUser = async (c: Context, next: Next) => {
-  let token;
+  let token: any;
   token = getCookie(c, "jwt");
 
   if (token) {
@@ -39,7 +39,7 @@ const protectUser = async (c: Context, next: Next) => {
 
 // Middleware for admin
 const protectAdmin = async (c: Context, next: Next) => {
-  let token;
+  let token: any;
   token = getCookie(c, "jwt");
 
   if (token) {

@@ -18,6 +18,7 @@ import path from "path";
 import fs from "fs-extra";
 import mime from "mime";
 
+// Function, to remove a disered field from the user array in a api response
 function exclude<User, Key extends keyof User>(
   user: User,
   keys: Key[],
@@ -460,17 +461,6 @@ const getTournamentsForUser = async (c: Context) => {
   }
 };
 
-const getAllTournaments = async (c: Context) => {
-  const tournaments = await db.tournament.findMany({
-    include: {
-      participants: true,
-      contract: true,
-      result: true,
-    },
-  });
-  console.log(tournaments);
-  return c.json(tournaments, 200);
-};
 
 const saveSubscription = async (c: Context) => {
   const { subscription, userId } = await c.req.json();
@@ -511,6 +501,22 @@ const sendPushNotification = async (c: Context) => {
   } else {
     return c.json({ error: "user is not subscribed to push service" });
   }
+};
+
+/**
+ * @desc GET /api/tournament/getall
+ * @access PRIVATE
+ */
+const getAllTournaments = async (c: Context) => {
+  const tournaments = await db.tournament.findMany({
+    include: {
+      participants: true,
+      contract: true,
+      result: true,
+    },
+  });
+  console.log(tournaments);
+  return c.json(tournaments, 200);
 };
 
 const deleteTournament = async (c: Context) => {
