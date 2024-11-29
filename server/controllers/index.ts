@@ -515,7 +515,6 @@ const getAllTournaments = async (c: Context) => {
       result: true,
     },
   });
-  console.log(tournaments);
   return c.json(tournaments, 200);
 };
 
