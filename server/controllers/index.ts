@@ -515,7 +515,13 @@ const getAllTournaments = async (c: Context) => {
       result: true,
     },
   });
-  return c.json(tournaments, 200);
+
+  const sanitizedTournaments = tournaments.map((tournament) => ({
+    ...tournament,
+    participants: tournament.participants.map(({ password, ...participant }) => participant),
+  }));
+
+  return c.json(sanitizedTournaments, 200);
 };
 
 const deleteTournament = async (c: Context) => {

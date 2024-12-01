@@ -264,6 +264,16 @@ const TournamentSchema = z.object({
   participants: z.array(UserSchema).optional(),
 });
 
+const UpdateTournamentSchema = z.object({
+  id: z.string().optional(),
+  date: z.date().optional(),
+  name: z.string().optional(),
+  location: z.string().optional(),
+  result: z.instanceof(File).optional(),
+  contract: z.instanceof(File).optional(),
+  participants: z.array(UserSchema).optional(),
+})
+
 export {
   CreateUserSchema,
   UpdateUserSchema,
@@ -275,5 +285,6 @@ export {
   DeleteUserSchema,
   CreateTournamentSchemaBackend,
   CreateTournamentSchemaFrontend,
+  UpdateTournamentSchema,
   TournamentSchema,
 };

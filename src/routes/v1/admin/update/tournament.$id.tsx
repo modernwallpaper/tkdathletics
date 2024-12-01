@@ -26,6 +26,8 @@ function Comp() {
   }
 
   return(
-    <UpdateTournamentForm tournament={tournamentToUpdate} />
+    <div className="flex w-full h-full items-center justify-center">
+      <UpdateTournamentForm dataLoading={loading} fileLoading={loading} tournament={tournamentToUpdate} />
+    </div>
   )
 }
