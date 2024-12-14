@@ -6,7 +6,7 @@ import {
 } from "workbox-precaching";
 import { clientsClaim } from "workbox-core";
 import { NavigationRoute, registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import { NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -20,7 +20,7 @@ let allowlist: RegExp[] | undefined;
 // in dev mode, we disable precaching to avoid caching issues
 if (import.meta.env.DEV) allowlist = [/^\/.*/, /^\/$/];
 
-// Dont cache api route
+// Cache api route in a specific manner 
 registerRoute(
   ({ url }) => url.pathname.startsWith("/api/"),
   new StaleWhileRevalidate({
@@ -30,10 +30,11 @@ registerRoute(
 
 // Dont cache upload route 
 registerRoute(
-  ({ url }) => url.pathname.startsWith("/uplaods/"),
-  new StaleWhileRevalidate({
-    cacheName: "uplaod-cache",
-  }),
+   ({ url }) => url.pathname.startsWith("/uploads/"),
+   new NetworkOnly({
+      plugins: [],
+   }),
+   "GET",
 );
 
 // to allow work offline
