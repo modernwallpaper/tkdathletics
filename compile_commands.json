@@ -1,0 +1,21 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-ffreestanding",
+      "-Wno-write-strings",
+      "-fno-use-cxa-atexit",
+      "-fno-builtin",
+      "-fno-rtti",
+      "-fno-exceptions",
+      "-Iinclude/kernel/",
+      "-c",
+      "-o",
+      "build/kernel/core/gdt.o",
+      "src/kernel/core/gdt.cpp"
+    ],
+    "directory": "/home/jakob/coding/os_dev/cos",
+    "file": "/home/jakob/coding/os_dev/cos/src/kernel/core/gdt.cpp",
+    "output": "/home/jakob/coding/os_dev/cos/build/kernel/core/gdt.o"
+  }
+]
