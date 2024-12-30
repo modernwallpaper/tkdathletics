@@ -42,6 +42,7 @@ export const useUpdateUserAsUser = () => {
       }
     } else {
       if (values) {
+        console.log("Saving user to local db, as user is currently offline")
         await saveUser({ ...values });
       }
     }

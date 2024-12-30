@@ -11,6 +11,7 @@ import {
   register,
   saveSubscription,
   sendPushNotification,
+  updateTournament,
   updateUserAsAdmin,
   updateUserAsUser,
   uploadTournamentFile,
@@ -36,6 +37,7 @@ export const routes = new Hono()
   .post("tournament/create", protectAdmin, createTorunament)
   .post("tournament/file/upload", protectAdmin, uploadTournamentFile)
   .post("tournament/delete", protectAdmin, deleteTournament)
+  .put("tournament/update", protectAdmin, updateTournament)
   
   // Push notification related routes
   .post("save-subscription", protectUser, saveSubscription)

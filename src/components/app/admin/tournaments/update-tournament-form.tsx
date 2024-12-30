@@ -13,29 +13,42 @@ import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { TournamentSchema, UpdateTournamentSchema } from "../../../../../schemas";
 import { z } from "zod";
+import { useUpdateTournament } from "@/hooks/useUpdateTournament";
 
-export const UpdateTournamentForm = ({
-  tournament,
-  dataLoading,
-  fileLoading,
-}: {
-  tournament: z.infer<typeof TournamentSchema>,
-  dataLoading: boolean,
+export const UpdateTournamentForm = ({ 
+  tournament, 
+  dataLoading, 
+  fileLoading, 
+}: { 
+  tournament: z.infer<typeof TournamentSchema>, 
+  dataLoading: boolean, 
   fileLoading: boolean, 
 }) => {
   const form = useForm<z.infer<typeof UpdateTournamentSchema>>({
     resolver: zodResolver(UpdateTournamentSchema),
-    defaultValues: { ...tournament }
+    defaultValues: { 
+      ...tournament,
+      date: tournament.date ? new Date(tournament.date) : undefined,
+      result: undefined,
+      contract: undefined,
+      participants: tournament.participants || [],
+    },
   });
 
   const { loading, users } = getAllUsers();
- 
+  const { loadingTournamentUpdate, errorTournamentUpdate, successTournamentUpdate, update } = useUpdateTournament();
+  
   if(!users) {
     return <p>Internal server error...</p>
   }
 
   const onSubmit = async(values: z.infer<typeof UpdateTournamentSchema>) => {
-    console.log("Submit requested: ", values);
+    await update(values);
+    if(errorTournamentUpdate) {
+      console.log("Error: ", errorTournamentUpdate);
+    } else if (successTournamentUpdate) {
+      console.log("Success: ", successTournamentUpdate);
+    }
   }
 
   return (
@@ -47,7 +60,7 @@ export const UpdateTournamentForm = ({
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-2">
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="name"
               control={form.control}
               render={({ field }) => (
@@ -60,7 +73,7 @@ export const UpdateTournamentForm = ({
               )}
             />
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="location"
               control={form.control}
               render={({ field }) => (
@@ -73,7 +86,7 @@ export const UpdateTournamentForm = ({
               )}
             />
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="date"
               control={form.control}
               render={({ field }) => (
@@ -106,14 +119,14 @@ export const UpdateTournamentForm = ({
                           date > new Date() || date < new Date("1900-01-01")
                         }
                         initialFocus
-                      />
+                       />
                     </PopoverContent>
                   </Popover>
                 </FormItem>
               )}
             />
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="result"
               control={form.control}
               render={({ field }) => (
@@ -130,6 +143,8 @@ export const UpdateTournamentForm = ({
                           onChange={(e) => {
                             if (e.target.files?.[0]) {
                               field.onChange(e.target.files[0]);
+                            } else {
+                              field.onChange(undefined);
                             }
                           }}
                         />
@@ -142,6 +157,8 @@ export const UpdateTournamentForm = ({
                         onChange={(e) => {
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files[0]);
+                          } else {
+                              field.onChange(undefined);
                           }
                         }}
                       />
@@ -151,7 +168,7 @@ export const UpdateTournamentForm = ({
               )}
             />
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="contract"
               control={form.control}
               render={({ field }) => (
@@ -189,7 +206,7 @@ export const UpdateTournamentForm = ({
               )}
             />
             <FormField
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               name="participants"
               control={form.control}
               render={({ field }) => (
@@ -239,7 +256,7 @@ export const UpdateTournamentForm = ({
           <Separator className="mt-3" />
           <div className="flex gap-x-2">
             <Button
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               asChild
               className="w-full mt-3"
               variant={"secondary"}
@@ -247,7 +264,7 @@ export const UpdateTournamentForm = ({
               <a href="/v1/admin">Cancel</a>
             </Button>
             <Button
-              disabled={dataLoading || fileLoading}
+              disabled={dataLoading || fileLoading || loadingTournamentUpdate}
               className="w-full mt-3"
               type="submit"
             >

@@ -7,6 +7,7 @@ import {
   UpdateUserSchema,
   CreateUserSchema,
   CreateTournamentSchemaBackend,
+  UpdateTournamentSchemaBackend,
 } from "../../schemas";
 import { getUserByEmail, getUserById } from "../lib/user";
 import bcrypt from "bcryptjs";
@@ -17,6 +18,7 @@ import webPush from "web-push";
 import path from "path";
 import fs from "fs-extra";
 import mime from "mime";
+import { getTournamentById } from "../lib/tournament";
 
 // Function, to remove a disered field from the user array in a api response
 function exclude<User, Key extends keyof User>(
@@ -610,6 +612,61 @@ const createTorunament = async (c: Context) => {
   return c.json({ tournament, success: "Tournament created successfully" }, 201);
 };
 
+const updateTournament = async (c: Context) => {
+  const data = await c.req.json();
+  if(data.date) {
+    data.date = new Date(data.date);
+  }
+  const validatedFields = UpdateTournamentSchemaBackend.safeParse(data);
+  if(!validatedFields.success) {
+    console.error(validatedFields.error);
+    return c.json({ error: "Invalid fields" }, 400);
+  }
+
+  const {
+    name,
+    location,
+    date,
+    result,
+    contract,
+    participants,
+  } = validatedFields.data;
+
+  const udata: Partial<typeof validatedFields.data> = {};
+
+  if (name) udata.name = name;
+  if (location) udata.location = location;
+  if (date) udata.date = date;
+  if (result) udata.result = result;
+  if (contract) udata.contract = contract;
+  if (participants) udata.participants = participants;
+
+  if (Object.keys(udata).length === 0) {
+    return c.json({ error: "No fields for update provided" });
+  }
+
+  const existingTournament = await getTournamentById(validatedFields.data.id); 
+
+  try {
+    if (existingTournament) {
+      const utournament = await db.tournament.update({
+        where: { id: validatedFields.data.id },
+        data: { 
+          name: udata.name,
+          location: udata.location,
+          date: udata.date,
+          participants: udata.participants,
+          result: udata.result,
+          contract: udata.contract, 
+        },
+      });
+      return c.json({ success: "Tournament updated successfully", tournament: utournament }, 200);
+    }
+  } catch (err) {
+    return c.json({ error: err }, 500);
+  }
+}
+
 const uploadTournamentFile = async (c: Context) => {
   const uploadDir = path.resolve("./uploads/");
   const uploadDirExists = fs.existsSync(uploadDir);
@@ -682,4 +739,5 @@ export {
   createTorunament,
   uploadTournamentFile,
   deleteTournament,
+  updateTournament,
 };

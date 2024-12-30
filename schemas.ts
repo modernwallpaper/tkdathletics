@@ -4,9 +4,9 @@ import * as z from "zod";
 const UserSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
-  email: z.string().email().optional(),
-  password: z.string().min(6).optional(),
-  surname: z.string().optional(),
+  email: z.string().email().optional().nullable(),
+  password: z.string().min(6).optional().nullable(),
+  surname: z.string().optional().nullable(),
   birthday: z
     .string()
     .refine(
@@ -19,8 +19,8 @@ const UserSchema = z.object({
       },
     )
     .transform((dateString) => new Date(dateString))
-    .optional(),
-  img: z.string().optional().optional(),
+    .optional().nullable(),
+  img: z.string().optional().optional().nullable(),
   kup: z
     .enum([
       "ONE",
@@ -35,7 +35,7 @@ const UserSchema = z.object({
       "TEN",
       "DAN",
     ])
-    .optional(),
+    .optional().nullable(),
   weight_class: z
     .enum([
       "TO_22KG",
@@ -88,13 +88,13 @@ const UserSchema = z.object({
       "PLUS_80KG",
       "PLUS_87KG",
     ])
-    .optional(),
-  gender: z.enum(["MALE", "FEMALE"]).optional(),
-  ag: z.enum(["SENIOR", "YOUTHA", "YOUTHB", "YOUTHC", "YOUTHD"]).optional(),
-  pg: z.enum(["KADETS", "LK1", "LK2"]).optional(),
-  failed_logins: z.number().optional(),
-  authority: z.enum(["USER", "ADMIN"]).optional(),
-  timestamp: z.string().optional(),
+    .optional().nullable(),
+  gender: z.enum(["MALE", "FEMALE"]).optional().nullable(),
+  ag: z.enum(["SENIOR", "YOUTHA", "YOUTHB", "YOUTHC", "YOUTHD"]).optional().nullable(),
+  pg: z.enum(["KADETS", "LK1", "LK2"]).optional().nullable(),
+  failed_logins: z.number().optional().nullable(),
+  authority: z.enum(["USER", "ADMIN"]).optional().nullable(),
+  timestamp: z.string().optional().nullable(),
 });
 
 // User Schema for delete
@@ -254,6 +254,26 @@ const CreateTournamentSchemaFrontend = z.object({
   participants: z.array(z.string()).optional(),
 });
 
+const UpdateTournamentSchema = z.object({
+  id: z.string().optional(),
+  date: z.date().optional(),
+  name: z.string().optional(),
+  location: z.string().optional(),
+  result: z.instanceof(File).optional(),
+  contract: z.instanceof(File).optional(),
+  participants: z.array(UserSchema).optional(),
+});
+
+const UpdateTournamentSchemaBackend = z.object({
+  id: z.string().optional(),
+  date: z.date().optional(),
+  name: z.string().optional(),
+  location: z.string().optional(),
+  result: TournamentFileSchema.optional(),
+  contract: TournamentFileSchema.optional(),
+  participants: z.array(UserSchema).optional(),
+})
+
 const TournamentSchema = z.object({
   id: z.string().optional(),
   date: z.date().optional(),
@@ -263,16 +283,6 @@ const TournamentSchema = z.object({
   contractUrl: z.string().optional(),
   participants: z.array(UserSchema).optional(),
 });
-
-const UpdateTournamentSchema = z.object({
-  id: z.string().optional(),
-  date: z.date().optional(),
-  name: z.string().optional(),
-  location: z.string().optional(),
-  result: z.instanceof(File).optional(),
-  contract: z.instanceof(File).optional(),
-  participants: z.array(UserSchema).optional(),
-})
 
 export {
   CreateUserSchema,
@@ -287,4 +297,5 @@ export {
   CreateTournamentSchemaFrontend,
   UpdateTournamentSchema,
   TournamentSchema,
+  UpdateTournamentSchemaBackend,
 };
