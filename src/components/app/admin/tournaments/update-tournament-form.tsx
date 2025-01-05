@@ -36,7 +36,7 @@ export const UpdateTournamentForm = ({
   });
 
   const { loading, users } = getAllUsers();
-  const { loadingTournamentUpdate, errorTournamentUpdate, successTournamentUpdate, update } = useUpdateTournament();
+  const { loadingTournamentUpdate, update } = useUpdateTournament();
   
   if(!users) {
     return <p>Internal server error...</p>
@@ -44,11 +44,6 @@ export const UpdateTournamentForm = ({
 
   const onSubmit = async(values: z.infer<typeof UpdateTournamentSchema>) => {
     await update(values);
-    if(errorTournamentUpdate) {
-      console.log("Error: ", errorTournamentUpdate);
-    } else if (successTournamentUpdate) {
-      console.log("Success: ", successTournamentUpdate);
-    }
   }
 
   return (

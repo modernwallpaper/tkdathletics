@@ -655,9 +655,21 @@ const updateTournament = async (c: Context) => {
           name: udata.name,
           location: udata.location,
           date: udata.date,
-          participants: udata.participants,
-          result: udata.result,
-          contract: udata.contract, 
+          participants: udata.participants
+            ? {
+                connect: udata.participants.map((participant) => ({ id: participant.id })),
+              }
+            : undefined,
+          result: udata.result
+            ? {
+                connect: { id: udata.result.id }
+              }
+            : undefined,
+          contract: udata.contract
+            ? {
+                connect: { id: udata.contract.id }
+              }
+            : undefined,
         },
       });
       return c.json({ success: "Tournament updated successfully", tournament: utournament }, 200);
