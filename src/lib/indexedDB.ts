@@ -12,12 +12,6 @@ const STORE_NAME = "user";
 // admin store
 const ADMIN_STORE_NAME = "users";
 
-// competition store
-// const STORE_NAME_COMP = "competition";
-//
-// tournament store
-// const STORE_NAME_TOURN = "tournament";
-//
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -111,7 +105,6 @@ export async function loadAllUsers(): Promise<User | undefined> {
   });
 }
 
-// Assuming you want to get user by email, you need to create an index for email
 export async function loadUserByEmail(
   email: string,
 ): Promise<User | undefined> {

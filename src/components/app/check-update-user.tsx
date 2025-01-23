@@ -39,7 +39,7 @@ export const CheckForUpdate = ({ children }: { children: React.ReactNode }) => {
     if (user && isOnline) {
       getTimestamps();
     }
-  }, [user, isOnline]); // Dependencies for the useEffect
+  }, [user, isOnline]);
 
   useEffect(() => {
     const checkForUpdate = async () => {

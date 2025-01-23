@@ -11,6 +11,8 @@ export const Route = createFileRoute("/")({
     useEffect(() => {
       if (user) {
         router.navigate({ to: "/v1/settings/account" });
+      } else {
+        router.navigate({ to: "/login" });
       }
     }, [user, router]);
 
