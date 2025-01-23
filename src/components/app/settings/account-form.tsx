@@ -65,11 +65,11 @@ export const AccountForm = () => {
               disabled={loading}
               control={form.control}
               name="surname"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Surname</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="surname" />
+                    <Input placeholder="surname" />
                   </FormControl>
                 </FormItem>
               )}
@@ -78,11 +78,11 @@ export const AccountForm = () => {
               disabled={loading}
               control={form.control}
               name="email"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="email" />
+                    <Input placeholder="email" />
                   </FormControl>
                 </FormItem>
               )}

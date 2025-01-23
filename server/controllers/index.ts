@@ -564,6 +564,10 @@ const deleteTournament = async (c: Context) => {
       }
     }
 
+    console.log("Wiping database entrys for files");
+    await db.file.delete({ where: { id: tournament.result?.id } });
+    await db.file.delete({ where: { id: tournament.contract?.id } });
+
     await db.tournament.delete({ where: { id: data.id } });
     return c.json({ success: "Tournament deleted successfully" });
   } else if (!data.id) {

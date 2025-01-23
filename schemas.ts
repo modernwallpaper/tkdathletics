@@ -127,9 +127,9 @@ const NotificationsSchema = z.object({
 const UpdateUserSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().nullable(),
   password: z.string().min(6).optional(),
-  surname: z.string().optional(),
+  surname: z.string().optional().nullable(),
   birthday: z
     .string()
     .refine(

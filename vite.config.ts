@@ -13,7 +13,7 @@ export default defineConfig({
       srcDir: "src",
       filename: "sw.ts",
       registerType: "autoUpdate",
-      injectRegister: false,
+      injectRegister: "auto",
 
       pwaAssets: {
         disabled: false,
