@@ -19,7 +19,8 @@ const UserSchema = z.object({
       },
     )
     .transform((dateString) => new Date(dateString))
-    .optional().nullable(),
+    .optional()
+    .nullable(),
   img: z.string().optional().optional().nullable(),
   kup: z
     .enum([
@@ -35,7 +36,8 @@ const UserSchema = z.object({
       "TEN",
       "DAN",
     ])
-    .optional().nullable(),
+    .optional()
+    .nullable(),
   weight_class: z
     .enum([
       "TO_22KG",
@@ -88,9 +90,13 @@ const UserSchema = z.object({
       "PLUS_80KG",
       "PLUS_87KG",
     ])
-    .optional().nullable(),
+    .optional()
+    .nullable(),
   gender: z.enum(["MALE", "FEMALE"]).optional().nullable(),
-  ag: z.enum(["SENIOR", "YOUTHA", "YOUTHB", "YOUTHC", "YOUTHD"]).optional().nullable(),
+  ag: z
+    .enum(["SENIOR", "YOUTHA", "YOUTHB", "YOUTHC", "YOUTHD"])
+    .optional()
+    .nullable(),
   pg: z.enum(["KADETS", "LK1", "LK2"]).optional().nullable(),
   failed_logins: z.number().optional().nullable(),
   authority: z.enum(["USER", "ADMIN"]).optional().nullable(),
@@ -272,7 +278,7 @@ const UpdateTournamentSchemaBackend = z.object({
   result: TournamentFileSchema.optional(),
   contract: TournamentFileSchema.optional(),
   participants: z.array(UserSchema).optional(),
-})
+});
 
 const TournamentSchema = z.object({
   id: z.string().optional(),

@@ -1,32 +1,50 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { getAllUsers } from "@/hooks/getAllUsers";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
-import { TournamentSchema, UpdateTournamentSchema } from "../../../../../schemas";
+import {
+  TournamentSchema,
+  UpdateTournamentSchema,
+} from "../../../../../schemas";
 import { z } from "zod";
 import { useUpdateTournament } from "@/hooks/useUpdateTournament";
 
-export const UpdateTournamentForm = ({ 
-  tournament, 
-  dataLoading, 
-  fileLoading, 
-}: { 
-  tournament: z.infer<typeof TournamentSchema>, 
-  dataLoading: boolean, 
-  fileLoading: boolean, 
+export const UpdateTournamentForm = ({
+  tournament,
+  dataLoading,
+  fileLoading,
+}: {
+  tournament: z.infer<typeof TournamentSchema>;
+  dataLoading: boolean;
+  fileLoading: boolean;
 }) => {
   const form = useForm<z.infer<typeof UpdateTournamentSchema>>({
     resolver: zodResolver(UpdateTournamentSchema),
-    defaultValues: { 
+    defaultValues: {
       ...tournament,
       date: tournament.date ? new Date(tournament.date) : undefined,
       result: undefined,
@@ -37,14 +55,14 @@ export const UpdateTournamentForm = ({
 
   const { loading, users } = getAllUsers();
   const { loadingTournamentUpdate, update } = useUpdateTournament();
-  
-  if(!users) {
-    return <p>Internal server error...</p>
+
+  if (!users) {
+    return <p>Internal server error...</p>;
   }
 
-  const onSubmit = async(values: z.infer<typeof UpdateTournamentSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UpdateTournamentSchema>) => {
     await update(values);
-  }
+  };
 
   return (
     <div className="felx w-fit">
@@ -114,7 +132,7 @@ export const UpdateTournamentForm = ({
                           date > new Date() || date < new Date("1900-01-01")
                         }
                         initialFocus
-                       />
+                      />
                     </PopoverContent>
                   </Popover>
                 </FormItem>
@@ -129,8 +147,14 @@ export const UpdateTournamentForm = ({
                   <FormLabel>Results</FormLabel>
                   {tournament.resultUrl ? (
                     <div>
-                      <Button className="w-full mb-2" variant={"secondary"} asChild>
-                        <a href={tournament.resultUrl}>Already existing result upload</a>
+                      <Button
+                        className="w-full mb-2"
+                        variant={"secondary"}
+                        asChild
+                      >
+                        <a href={tournament.resultUrl}>
+                          Already existing result upload
+                        </a>
                       </Button>
                       <FormControl>
                         <Input
@@ -153,7 +177,7 @@ export const UpdateTournamentForm = ({
                           if (e.target.files?.[0]) {
                             field.onChange(e.target.files[0]);
                           } else {
-                              field.onChange(undefined);
+                            field.onChange(undefined);
                           }
                         }}
                       />
@@ -171,8 +195,14 @@ export const UpdateTournamentForm = ({
                   <FormLabel>Results</FormLabel>
                   {tournament.contractUrl ? (
                     <div>
-                      <Button className="w-full mb-2" variant={"secondary"} asChild>
-                        <a href={tournament.contractUrl}>Already existing contract upload</a>
+                      <Button
+                        className="w-full mb-2"
+                        variant={"secondary"}
+                        asChild
+                      >
+                        <a href={tournament.contractUrl}>
+                          Already existing contract upload
+                        </a>
                       </Button>
                       <FormControl>
                         <Input
@@ -225,12 +255,23 @@ export const UpdateTournamentForm = ({
                                   <DropdownMenuCheckboxItem
                                     key={user.id}
                                     onCheckedChange={() => {
-                                      const newValue = field.value?.some((participant) => participant.id === user.id)
-                                        ? field.value.filter((participant) => participant.id !== user.id)
+                                      const newValue = field.value?.some(
+                                        (participant) =>
+                                          participant.id === user.id,
+                                      )
+                                        ? field.value.filter(
+                                            (participant) =>
+                                              participant.id !== user.id,
+                                          )
                                         : [...(field.value || []), user];
                                       field.onChange(newValue);
                                     }}
-                                    checked={field.value?.some((participant) => participant.id === user.id) || false}
+                                    checked={
+                                      field.value?.some(
+                                        (participant) =>
+                                          participant.id === user.id,
+                                      ) || false
+                                    }
                                   >
                                     <p key={user.id}>{user.name}</p>
                                   </DropdownMenuCheckboxItem>

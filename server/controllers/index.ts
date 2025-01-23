@@ -463,7 +463,6 @@ const getTournamentsForUser = async (c: Context) => {
   }
 };
 
-
 const saveSubscription = async (c: Context) => {
   const { subscription, userId } = await c.req.json();
 
@@ -520,7 +519,9 @@ const getAllTournaments = async (c: Context) => {
 
   const sanitizedTournaments = tournaments.map((tournament) => ({
     ...tournament,
-    participants: tournament.participants.map(({ password, ...participant }) => participant),
+    participants: tournament.participants.map(
+      ({ password, ...participant }) => participant,
+    ),
   }));
 
   return c.json(sanitizedTournaments, 200);
@@ -529,38 +530,43 @@ const getAllTournaments = async (c: Context) => {
 const deleteTournament = async (c: Context) => {
   const data = await c.req.json();
   if (data.id) {
-    const tournament = await db.tournament.findUnique({ 
+    const tournament = await db.tournament.findUnique({
       where: { id: data.id },
       include: {
         contract: true,
         result: true,
-      }
+      },
     });
 
-    if(!tournament) {
+    if (!tournament) {
       return c.json({ error: "No tournament found for given id" }, 404);
     }
 
-
-    if(tournament.result?.url) {
-      const result_path = path.resolve("."+tournament?.result?.url);
+    if (tournament.result?.url) {
+      const result_path = path.resolve("." + tournament?.result?.url);
       console.log("path to delete: ", result_path);
-      if(fs.existsSync(result_path)) {
+      if (fs.existsSync(result_path)) {
         console.log("path exists, deleting: ", result_path);
         fs.removeSync(result_path);
       } else {
-        console.log("Result file path is not available for tournament with id: ", tournament.id);
+        console.log(
+          "Result file path is not available for tournament with id: ",
+          tournament.id,
+        );
       }
     }
 
-    if(tournament.contract?.url) {
-      const contract_path = path.resolve("."+tournament?.contract?.url);
+    if (tournament.contract?.url) {
+      const contract_path = path.resolve("." + tournament?.contract?.url);
       console.log("path to delete: ", contract_path);
-      if(fs.existsSync(contract_path)) {
+      if (fs.existsSync(contract_path)) {
         console.log("path exists, deleting: ", contract_path);
         fs.removeSync(contract_path);
       } else {
-        console.log("Contract file path is not available for tournament with id: ", tournament.id);
+        console.log(
+          "Contract file path is not available for tournament with id: ",
+          tournament.id,
+        );
       }
     }
 
@@ -613,28 +619,25 @@ const createTorunament = async (c: Context) => {
     },
   });
 
-  return c.json({ tournament, success: "Tournament created successfully" }, 201);
+  return c.json(
+    { tournament, success: "Tournament created successfully" },
+    201,
+  );
 };
 
 const updateTournament = async (c: Context) => {
   const data = await c.req.json();
-  if(data.date) {
+  if (data.date) {
     data.date = new Date(data.date);
   }
   const validatedFields = UpdateTournamentSchemaBackend.safeParse(data);
-  if(!validatedFields.success) {
+  if (!validatedFields.success) {
     console.error(validatedFields.error);
     return c.json({ error: "Invalid fields" }, 400);
   }
 
-  const {
-    name,
-    location,
-    date,
-    result,
-    contract,
-    participants,
-  } = validatedFields.data;
+  const { name, location, date, result, contract, participants } =
+    validatedFields.data;
 
   const udata: Partial<typeof validatedFields.data> = {};
 
@@ -649,39 +652,44 @@ const updateTournament = async (c: Context) => {
     return c.json({ error: "No fields for update provided" });
   }
 
-  const existingTournament = await getTournamentById(validatedFields.data.id); 
+  const existingTournament = await getTournamentById(validatedFields.data.id);
 
   try {
     if (existingTournament) {
       const utournament = await db.tournament.update({
         where: { id: validatedFields.data.id },
-        data: { 
+        data: {
           name: udata.name,
           location: udata.location,
           date: udata.date,
           participants: udata.participants
             ? {
-                connect: udata.participants.map((participant) => ({ id: participant.id })),
+                connect: udata.participants.map((participant) => ({
+                  id: participant.id,
+                })),
               }
             : undefined,
           result: udata.result
             ? {
-                connect: { id: udata.result.id }
+                connect: { id: udata.result.id },
               }
             : undefined,
           contract: udata.contract
             ? {
-                connect: { id: udata.contract.id }
+                connect: { id: udata.contract.id },
               }
             : undefined,
         },
       });
-      return c.json({ success: "Tournament updated successfully", tournament: utournament }, 200);
+      return c.json(
+        { success: "Tournament updated successfully", tournament: utournament },
+        200,
+      );
     }
   } catch (err) {
     return c.json({ error: err }, 500);
   }
-}
+};
 
 const uploadTournamentFile = async (c: Context) => {
   const uploadDir = path.resolve("./uploads/");

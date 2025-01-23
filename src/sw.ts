@@ -20,7 +20,7 @@ let allowlist: RegExp[] | undefined;
 // in dev mode, we disable precaching to avoid caching issues
 if (import.meta.env.DEV) allowlist = [/^\/.*/, /^\/$/];
 
-// Cache api route in a specific manner 
+// Cache api route in a specific manner
 registerRoute(
   ({ url }) => url.pathname.startsWith("/api/"),
   new StaleWhileRevalidate({
@@ -28,13 +28,13 @@ registerRoute(
   }),
 );
 
-// Dont cache upload route 
+// Dont cache upload route
 registerRoute(
-   ({ url }) => url.pathname.startsWith("/uploads/"),
-   new NetworkOnly({
-      plugins: [],
-   }),
-   "GET",
+  ({ url }) => url.pathname.startsWith("/uploads/"),
+  new NetworkOnly({
+    plugins: [],
+  }),
+  "GET",
 );
 
 // to allow work offline

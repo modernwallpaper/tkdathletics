@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import { UpdateTournamentSchema } from "schemas";
 import { z } from "zod";
 import { useUploadTournamentFile } from "./useUploadTournamentFile";
@@ -7,7 +7,7 @@ export const useUpdateTournament = () => {
   const [loadingTournamentUpdate, setLoading] = useState<boolean>(false);
   const [errorTournamentUpdate, setError] = useState<string>("");
   const [successTournamentUpdate, setSuccess] = useState<string>("");
-  
+
   const { UploadFile } = useUploadTournamentFile();
 
   const update = async (values: z.infer<typeof UpdateTournamentSchema>) => {
@@ -16,7 +16,7 @@ export const useUpdateTournament = () => {
     setSuccess("");
 
     const { result, contract, ...tournamentData } = values;
-    const uploadedResult = result ? await  UploadFile(result) : null;
+    const uploadedResult = result ? await UploadFile(result) : null;
     const uploadedContract = contract ? await UploadFile(contract) : null;
 
     const finalData = {
@@ -42,7 +42,7 @@ export const useUpdateTournament = () => {
     });
 
     const res = await req.json();
-    if(res.success) {
+    if (res.success) {
       setSuccess("Update request was successfull");
       sessionStorage.setItem("toastMessage", res.success);
       setError("");
@@ -50,16 +50,21 @@ export const useUpdateTournament = () => {
       setLoading(false);
     }
 
-    if(!res.ok) {
-      if(res.error) {
+    if (!res.ok) {
+      if (res.error) {
         setError("Invalid values");
         sessionStorage.setItem("toastMessage", res.error);
-        setSuccess("")
+        setSuccess("");
         window.location.reload();
         setLoading(false);
       }
     }
-  }
+  };
 
-  return { loadingTournamentUpdate, errorTournamentUpdate, successTournamentUpdate, update };
-}
+  return {
+    loadingTournamentUpdate,
+    errorTournamentUpdate,
+    successTournamentUpdate,
+    update,
+  };
+};

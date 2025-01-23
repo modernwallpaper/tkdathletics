@@ -84,9 +84,7 @@ export const UpdateUserForm = () => {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="someone@example.com"
-                            />
+                            <Input placeholder="someone@example.com" />
                           </FormControl>
                         </FormItem>
                       )}

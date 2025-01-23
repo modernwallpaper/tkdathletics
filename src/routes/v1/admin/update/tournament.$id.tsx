@@ -3,31 +3,37 @@ import { getAllTournaments } from "@/hooks/getAllTournamennts";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/v1/admin/update/tournament/$id")({
-  component: Comp, 
+  component: Comp,
 });
 
 function Comp() {
-  const { id } = Route.useParams()
-  
+  const { id } = Route.useParams();
+
   const { loading, error, tournaments } = getAllTournaments();
 
-  if(loading) {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
-  if(error) {
+  if (error) {
     return <p>Error: {error}</p>;
   }
 
-  const tournamentToUpdate = tournaments?.find((tournament) => tournament.id === id);
+  const tournamentToUpdate = tournaments?.find(
+    (tournament) => tournament.id === id,
+  );
 
-  if(!tournamentToUpdate) {
+  if (!tournamentToUpdate) {
     return <p>No tournament found with ID {id}</p>;
   }
 
-  return(
+  return (
     <div className="flex w-full h-full items-center justify-center">
-      <UpdateTournamentForm dataLoading={loading} fileLoading={loading} tournament={tournamentToUpdate} />
+      <UpdateTournamentForm
+        dataLoading={loading}
+        fileLoading={loading}
+        tournament={tournamentToUpdate}
+      />
     </div>
-  )
+  );
 }

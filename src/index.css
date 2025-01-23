@@ -22,7 +22,8 @@ body,
 /* For mobile screens */
 @media (max-width: 768px) {
   /* Hide horizontal scrollbar */
-  body, html {
+  body,
+  html {
     overflow-x: hidden;
   }
 

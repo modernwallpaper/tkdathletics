@@ -10,7 +10,7 @@ import path from "path";
 import fs from "fs";
 import mime from "mime";
 import chalk from "chalk";
-import { secureHeaders } from "hono/secure-headers"
+import { secureHeaders } from "hono/secure-headers";
 
 // Create a server admin if it doesnt exist
 const initAdmin = async () => {
@@ -39,9 +39,13 @@ const initAdmin = async () => {
         timestamp: new Date(),
       },
     });
-    console.log(`${chalk.cyan(`${chalk.blue("[+]")} New server admin created successfully`)}`);
+    console.log(
+      `${chalk.cyan(`${chalk.blue("[+]")} New server admin created successfully`)}`,
+    );
   } else {
-    console.log(`${chalk.cyan(`${chalk.blue("[i]")} Server admin already created`)}`);
+    console.log(
+      `${chalk.cyan(`${chalk.blue("[i]")} Server admin already created`)}`,
+    );
   }
 };
 initAdmin();
@@ -68,12 +72,12 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 const app = new Hono();
 
 // Logging
-if(import.meta.env.NODE_ENV === "development") {
+if (import.meta.env.NODE_ENV === "development") {
   app.use("*", logger());
-} else if(import.meta.env.NODE_ENV === "production") {
+} else if (import.meta.env.NODE_ENV === "production") {
   app.use("*", async (c, next) => {
     const info = getConnInfo(c);
-    
+
     await next();
 
     console.log(`
@@ -94,7 +98,7 @@ if(import.meta.env.NODE_ENV === "development") {
 } else {
   app.use("*", async (c, next) => {
     const info = getConnInfo(c);
-    
+
     await next();
 
     console.log(`
@@ -115,7 +119,7 @@ if(import.meta.env.NODE_ENV === "development") {
 }
 
 // Secure headers
-app.use(secureHeaders())
+app.use(secureHeaders());
 
 // Setup routes
 app.route("/api/", routes);
