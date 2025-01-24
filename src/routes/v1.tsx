@@ -21,7 +21,7 @@ export const Route = createFileRoute("/v1")({
             <header className="sticky top-0 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <Navbar />
             </header>
-            <div className="flex-1">
+            <div className="flex-1 lg:pr-20 lg:pl-20 pt-5">
               <Outlet />
             </div>
           </main>

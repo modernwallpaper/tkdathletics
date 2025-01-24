@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   ColumnDef,
@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Eye } from "lucide-react";
+import { ArrowLeft, ArrowRight, CirclePlus, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -28,6 +28,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -58,6 +59,10 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  useEffect(() => {
+    table.setPageSize(5);
+  }, [table])
+  
   return (
     <div>
       <div className="flex items-center py-4">
@@ -72,8 +77,7 @@ export function DataTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              <Eye className="mr-2 h-4 w-4" />
-              <p>Columnns</p>
+              <Eye className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -150,9 +154,14 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1">
           <Button asChild>
-            <a href="/v1/admin/create/tournament/">Create Tournament</a>
+            <a href="/v1/admin/create/tournament">
+              <CirclePlus className="h-4 w-4 mr-2"/>
+              <p>Create Tournament</p>
+            </a>
           </Button>
         </div>
+        <div>{table.getState().pagination.pageIndex + 1}</div>
+        <Separator orientation="vertical" className="pt-4 pb-4 mr-2 ml-2"/>
         <div className="space-x-2">
           <Button
             variant="outline"

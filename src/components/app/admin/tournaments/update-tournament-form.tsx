@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { CardHeader, CardTitle } from "@/components/ui/card";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -66,9 +66,16 @@ export const UpdateTournamentForm = ({
 
   return (
     <div className="felx w-fit">
-      <CardHeader>
-        <CardTitle>Update Tournament</CardTitle>
-      </CardHeader>
+      <div>
+        <CardHeader>
+          <CardTitle>
+            Update <code>{tournament.id}</code>
+          </CardTitle>
+          <CardDescription>
+            Enter the new tournament information to update
+          </CardDescription>
+        </CardHeader>
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-2">

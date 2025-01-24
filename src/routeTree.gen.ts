@@ -10,320 +10,335 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as V1Import } from "./routes/v1";
-import { Route as IndexImport } from "./routes/index";
-import { Route as V1IndexImport } from "./routes/v1/index";
-import { Route as LoginIndexImport } from "./routes/login/index";
-import { Route as V1SettingsImport } from "./routes/v1/settings";
-import { Route as V1TrainingIndexImport } from "./routes/v1/training/index";
-import { Route as V1SettingsIndexImport } from "./routes/v1/settings/index";
-import { Route as V1ScorecardIndexImport } from "./routes/v1/scorecard/index";
-import { Route as V1EventsIndexImport } from "./routes/v1/events/index";
-import { Route as V1CompetitionsIndexImport } from "./routes/v1/competitions/index";
-import { Route as V1AnalysisIndexImport } from "./routes/v1/analysis/index";
-import { Route as V1AdminIndexImport } from "./routes/v1/admin/index";
-import { Route as V1SettingsNotificationsIndexImport } from "./routes/v1/settings/notifications/index";
-import { Route as V1SettingsCompetitionDataIndexImport } from "./routes/v1/settings/competition-data/index";
-import { Route as V1SettingsAccountIndexImport } from "./routes/v1/settings/account/index";
-import { Route as V1AdminCreateUserImport } from "./routes/v1/admin/create/user";
-import { Route as V1AdminCreateTournamentImport } from "./routes/v1/admin/create/tournament";
-import { Route as V1AdminUpdateUserIdImport } from "./routes/v1/admin/update/user.$id";
-import { Route as V1AdminUpdateTournamentIdImport } from "./routes/v1/admin/update/tournament.$id";
-import { Route as V1AdminDeleteUserIdImport } from "./routes/v1/admin/delete/user.$id";
-import { Route as V1AdminDeleteTournamentIdImport } from "./routes/v1/admin/delete/tournament.$id";
+import { Route as rootRoute } from './routes/__root'
+import { Route as V1Import } from './routes/v1'
+import { Route as IndexImport } from './routes/index'
+import { Route as V1IndexImport } from './routes/v1/index'
+import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as V1SettingsImport } from './routes/v1/settings'
+import { Route as V1TrainingIndexImport } from './routes/v1/training/index'
+import { Route as V1SettingsIndexImport } from './routes/v1/settings/index'
+import { Route as V1ScorecardIndexImport } from './routes/v1/scorecard/index'
+import { Route as V1EventsIndexImport } from './routes/v1/events/index'
+import { Route as V1CompetitionsIndexImport } from './routes/v1/competitions/index'
+import { Route as V1AnalysisIndexImport } from './routes/v1/analysis/index'
+import { Route as V1AdminIndexImport } from './routes/v1/admin/index'
+import { Route as V1SettingsOfflineIndexImport } from './routes/v1/settings/offline/index'
+import { Route as V1SettingsNotificationsIndexImport } from './routes/v1/settings/notifications/index'
+import { Route as V1SettingsCompetitionDataIndexImport } from './routes/v1/settings/competition-data/index'
+import { Route as V1SettingsAccountIndexImport } from './routes/v1/settings/account/index'
+import { Route as V1AdminCreateUserImport } from './routes/v1/admin/create/user'
+import { Route as V1AdminCreateTournamentImport } from './routes/v1/admin/create/tournament'
+import { Route as V1AdminUpdateUserIdImport } from './routes/v1/admin/update/user.$id'
+import { Route as V1AdminUpdateTournamentIdImport } from './routes/v1/admin/update/tournament.$id'
+import { Route as V1AdminDeleteUserIdImport } from './routes/v1/admin/delete/user.$id'
+import { Route as V1AdminDeleteTournamentIdImport } from './routes/v1/admin/delete/tournament.$id'
 
 // Create/Update Routes
 
 const V1Route = V1Import.update({
-  id: "/v1",
-  path: "/v1",
+  id: '/v1',
+  path: '/v1',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const V1IndexRoute = V1IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const LoginIndexRoute = LoginIndexImport.update({
-  id: "/login/",
-  path: "/login/",
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const V1SettingsRoute = V1SettingsImport.update({
-  id: "/settings",
-  path: "/settings",
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1TrainingIndexRoute = V1TrainingIndexImport.update({
-  id: "/training/",
-  path: "/training/",
+  id: '/training/',
+  path: '/training/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1SettingsIndexRoute = V1SettingsIndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => V1SettingsRoute,
-} as any);
+} as any)
 
 const V1ScorecardIndexRoute = V1ScorecardIndexImport.update({
-  id: "/scorecard/",
-  path: "/scorecard/",
+  id: '/scorecard/',
+  path: '/scorecard/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1EventsIndexRoute = V1EventsIndexImport.update({
-  id: "/events/",
-  path: "/events/",
+  id: '/events/',
+  path: '/events/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1CompetitionsIndexRoute = V1CompetitionsIndexImport.update({
-  id: "/competitions/",
-  path: "/competitions/",
+  id: '/competitions/',
+  path: '/competitions/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AnalysisIndexRoute = V1AnalysisIndexImport.update({
-  id: "/analysis/",
-  path: "/analysis/",
+  id: '/analysis/',
+  path: '/analysis/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminIndexRoute = V1AdminIndexImport.update({
-  id: "/admin/",
-  path: "/admin/",
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
+
+const V1SettingsOfflineIndexRoute = V1SettingsOfflineIndexImport.update({
+  id: '/offline/',
+  path: '/offline/',
+  getParentRoute: () => V1SettingsRoute,
+} as any)
 
 const V1SettingsNotificationsIndexRoute =
   V1SettingsNotificationsIndexImport.update({
-    id: "/notifications/",
-    path: "/notifications/",
+    id: '/notifications/',
+    path: '/notifications/',
     getParentRoute: () => V1SettingsRoute,
-  } as any);
+  } as any)
 
 const V1SettingsCompetitionDataIndexRoute =
   V1SettingsCompetitionDataIndexImport.update({
-    id: "/competition-data/",
-    path: "/competition-data/",
+    id: '/competition-data/',
+    path: '/competition-data/',
     getParentRoute: () => V1SettingsRoute,
-  } as any);
+  } as any)
 
 const V1SettingsAccountIndexRoute = V1SettingsAccountIndexImport.update({
-  id: "/account/",
-  path: "/account/",
+  id: '/account/',
+  path: '/account/',
   getParentRoute: () => V1SettingsRoute,
-} as any);
+} as any)
 
 const V1AdminCreateUserRoute = V1AdminCreateUserImport.update({
-  id: "/admin/create/user",
-  path: "/admin/create/user",
+  id: '/admin/create/user',
+  path: '/admin/create/user',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminCreateTournamentRoute = V1AdminCreateTournamentImport.update({
-  id: "/admin/create/tournament",
-  path: "/admin/create/tournament",
+  id: '/admin/create/tournament',
+  path: '/admin/create/tournament',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminUpdateUserIdRoute = V1AdminUpdateUserIdImport.update({
-  id: "/admin/update/user/$id",
-  path: "/admin/update/user/$id",
+  id: '/admin/update/user/$id',
+  path: '/admin/update/user/$id',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminUpdateTournamentIdRoute = V1AdminUpdateTournamentIdImport.update({
-  id: "/admin/update/tournament/$id",
-  path: "/admin/update/tournament/$id",
+  id: '/admin/update/tournament/$id',
+  path: '/admin/update/tournament/$id',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminDeleteUserIdRoute = V1AdminDeleteUserIdImport.update({
-  id: "/admin/delete/user/$id",
-  path: "/admin/delete/user/$id",
+  id: '/admin/delete/user/$id',
+  path: '/admin/delete/user/$id',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 const V1AdminDeleteTournamentIdRoute = V1AdminDeleteTournamentIdImport.update({
-  id: "/admin/delete/tournament/$id",
-  path: "/admin/delete/tournament/$id",
+  id: '/admin/delete/tournament/$id',
+  path: '/admin/delete/tournament/$id',
   getParentRoute: () => V1Route,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/v1": {
-      id: "/v1";
-      path: "/v1";
-      fullPath: "/v1";
-      preLoaderRoute: typeof V1Import;
-      parentRoute: typeof rootRoute;
-    };
-    "/v1/settings": {
-      id: "/v1/settings";
-      path: "/settings";
-      fullPath: "/v1/settings";
-      preLoaderRoute: typeof V1SettingsImport;
-      parentRoute: typeof V1Import;
-    };
-    "/login/": {
-      id: "/login/";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginIndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/v1/": {
-      id: "/v1/";
-      path: "/";
-      fullPath: "/v1/";
-      preLoaderRoute: typeof V1IndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/": {
-      id: "/v1/admin/";
-      path: "/admin";
-      fullPath: "/v1/admin";
-      preLoaderRoute: typeof V1AdminIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/analysis/": {
-      id: "/v1/analysis/";
-      path: "/analysis";
-      fullPath: "/v1/analysis";
-      preLoaderRoute: typeof V1AnalysisIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/competitions/": {
-      id: "/v1/competitions/";
-      path: "/competitions";
-      fullPath: "/v1/competitions";
-      preLoaderRoute: typeof V1CompetitionsIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/events/": {
-      id: "/v1/events/";
-      path: "/events";
-      fullPath: "/v1/events";
-      preLoaderRoute: typeof V1EventsIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/scorecard/": {
-      id: "/v1/scorecard/";
-      path: "/scorecard";
-      fullPath: "/v1/scorecard";
-      preLoaderRoute: typeof V1ScorecardIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/settings/": {
-      id: "/v1/settings/";
-      path: "/";
-      fullPath: "/v1/settings/";
-      preLoaderRoute: typeof V1SettingsIndexImport;
-      parentRoute: typeof V1SettingsImport;
-    };
-    "/v1/training/": {
-      id: "/v1/training/";
-      path: "/training";
-      fullPath: "/v1/training";
-      preLoaderRoute: typeof V1TrainingIndexImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/create/tournament": {
-      id: "/v1/admin/create/tournament";
-      path: "/admin/create/tournament";
-      fullPath: "/v1/admin/create/tournament";
-      preLoaderRoute: typeof V1AdminCreateTournamentImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/create/user": {
-      id: "/v1/admin/create/user";
-      path: "/admin/create/user";
-      fullPath: "/v1/admin/create/user";
-      preLoaderRoute: typeof V1AdminCreateUserImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/settings/account/": {
-      id: "/v1/settings/account/";
-      path: "/account";
-      fullPath: "/v1/settings/account";
-      preLoaderRoute: typeof V1SettingsAccountIndexImport;
-      parentRoute: typeof V1SettingsImport;
-    };
-    "/v1/settings/competition-data/": {
-      id: "/v1/settings/competition-data/";
-      path: "/competition-data";
-      fullPath: "/v1/settings/competition-data";
-      preLoaderRoute: typeof V1SettingsCompetitionDataIndexImport;
-      parentRoute: typeof V1SettingsImport;
-    };
-    "/v1/settings/notifications/": {
-      id: "/v1/settings/notifications/";
-      path: "/notifications";
-      fullPath: "/v1/settings/notifications";
-      preLoaderRoute: typeof V1SettingsNotificationsIndexImport;
-      parentRoute: typeof V1SettingsImport;
-    };
-    "/v1/admin/delete/tournament/$id": {
-      id: "/v1/admin/delete/tournament/$id";
-      path: "/admin/delete/tournament/$id";
-      fullPath: "/v1/admin/delete/tournament/$id";
-      preLoaderRoute: typeof V1AdminDeleteTournamentIdImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/delete/user/$id": {
-      id: "/v1/admin/delete/user/$id";
-      path: "/admin/delete/user/$id";
-      fullPath: "/v1/admin/delete/user/$id";
-      preLoaderRoute: typeof V1AdminDeleteUserIdImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/update/tournament/$id": {
-      id: "/v1/admin/update/tournament/$id";
-      path: "/admin/update/tournament/$id";
-      fullPath: "/v1/admin/update/tournament/$id";
-      preLoaderRoute: typeof V1AdminUpdateTournamentIdImport;
-      parentRoute: typeof V1Import;
-    };
-    "/v1/admin/update/user/$id": {
-      id: "/v1/admin/update/user/$id";
-      path: "/admin/update/user/$id";
-      fullPath: "/v1/admin/update/user/$id";
-      preLoaderRoute: typeof V1AdminUpdateUserIdImport;
-      parentRoute: typeof V1Import;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/v1': {
+      id: '/v1'
+      path: '/v1'
+      fullPath: '/v1'
+      preLoaderRoute: typeof V1Import
+      parentRoute: typeof rootRoute
+    }
+    '/v1/settings': {
+      id: '/v1/settings'
+      path: '/settings'
+      fullPath: '/v1/settings'
+      preLoaderRoute: typeof V1SettingsImport
+      parentRoute: typeof V1Import
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/v1/': {
+      id: '/v1/'
+      path: '/'
+      fullPath: '/v1/'
+      preLoaderRoute: typeof V1IndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/': {
+      id: '/v1/admin/'
+      path: '/admin'
+      fullPath: '/v1/admin'
+      preLoaderRoute: typeof V1AdminIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/analysis/': {
+      id: '/v1/analysis/'
+      path: '/analysis'
+      fullPath: '/v1/analysis'
+      preLoaderRoute: typeof V1AnalysisIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/competitions/': {
+      id: '/v1/competitions/'
+      path: '/competitions'
+      fullPath: '/v1/competitions'
+      preLoaderRoute: typeof V1CompetitionsIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/events/': {
+      id: '/v1/events/'
+      path: '/events'
+      fullPath: '/v1/events'
+      preLoaderRoute: typeof V1EventsIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/scorecard/': {
+      id: '/v1/scorecard/'
+      path: '/scorecard'
+      fullPath: '/v1/scorecard'
+      preLoaderRoute: typeof V1ScorecardIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/settings/': {
+      id: '/v1/settings/'
+      path: '/'
+      fullPath: '/v1/settings/'
+      preLoaderRoute: typeof V1SettingsIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/training/': {
+      id: '/v1/training/'
+      path: '/training'
+      fullPath: '/v1/training'
+      preLoaderRoute: typeof V1TrainingIndexImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/create/tournament': {
+      id: '/v1/admin/create/tournament'
+      path: '/admin/create/tournament'
+      fullPath: '/v1/admin/create/tournament'
+      preLoaderRoute: typeof V1AdminCreateTournamentImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/create/user': {
+      id: '/v1/admin/create/user'
+      path: '/admin/create/user'
+      fullPath: '/v1/admin/create/user'
+      preLoaderRoute: typeof V1AdminCreateUserImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/settings/account/': {
+      id: '/v1/settings/account/'
+      path: '/account'
+      fullPath: '/v1/settings/account'
+      preLoaderRoute: typeof V1SettingsAccountIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/settings/competition-data/': {
+      id: '/v1/settings/competition-data/'
+      path: '/competition-data'
+      fullPath: '/v1/settings/competition-data'
+      preLoaderRoute: typeof V1SettingsCompetitionDataIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/settings/notifications/': {
+      id: '/v1/settings/notifications/'
+      path: '/notifications'
+      fullPath: '/v1/settings/notifications'
+      preLoaderRoute: typeof V1SettingsNotificationsIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/settings/offline/': {
+      id: '/v1/settings/offline/'
+      path: '/offline'
+      fullPath: '/v1/settings/offline'
+      preLoaderRoute: typeof V1SettingsOfflineIndexImport
+      parentRoute: typeof V1SettingsImport
+    }
+    '/v1/admin/delete/tournament/$id': {
+      id: '/v1/admin/delete/tournament/$id'
+      path: '/admin/delete/tournament/$id'
+      fullPath: '/v1/admin/delete/tournament/$id'
+      preLoaderRoute: typeof V1AdminDeleteTournamentIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/delete/user/$id': {
+      id: '/v1/admin/delete/user/$id'
+      path: '/admin/delete/user/$id'
+      fullPath: '/v1/admin/delete/user/$id'
+      preLoaderRoute: typeof V1AdminDeleteUserIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/update/tournament/$id': {
+      id: '/v1/admin/update/tournament/$id'
+      path: '/admin/update/tournament/$id'
+      fullPath: '/v1/admin/update/tournament/$id'
+      preLoaderRoute: typeof V1AdminUpdateTournamentIdImport
+      parentRoute: typeof V1Import
+    }
+    '/v1/admin/update/user/$id': {
+      id: '/v1/admin/update/user/$id'
+      path: '/admin/update/user/$id'
+      fullPath: '/v1/admin/update/user/$id'
+      preLoaderRoute: typeof V1AdminUpdateUserIdImport
+      parentRoute: typeof V1Import
+    }
   }
 }
 
 // Create and export the route tree
 
 interface V1SettingsRouteChildren {
-  V1SettingsIndexRoute: typeof V1SettingsIndexRoute;
-  V1SettingsAccountIndexRoute: typeof V1SettingsAccountIndexRoute;
-  V1SettingsCompetitionDataIndexRoute: typeof V1SettingsCompetitionDataIndexRoute;
-  V1SettingsNotificationsIndexRoute: typeof V1SettingsNotificationsIndexRoute;
+  V1SettingsIndexRoute: typeof V1SettingsIndexRoute
+  V1SettingsAccountIndexRoute: typeof V1SettingsAccountIndexRoute
+  V1SettingsCompetitionDataIndexRoute: typeof V1SettingsCompetitionDataIndexRoute
+  V1SettingsNotificationsIndexRoute: typeof V1SettingsNotificationsIndexRoute
+  V1SettingsOfflineIndexRoute: typeof V1SettingsOfflineIndexRoute
 }
 
 const V1SettingsRouteChildren: V1SettingsRouteChildren = {
@@ -331,27 +346,28 @@ const V1SettingsRouteChildren: V1SettingsRouteChildren = {
   V1SettingsAccountIndexRoute: V1SettingsAccountIndexRoute,
   V1SettingsCompetitionDataIndexRoute: V1SettingsCompetitionDataIndexRoute,
   V1SettingsNotificationsIndexRoute: V1SettingsNotificationsIndexRoute,
-};
+  V1SettingsOfflineIndexRoute: V1SettingsOfflineIndexRoute,
+}
 
 const V1SettingsRouteWithChildren = V1SettingsRoute._addFileChildren(
   V1SettingsRouteChildren,
-);
+)
 
 interface V1RouteChildren {
-  V1SettingsRoute: typeof V1SettingsRouteWithChildren;
-  V1IndexRoute: typeof V1IndexRoute;
-  V1AdminIndexRoute: typeof V1AdminIndexRoute;
-  V1AnalysisIndexRoute: typeof V1AnalysisIndexRoute;
-  V1CompetitionsIndexRoute: typeof V1CompetitionsIndexRoute;
-  V1EventsIndexRoute: typeof V1EventsIndexRoute;
-  V1ScorecardIndexRoute: typeof V1ScorecardIndexRoute;
-  V1TrainingIndexRoute: typeof V1TrainingIndexRoute;
-  V1AdminCreateTournamentRoute: typeof V1AdminCreateTournamentRoute;
-  V1AdminCreateUserRoute: typeof V1AdminCreateUserRoute;
-  V1AdminDeleteTournamentIdRoute: typeof V1AdminDeleteTournamentIdRoute;
-  V1AdminDeleteUserIdRoute: typeof V1AdminDeleteUserIdRoute;
-  V1AdminUpdateTournamentIdRoute: typeof V1AdminUpdateTournamentIdRoute;
-  V1AdminUpdateUserIdRoute: typeof V1AdminUpdateUserIdRoute;
+  V1SettingsRoute: typeof V1SettingsRouteWithChildren
+  V1IndexRoute: typeof V1IndexRoute
+  V1AdminIndexRoute: typeof V1AdminIndexRoute
+  V1AnalysisIndexRoute: typeof V1AnalysisIndexRoute
+  V1CompetitionsIndexRoute: typeof V1CompetitionsIndexRoute
+  V1EventsIndexRoute: typeof V1EventsIndexRoute
+  V1ScorecardIndexRoute: typeof V1ScorecardIndexRoute
+  V1TrainingIndexRoute: typeof V1TrainingIndexRoute
+  V1AdminCreateTournamentRoute: typeof V1AdminCreateTournamentRoute
+  V1AdminCreateUserRoute: typeof V1AdminCreateUserRoute
+  V1AdminDeleteTournamentIdRoute: typeof V1AdminDeleteTournamentIdRoute
+  V1AdminDeleteUserIdRoute: typeof V1AdminDeleteUserIdRoute
+  V1AdminUpdateTournamentIdRoute: typeof V1AdminUpdateTournamentIdRoute
+  V1AdminUpdateUserIdRoute: typeof V1AdminUpdateUserIdRoute
 }
 
 const V1RouteChildren: V1RouteChildren = {
@@ -369,167 +385,173 @@ const V1RouteChildren: V1RouteChildren = {
   V1AdminDeleteUserIdRoute: V1AdminDeleteUserIdRoute,
   V1AdminUpdateTournamentIdRoute: V1AdminUpdateTournamentIdRoute,
   V1AdminUpdateUserIdRoute: V1AdminUpdateUserIdRoute,
-};
+}
 
-const V1RouteWithChildren = V1Route._addFileChildren(V1RouteChildren);
+const V1RouteWithChildren = V1Route._addFileChildren(V1RouteChildren)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/v1": typeof V1RouteWithChildren;
-  "/v1/settings": typeof V1SettingsRouteWithChildren;
-  "/login": typeof LoginIndexRoute;
-  "/v1/": typeof V1IndexRoute;
-  "/v1/admin": typeof V1AdminIndexRoute;
-  "/v1/analysis": typeof V1AnalysisIndexRoute;
-  "/v1/competitions": typeof V1CompetitionsIndexRoute;
-  "/v1/events": typeof V1EventsIndexRoute;
-  "/v1/scorecard": typeof V1ScorecardIndexRoute;
-  "/v1/settings/": typeof V1SettingsIndexRoute;
-  "/v1/training": typeof V1TrainingIndexRoute;
-  "/v1/admin/create/tournament": typeof V1AdminCreateTournamentRoute;
-  "/v1/admin/create/user": typeof V1AdminCreateUserRoute;
-  "/v1/settings/account": typeof V1SettingsAccountIndexRoute;
-  "/v1/settings/competition-data": typeof V1SettingsCompetitionDataIndexRoute;
-  "/v1/settings/notifications": typeof V1SettingsNotificationsIndexRoute;
-  "/v1/admin/delete/tournament/$id": typeof V1AdminDeleteTournamentIdRoute;
-  "/v1/admin/delete/user/$id": typeof V1AdminDeleteUserIdRoute;
-  "/v1/admin/update/tournament/$id": typeof V1AdminUpdateTournamentIdRoute;
-  "/v1/admin/update/user/$id": typeof V1AdminUpdateUserIdRoute;
+  '/': typeof IndexRoute
+  '/v1': typeof V1RouteWithChildren
+  '/v1/settings': typeof V1SettingsRouteWithChildren
+  '/login': typeof LoginIndexRoute
+  '/v1/': typeof V1IndexRoute
+  '/v1/admin': typeof V1AdminIndexRoute
+  '/v1/analysis': typeof V1AnalysisIndexRoute
+  '/v1/competitions': typeof V1CompetitionsIndexRoute
+  '/v1/events': typeof V1EventsIndexRoute
+  '/v1/scorecard': typeof V1ScorecardIndexRoute
+  '/v1/settings/': typeof V1SettingsIndexRoute
+  '/v1/training': typeof V1TrainingIndexRoute
+  '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
+  '/v1/admin/create/user': typeof V1AdminCreateUserRoute
+  '/v1/settings/account': typeof V1SettingsAccountIndexRoute
+  '/v1/settings/competition-data': typeof V1SettingsCompetitionDataIndexRoute
+  '/v1/settings/notifications': typeof V1SettingsNotificationsIndexRoute
+  '/v1/settings/offline': typeof V1SettingsOfflineIndexRoute
+  '/v1/admin/delete/tournament/$id': typeof V1AdminDeleteTournamentIdRoute
+  '/v1/admin/delete/user/$id': typeof V1AdminDeleteUserIdRoute
+  '/v1/admin/update/tournament/$id': typeof V1AdminUpdateTournamentIdRoute
+  '/v1/admin/update/user/$id': typeof V1AdminUpdateUserIdRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/login": typeof LoginIndexRoute;
-  "/v1": typeof V1IndexRoute;
-  "/v1/admin": typeof V1AdminIndexRoute;
-  "/v1/analysis": typeof V1AnalysisIndexRoute;
-  "/v1/competitions": typeof V1CompetitionsIndexRoute;
-  "/v1/events": typeof V1EventsIndexRoute;
-  "/v1/scorecard": typeof V1ScorecardIndexRoute;
-  "/v1/settings": typeof V1SettingsIndexRoute;
-  "/v1/training": typeof V1TrainingIndexRoute;
-  "/v1/admin/create/tournament": typeof V1AdminCreateTournamentRoute;
-  "/v1/admin/create/user": typeof V1AdminCreateUserRoute;
-  "/v1/settings/account": typeof V1SettingsAccountIndexRoute;
-  "/v1/settings/competition-data": typeof V1SettingsCompetitionDataIndexRoute;
-  "/v1/settings/notifications": typeof V1SettingsNotificationsIndexRoute;
-  "/v1/admin/delete/tournament/$id": typeof V1AdminDeleteTournamentIdRoute;
-  "/v1/admin/delete/user/$id": typeof V1AdminDeleteUserIdRoute;
-  "/v1/admin/update/tournament/$id": typeof V1AdminUpdateTournamentIdRoute;
-  "/v1/admin/update/user/$id": typeof V1AdminUpdateUserIdRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginIndexRoute
+  '/v1': typeof V1IndexRoute
+  '/v1/admin': typeof V1AdminIndexRoute
+  '/v1/analysis': typeof V1AnalysisIndexRoute
+  '/v1/competitions': typeof V1CompetitionsIndexRoute
+  '/v1/events': typeof V1EventsIndexRoute
+  '/v1/scorecard': typeof V1ScorecardIndexRoute
+  '/v1/settings': typeof V1SettingsIndexRoute
+  '/v1/training': typeof V1TrainingIndexRoute
+  '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
+  '/v1/admin/create/user': typeof V1AdminCreateUserRoute
+  '/v1/settings/account': typeof V1SettingsAccountIndexRoute
+  '/v1/settings/competition-data': typeof V1SettingsCompetitionDataIndexRoute
+  '/v1/settings/notifications': typeof V1SettingsNotificationsIndexRoute
+  '/v1/settings/offline': typeof V1SettingsOfflineIndexRoute
+  '/v1/admin/delete/tournament/$id': typeof V1AdminDeleteTournamentIdRoute
+  '/v1/admin/delete/user/$id': typeof V1AdminDeleteUserIdRoute
+  '/v1/admin/update/tournament/$id': typeof V1AdminUpdateTournamentIdRoute
+  '/v1/admin/update/user/$id': typeof V1AdminUpdateUserIdRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/v1": typeof V1RouteWithChildren;
-  "/v1/settings": typeof V1SettingsRouteWithChildren;
-  "/login/": typeof LoginIndexRoute;
-  "/v1/": typeof V1IndexRoute;
-  "/v1/admin/": typeof V1AdminIndexRoute;
-  "/v1/analysis/": typeof V1AnalysisIndexRoute;
-  "/v1/competitions/": typeof V1CompetitionsIndexRoute;
-  "/v1/events/": typeof V1EventsIndexRoute;
-  "/v1/scorecard/": typeof V1ScorecardIndexRoute;
-  "/v1/settings/": typeof V1SettingsIndexRoute;
-  "/v1/training/": typeof V1TrainingIndexRoute;
-  "/v1/admin/create/tournament": typeof V1AdminCreateTournamentRoute;
-  "/v1/admin/create/user": typeof V1AdminCreateUserRoute;
-  "/v1/settings/account/": typeof V1SettingsAccountIndexRoute;
-  "/v1/settings/competition-data/": typeof V1SettingsCompetitionDataIndexRoute;
-  "/v1/settings/notifications/": typeof V1SettingsNotificationsIndexRoute;
-  "/v1/admin/delete/tournament/$id": typeof V1AdminDeleteTournamentIdRoute;
-  "/v1/admin/delete/user/$id": typeof V1AdminDeleteUserIdRoute;
-  "/v1/admin/update/tournament/$id": typeof V1AdminUpdateTournamentIdRoute;
-  "/v1/admin/update/user/$id": typeof V1AdminUpdateUserIdRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/v1': typeof V1RouteWithChildren
+  '/v1/settings': typeof V1SettingsRouteWithChildren
+  '/login/': typeof LoginIndexRoute
+  '/v1/': typeof V1IndexRoute
+  '/v1/admin/': typeof V1AdminIndexRoute
+  '/v1/analysis/': typeof V1AnalysisIndexRoute
+  '/v1/competitions/': typeof V1CompetitionsIndexRoute
+  '/v1/events/': typeof V1EventsIndexRoute
+  '/v1/scorecard/': typeof V1ScorecardIndexRoute
+  '/v1/settings/': typeof V1SettingsIndexRoute
+  '/v1/training/': typeof V1TrainingIndexRoute
+  '/v1/admin/create/tournament': typeof V1AdminCreateTournamentRoute
+  '/v1/admin/create/user': typeof V1AdminCreateUserRoute
+  '/v1/settings/account/': typeof V1SettingsAccountIndexRoute
+  '/v1/settings/competition-data/': typeof V1SettingsCompetitionDataIndexRoute
+  '/v1/settings/notifications/': typeof V1SettingsNotificationsIndexRoute
+  '/v1/settings/offline/': typeof V1SettingsOfflineIndexRoute
+  '/v1/admin/delete/tournament/$id': typeof V1AdminDeleteTournamentIdRoute
+  '/v1/admin/delete/user/$id': typeof V1AdminDeleteUserIdRoute
+  '/v1/admin/update/tournament/$id': typeof V1AdminUpdateTournamentIdRoute
+  '/v1/admin/update/user/$id': typeof V1AdminUpdateUserIdRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/v1"
-    | "/v1/settings"
-    | "/login"
-    | "/v1/"
-    | "/v1/admin"
-    | "/v1/analysis"
-    | "/v1/competitions"
-    | "/v1/events"
-    | "/v1/scorecard"
-    | "/v1/settings/"
-    | "/v1/training"
-    | "/v1/admin/create/tournament"
-    | "/v1/admin/create/user"
-    | "/v1/settings/account"
-    | "/v1/settings/competition-data"
-    | "/v1/settings/notifications"
-    | "/v1/admin/delete/tournament/$id"
-    | "/v1/admin/delete/user/$id"
-    | "/v1/admin/update/tournament/$id"
-    | "/v1/admin/update/user/$id";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/v1'
+    | '/v1/settings'
+    | '/login'
+    | '/v1/'
+    | '/v1/admin'
+    | '/v1/analysis'
+    | '/v1/competitions'
+    | '/v1/events'
+    | '/v1/scorecard'
+    | '/v1/settings/'
+    | '/v1/training'
+    | '/v1/admin/create/tournament'
+    | '/v1/admin/create/user'
+    | '/v1/settings/account'
+    | '/v1/settings/competition-data'
+    | '/v1/settings/notifications'
+    | '/v1/settings/offline'
+    | '/v1/admin/delete/tournament/$id'
+    | '/v1/admin/delete/user/$id'
+    | '/v1/admin/update/tournament/$id'
+    | '/v1/admin/update/user/$id'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/login"
-    | "/v1"
-    | "/v1/admin"
-    | "/v1/analysis"
-    | "/v1/competitions"
-    | "/v1/events"
-    | "/v1/scorecard"
-    | "/v1/settings"
-    | "/v1/training"
-    | "/v1/admin/create/tournament"
-    | "/v1/admin/create/user"
-    | "/v1/settings/account"
-    | "/v1/settings/competition-data"
-    | "/v1/settings/notifications"
-    | "/v1/admin/delete/tournament/$id"
-    | "/v1/admin/delete/user/$id"
-    | "/v1/admin/update/tournament/$id"
-    | "/v1/admin/update/user/$id";
+    | '/'
+    | '/login'
+    | '/v1'
+    | '/v1/admin'
+    | '/v1/analysis'
+    | '/v1/competitions'
+    | '/v1/events'
+    | '/v1/scorecard'
+    | '/v1/settings'
+    | '/v1/training'
+    | '/v1/admin/create/tournament'
+    | '/v1/admin/create/user'
+    | '/v1/settings/account'
+    | '/v1/settings/competition-data'
+    | '/v1/settings/notifications'
+    | '/v1/settings/offline'
+    | '/v1/admin/delete/tournament/$id'
+    | '/v1/admin/delete/user/$id'
+    | '/v1/admin/update/tournament/$id'
+    | '/v1/admin/update/user/$id'
   id:
-    | "__root__"
-    | "/"
-    | "/v1"
-    | "/v1/settings"
-    | "/login/"
-    | "/v1/"
-    | "/v1/admin/"
-    | "/v1/analysis/"
-    | "/v1/competitions/"
-    | "/v1/events/"
-    | "/v1/scorecard/"
-    | "/v1/settings/"
-    | "/v1/training/"
-    | "/v1/admin/create/tournament"
-    | "/v1/admin/create/user"
-    | "/v1/settings/account/"
-    | "/v1/settings/competition-data/"
-    | "/v1/settings/notifications/"
-    | "/v1/admin/delete/tournament/$id"
-    | "/v1/admin/delete/user/$id"
-    | "/v1/admin/update/tournament/$id"
-    | "/v1/admin/update/user/$id";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/v1'
+    | '/v1/settings'
+    | '/login/'
+    | '/v1/'
+    | '/v1/admin/'
+    | '/v1/analysis/'
+    | '/v1/competitions/'
+    | '/v1/events/'
+    | '/v1/scorecard/'
+    | '/v1/settings/'
+    | '/v1/training/'
+    | '/v1/admin/create/tournament'
+    | '/v1/admin/create/user'
+    | '/v1/settings/account/'
+    | '/v1/settings/competition-data/'
+    | '/v1/settings/notifications/'
+    | '/v1/settings/offline/'
+    | '/v1/admin/delete/tournament/$id'
+    | '/v1/admin/delete/user/$id'
+    | '/v1/admin/update/tournament/$id'
+    | '/v1/admin/update/user/$id'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  V1Route: typeof V1RouteWithChildren;
-  LoginIndexRoute: typeof LoginIndexRoute;
+  IndexRoute: typeof IndexRoute
+  V1Route: typeof V1RouteWithChildren
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   V1Route: V1RouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -573,7 +595,8 @@ export const routeTree = rootRoute
         "/v1/settings/",
         "/v1/settings/account/",
         "/v1/settings/competition-data/",
-        "/v1/settings/notifications/"
+        "/v1/settings/notifications/",
+        "/v1/settings/offline/"
       ]
     },
     "/login/": {
@@ -629,6 +652,10 @@ export const routeTree = rootRoute
     },
     "/v1/settings/notifications/": {
       "filePath": "v1/settings/notifications/index.tsx",
+      "parent": "/v1/settings"
+    },
+    "/v1/settings/offline/": {
+      "filePath": "v1/settings/offline/index.tsx",
       "parent": "/v1/settings"
     },
     "/v1/admin/delete/tournament/$id": {

@@ -36,7 +36,7 @@ export const CreateUserForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-2 w-[480px]">
+    <div className="flex flex-col gap-y-2 w-[361px]">
       <CardHeader>
         <CardTitle>Create a user</CardTitle>
         <CardDescription>Enter the new user info</CardDescription>

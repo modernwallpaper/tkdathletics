@@ -8,16 +8,14 @@ export const UserList = () => {
   const data = getAllUsers();
   const { loading, error, users } = data;
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   if (error) {
     return <p>{error}</p>;
   }
 
   if (!users) {
-    return <p>No users found</p>;
+    return <p></p>;
+  } else if (loading) {
+    return <p></p>;
   } else {
     return (
       <UserTable<z.infer<typeof UserSchema>, unknown>

@@ -290,6 +290,11 @@ const TournamentSchema = z.object({
   participants: z.array(UserSchema).optional(),
 });
 
+const OfflineSchema = z.object({
+  userData: z.boolean().default(true),
+  tournamentData: z.boolean().default(true)
+})
+
 export {
   CreateUserSchema,
   UpdateUserSchema,
@@ -304,4 +309,5 @@ export {
   UpdateTournamentSchema,
   TournamentSchema,
   UpdateTournamentSchemaBackend,
+  OfflineSchema
 };

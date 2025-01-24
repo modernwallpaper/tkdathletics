@@ -5,9 +5,9 @@ import { z } from "zod";
 import { TournamentSchema } from "schemas";
 
 export const TournamentList = () => {
-  const { loading, error, tournaments } = getAllTournaments();
+  const { error, tournaments } = getAllTournaments();
 
-  if (loading) return <p>Loading...</p>;
+  //if (loading) return <p>Loading...</p>;
 
   if (error) return <p>{error}</p>;
 

@@ -27,7 +27,7 @@ export const Navbar = () => {
   const user = state.user;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-20 lg:pl-20">
+    <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md supports-[backdrop-filter]:bg-background/60 flex justify-between items-center h-[60px] lg:pr-14 lg:pl-14">
       <div className="flex w-full lg:hidden justify-between">
         <Sheet>
           <SheetTrigger asChild>
@@ -47,6 +47,7 @@ export const Navbar = () => {
                         variant={"nav_link"}
                         className={
                           pathname === "/v1/admin"
+                            || pathname.startsWith("/v1/admin")
                             ? "text-primary"
                             : "text-muted-foreground hover:text-primary"
                         }
@@ -61,6 +62,7 @@ export const Navbar = () => {
                       variant={"nav_link"}
                       className={
                         pathname === "/v1/analysis"
+                          || pathname.startsWith("/v1/analysis")
                           ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }
@@ -74,6 +76,7 @@ export const Navbar = () => {
                       variant={"nav_link"}
                       className={
                         pathname === "/v1/events"
+                          || pathname.startsWith("/v1/events")
                           ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }
@@ -87,6 +90,7 @@ export const Navbar = () => {
                       variant={"nav_link"}
                       className={
                         pathname === "/v1/competitions"
+                          || pathname.startsWith("/v1/competitions")
                           ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }
@@ -100,6 +104,7 @@ export const Navbar = () => {
                       variant={"nav_link"}
                       className={
                         pathname === "/v1/scoreboard"
+                          || pathname.startsWith("/v1/scoreboard")
                           ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }
@@ -113,6 +118,7 @@ export const Navbar = () => {
                       variant={"nav_link"}
                       className={
                         pathname === "/v1/training"
+                          || pathname.startsWith("/v1/training")
                           ? "text-primary"
                           : "text-muted-foreground hover:text-primary"
                       }
@@ -130,6 +136,7 @@ export const Navbar = () => {
                         <AccordionTrigger
                           className={
                             pathname === "/v1/settings"
+                            || pathname.startsWith("/v1/settings")
                               ? "text-sm no-underline"
                               : "text-muted-foreground text-sm"
                           }
@@ -142,6 +149,7 @@ export const Navbar = () => {
                             variant={"nav_link"}
                             className={
                               pathname === "/v1/settings/account"
+                                || pathname.startsWith("/v1/settings/account")
                                 ? "text-foreground pl-0 ml-0"
                                 : "text-muted-foreground pl-0 ml-0"
                             }
@@ -153,6 +161,7 @@ export const Navbar = () => {
                             variant={"nav_link"}
                             className={
                               pathname === "/v1/settings/competition-data"
+                                || pathname.startsWith("/v1/settings/competition-data")
                                 ? "text-foreground pl-0 ml-0"
                                 : "text-muted-foreground pl-0 ml-0"
                             }
@@ -166,12 +175,27 @@ export const Navbar = () => {
                             variant={"nav_link"}
                             className={
                               pathname === "/v1/settings/notifications"
+                                || pathname.startsWith("/v1/settings/notifications")
                                 ? "text-foreground pl-0 ml-0"
                                 : "text-muted-foreground pl-0 ml-0"
                             }
                           >
                             <a href="/v1/settings/notifications">
                               Notifications
+                            </a>
+                          </Button>
+                          <Button
+                            asChild
+                            variant={"nav_link"}
+                            className={
+                              pathname === "/v1/settings/offline"
+                                || pathname.startsWith("/v1/settings/offline")
+                                ? "text-foreground pl-0 ml-0"
+                                : "text-muted-foreground pl-0 ml-0"
+                            }
+                          >
+                            <a href="/v1/settings/offline">
+                              Offline 
                             </a>
                           </Button>
                         </AccordionContent>
@@ -191,14 +215,16 @@ export const Navbar = () => {
         </div>
       </div>
       <div className="hidden lg:flex items-center justify-between w-full">
+        <p className="font-semibold">TKDATHLETICS</p>
         <div className="gap-x-2 items-center">
           {user?.authority === "ADMIN" && (
             <Button
               asChild
               variant={"nav_link"}
               className={
-                pathname === "/v1/admin"
-                  ? "text-primary"
+                pathname === "/v1/admin" 
+                  || pathname.startsWith("/v1/admin")
+                  ? "text-primary border-b border-b-secondary"
                   : "text-muted-foreground hover:text-primary"
               }
             >
@@ -210,18 +236,22 @@ export const Navbar = () => {
             variant={"nav_link"}
             className={
               pathname === "/v1/analysis"
-                ? "text-primary"
+                || pathname.startsWith("/v1/analysis")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
-            <a href={"/v1/analysis"}>Analysis</a>
+            <div className="flex flex-col h-full">
+              <a href={"/v1/analysis"}>Analysis</a>
+            </div>
           </Button>
           <Button
             asChild
             variant={"nav_link"}
             className={
               pathname === "/v1/events"
-                ? "text-primary"
+                || pathname.startsWith("/v1/events")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -232,7 +262,8 @@ export const Navbar = () => {
             variant={"nav_link"}
             className={
               pathname === "/v1/competitions"
-                ? "text-primary"
+                || pathname.startsWith("/v1/competitions")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -242,8 +273,9 @@ export const Navbar = () => {
             asChild
             variant={"nav_link"}
             className={
-              pathname === "/v1/scoreboard"
-                ? "text-primary"
+              pathname === "/v1/scorecard"
+                || pathname.startsWith("/v1/scorecard")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -254,7 +286,8 @@ export const Navbar = () => {
             variant={"nav_link"}
             className={
               pathname === "/v1/training"
-                ? "text-primary"
+                || pathname.startsWith("/v1/training")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -265,7 +298,8 @@ export const Navbar = () => {
             variant={"nav_link"}
             className={
               pathname === "/v1/settings"
-                ? "text-primary"
+                || pathname.startsWith("/v1/settings")
+                ? "text-primary border-b border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
