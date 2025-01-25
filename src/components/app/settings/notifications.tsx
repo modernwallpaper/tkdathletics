@@ -1,11 +1,11 @@
 import { Separator } from "@/components/ui/separator";
-import { SmalllPageHeader } from "../page-header";
+import { SmallPageHeader } from "../page-header";
 import { NotificationsForm } from "./notifications-form";
 
 export const NotificationsPage = () => {
   return (
     <div>
-      <SmalllPageHeader label="Notifications" />
+      <SmallPageHeader label="Notifications" />
       <p className="text-muted-foreground text-sm">
         Manage your settings for notifications.
       </p>

@@ -1,11 +1,11 @@
 import { Separator } from "@/components/ui/separator";
-import { SmalllPageHeader } from "../page-header";
+import { SmallPageHeader } from "../page-header";
 import { AccountForm } from "./account-form";
 
 export const AccontPage = () => {
   return (
     <div className="w-full md:w-full">
-      <SmalllPageHeader label="Account" />
+      <SmallPageHeader label="Account" />
       <p className="text-muted-foreground text-sm">
         On this page you can edit your information that is used to manage your
         account.

@@ -30,12 +30,37 @@ export const columns: ColumnDef<z.infer<typeof TournamentSchema>, unknown>[] = [
   },
   {
     accessorKey: "resultUrl",
-    header: "Result url",
+    header: "Results",
+    cell: ({ row }) => {
+      const tournament = row.original;
+      const result = tournament.resultUrl;
+      if(!result) {
+        return <p>No result provided</p>;
+      }
+      return(
+        <div className="flex">
+          <a className="text-blue-500 hover:cursor-pointer" href={result}>Result</a>
+        </div>
+      )
+    },
   },
   {
     accessorKey: "contractUrl",
-    header: "Contract url",
+    header: "Contract",
+    cell: ({ row }) => {
+      const tournament = row.original;
+      const contract = tournament.contractUrl;
+      if(!contract) {
+        return <p>No contract provided</p>;
+      }
+      return(
+        <div className="flex">
+          <a className="text-blue-500 hover:cursor-pointer" href={contract}>Contract</a>
+        </div>
+      )
+    },
   },
+
   {
     accessorKey: "participants",
     header: "Participants",

@@ -33,7 +33,7 @@ export const routes = new Hono()
   .post("user/admin/delete", protectAdmin, deleteUserAsAdmin)
 
   // Tournament related routes
-  .get("tournament/getall", protectAdmin, getAllTournaments)
+  .get("tournament/getall", protectUser, getAllTournaments)
   .post("tournament/create", protectAdmin, createTorunament)
   .post("tournament/file/upload", protectAdmin, uploadTournamentFile)
   .post("tournament/delete", protectAdmin, deleteTournament)

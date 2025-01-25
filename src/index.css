@@ -9,32 +9,31 @@ body,
   height: 100%;
 }
 
-/* Hide scrollbar for all elements */
 * {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 *::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none; 
 }
 
-/* For mobile screens */
+
 @media (max-width: 768px) {
-  /* Hide horizontal scrollbar */
+
   body,
   html {
     overflow-x: hidden;
   }
 
-  /* Hide vertical scrollbar */
+  
   .no-scrollbar {
     overflow-y: hidden;
   }
 
-  /* Alternative for specific containers */
+  
   .container {
-    overflow: hidden; /* Hide both x and y scrollbars */
+    overflow: hidden; 
   }
 }
 
