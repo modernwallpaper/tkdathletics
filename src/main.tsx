@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { AuthContextProvider } from "./context/auth.context.tsx";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { Loader } from "./components/app/loader.tsx";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -45,12 +46,14 @@ if ("serviceWorker" in navigator) {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ConnectionProvider>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <AuthContextProvider>
-          <RouterProvider router={router} />
-        </AuthContextProvider>
-      </ThemeProvider>
-    </ConnectionProvider>
+    <Suspense fallback={<Loader />}>
+      <ConnectionProvider>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <AuthContextProvider>
+            <RouterProvider router={router} />
+          </AuthContextProvider>
+        </ThemeProvider>
+      </ConnectionProvider>
+    </Suspense>
   </React.StrictMode>,
 );

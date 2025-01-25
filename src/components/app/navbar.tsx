@@ -224,7 +224,7 @@ export const Navbar = () => {
               className={
                 pathname === "/v1/admin" 
                   || pathname.startsWith("/v1/admin")
-                  ? "text-primary border-b border-b-secondary"
+                  ? "text-primary border-b-2 border-b-secondary"
                   : "text-muted-foreground hover:text-primary"
               }
             >
@@ -237,7 +237,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/analysis"
                 || pathname.startsWith("/v1/analysis")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -251,7 +251,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/events"
                 || pathname.startsWith("/v1/events")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -263,7 +263,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/competitions"
                 || pathname.startsWith("/v1/competitions")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -275,7 +275,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/scorecard"
                 || pathname.startsWith("/v1/scorecard")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -287,7 +287,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/training"
                 || pathname.startsWith("/v1/training")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >
@@ -299,7 +299,7 @@ export const Navbar = () => {
             className={
               pathname === "/v1/settings"
                 || pathname.startsWith("/v1/settings")
-                ? "text-primary border-b border-b-secondary"
+                ? "text-primary border-b-2 border-b-secondary"
                 : "text-muted-foreground hover:text-primary"
             }
           >

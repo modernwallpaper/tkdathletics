@@ -1,5 +1,3 @@
 export const Loader = () => {
-  return(
-    <p>Loading...</p>
-  )
+  return <div className="h-full w-full bg-primary" />;
 }
