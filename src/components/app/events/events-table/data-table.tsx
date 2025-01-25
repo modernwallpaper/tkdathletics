@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, CirclePlus, Eye } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface DataTableProps<TData, TValue> {

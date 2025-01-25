@@ -1,6 +1,5 @@
 import { getAllTournaments } from "@/hooks/getAllTournamennts"
 import { PageHeader } from "../page-header"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DataTable } from "./events-table/data-table";
 import { columns } from "./events-table/columns";
 
