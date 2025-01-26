@@ -80,11 +80,11 @@ export const UpdateUserForm = () => {
                       control={form.control}
                       name="email"
                       disabled={isLoading}
-                      render={() => (
+                      render={({field}) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="someone@example.com" />
+                            <Input {...field} value={field.value ?? ""}  placeholder="someone@example.com" />
                           </FormControl>
                         </FormItem>
                       )}
@@ -93,11 +93,11 @@ export const UpdateUserForm = () => {
                       control={form.control}
                       name="surname"
                       disabled={isLoading}
-                      render={() => (
+                      render={({field}) => (
                         <FormItem>
                           <FormLabel>Surename</FormLabel>
                           <FormControl>
-                            <Input placeholder="surename" />
+                            <Input {...field} value={field.value ?? ""}  placeholder="someone" />
                           </FormControl>
                         </FormItem>
                       )}
